@@ -1,0 +1,48 @@
+/** Faz um trim em uma determinada string **/
+function trim(str) {
+	if(str != null){
+		return str.replace(/(^\s*)|(\s*$)/g, "");
+	}else{
+		return null;
+	}
+}
+
+function replaceAll(str,token1, token2){
+	while(str.indexOf(token1) != -1){
+		str = str.replace(token1, token2);
+	}
+	return str;
+}
+
+
+function parseStrToFloat(str){
+    if(isNaN(parseFloat(str.replace(/\./g,"").replace(/\,/g,".")))){
+        return parseFloat(0.0);   
+    } else {
+        return parseFloat(str.replace(/\./g,"").replace(/\,/g,"."));       
+    }   
+}
+
+function parseFloatToStr(num,casas){
+    if(isNaN(num)){
+        return CN_getValorFormatado("-$."+casas,"0");   
+    } else {       
+        num = num.toFixed(casas);
+        return CN_getValorFormatado("-$."+casas,num.toString().replace(/\./g,","));
+    }
+}
+
+function FS_startsWith(str, begin){
+	return str.indexOf(begin) == 0;
+}
+
+function FS_endsWith(str, end){
+	if(str == end){
+		return true;
+	}
+	if(end.length >= str.length){
+		return false;
+	}
+	var last = str.substring(str.length - end.length );
+	return (last == end);
+}

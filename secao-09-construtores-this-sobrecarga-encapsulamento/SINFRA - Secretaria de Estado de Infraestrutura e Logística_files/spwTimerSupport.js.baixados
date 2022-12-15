@@ -1,0 +1,43 @@
+//FUN??ES DE TIMER PARA ATUALIZA??ES
+//*********************************************************
+
+var timerID = null;
+var timeout = 10000000;
+var started = false;
+var lastAccess = 0;
+
+/*Funcao que deve ser sobrecrita para responder aos eventos de tempo.
+  Para receber as notifica??es, colocar na TAG body os seguintes m?todos:
+      - onunload="Stop()"
+*/
+
+function onTime() {
+}
+
+function _callOnTime() {
+    if( timerID != null ) {
+        clearTimeout( timerID );
+        clockID  = 0;
+    }
+
+     timerID = setInterval("_callOnTime()", timeout);
+     onTime();
+}
+
+function Start() {
+     Start( timeout );
+}
+
+function Start( newTimeout ) {
+    timeout = newTimeout;
+    timerID  = setInterval( "_callOnTime()", timeout );
+    started = true;
+}
+
+function Stop() {
+   if( timerID != null) {
+      clearTimeout( timerID );
+      timerID  = null;
+      started = false;
+   }
+}

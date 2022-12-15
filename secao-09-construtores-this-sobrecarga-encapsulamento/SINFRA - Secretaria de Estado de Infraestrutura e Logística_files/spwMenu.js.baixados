@@ -1,0 +1,160 @@
+function MENU_highModulo(obj){
+	jQuery(obj).find('.tabend').addClass('tabend-hover');
+}
+
+function MENU_lowModulo(obj){
+	jQuery(obj).find('.tabend').removeClass('tabend-hover');	
+}
+
+function MENU_active(obj) {
+	if(jQuery(obj).hasClass('tab-active')) {
+		jQuery(obj).removeClass('tab-active');
+		jQuery(obj).find('.tabend').removeClass('tabend-active');
+	} else {
+		jQuery('.tab-active').removeClass('tab-active');
+		jQuery('.tabend-active').removeClass('tabend-active');
+		jQuery(obj).addClass('tab-active');
+		jQuery(obj).find('.tabend').addClass('tabend-active');
+	}
+}
+
+var fecharEstrutura = function ($obj){
+	if (!$obj.jquery) {
+		$obj = jQuery(this);
+	}
+    $obj.find('li:first').addClass('fechado').removeClass('aberto'); 
+	$obj.parent().children('ul').fadeOut(0);
+}
+
+var abrirEstrutura = function ($obj){
+	if (!$obj.jquery) {
+		$obj = jQuery(this);
+	}
+    $obj.find('li').addClass('aberto').removeClass('fechado'); 
+	$obj.parent().children('ul').fadeIn(0);
+}
+
+var tratarCliqueItem = function(){
+	jQuery('[name=itemMenu]').css('background','');
+	jQuery(this).css('background', '#DDDDDD');
+}
+
+var tratarCliqueItemAutoOcultar = function(){
+	jQuery('[name=itemMenu]').css('background','');
+	jQuery(this).css('background', '#DDDDDD');
+	window.top.myLayout.close('west');
+	top.frames['page'].location = jQuery(this).attr('href');
+}
+
+var trocarModulo = function(){
+	var $item = jQuery('#itensDoMenu div:visible [nomegrupo]');
+	$item.addClass('fechado').removeClass('aberto');
+	
+	$item.parent().siblings('ul').each(function(){
+		this.style.display = 'none';
+	});
+	
+	jQuery('[id^=modulo_]').hide();
+	var comboSelecionado = jQuery(this).val();
+	var $modulo = jQuery('#modulo_' + comboSelecionado + '');
+	
+	if($modulo.size() === 0){
+		jQuery('[id^=modulo_' + comboSelecionado + ']').show();
+	}else{
+		$modulo.show();
+	}
+	
+	var $spanImgArvore = jQuery('.menutabbuttons').get(0).firstChild.nextSibling;
+	var $spanImgArvore = jQuery($spanImgArvore);
+
+	$spanImgArvore.attr('src','imagens/base/icoFecharMenu-a.png');
+	$spanImgArvore.prev().attr('src','imagens/base/icoAbrirMenu.png');
+};
+
+var esconderLateral = function(){ 
+	jQuery('#side', top.document).hide();
+}
+
+var mostrarLateral = function(){ 
+	jQuery('#side', top.document).show();
+}
+
+var encolherArvore = function(e){ 
+	
+	var $this = jQuery(this); 
+	
+	$this.attr('src','imagens/base/icoFecharMenu-a.png');
+	$this.prev().attr('src','imagens/base/icoAbrirMenu.png');
+
+	var $item = jQuery('#itensDoMenu div:visible [nomegrupo]');
+	$item.addClass('fechado').removeClass('aberto');
+	
+	$item.parent().siblings('ul').each(function(){
+		this.style.display = 'none';	
+	});
+	
+	e.preventDefault();
+	
+	return false;
+}
+
+var abrirArvore = function(e){ 
+
+	var $this = jQuery(this); 
+
+	$this.attr('src','imagens/base/icoAbrirMenu-a.png');
+	$this.next().attr('src','imagens/base/icoFecharMenu.png');
+
+	var $item = jQuery('#itensDoMenu div:visible [nomegrupo]');
+	$item.addClass('aberto').removeClass('fechado');
+	$item.parent().siblings('ul').fadeIn(0);
+	
+	e.preventDefault();
+	
+	return false;
+}
+
+var padraoEncolherArvore = function(e){ 
+	
+	var $obj = jQuery('[name=encolherArvore]'); 
+	
+	$obj.attr('src','imagens/base/icoFecharMenu-a.png');
+	$obj.prev().attr('src','imagens/base/icoAbrirMenu.png');
+
+	var $item = jQuery('#itensDoMenu [nomegrupo]'); 
+	$item.addClass('fechado').removeClass('aberto');
+	
+	$item.parent().siblings('ul').each(function(){
+		this.style.display = 'none';
+	});
+	
+	return false;
+}
+
+var abrirFecharEstrutura = function() {
+	
+	var $this = jQuery(this);
+	
+	if ($this.find('li:first').hasClass('aberto')) {
+		fecharEstrutura($this);
+	} else if($this.find('li:first').hasClass('fechado')) {
+		abrirEstrutura($this);
+	}
+	
+}
+
+jQuery(window).load(function(){
+    jQuery('html').click(function(){
+        var valorInput = jQuery('#buscar', top.document).val();
+        jQuery('#q', top.document).val(valorInput);
+        
+        if(jQuery.browser.msie){
+            jQuery('#resultados', top.document).hide();
+            jQuery('#menuacoes', top.document).hide();
+        }else{
+            jQuery('#resultados', top.document).slideUp();
+            jQuery('#menuacoes', top.document).slideUp();
+        }
+    });	
+    
+}); 

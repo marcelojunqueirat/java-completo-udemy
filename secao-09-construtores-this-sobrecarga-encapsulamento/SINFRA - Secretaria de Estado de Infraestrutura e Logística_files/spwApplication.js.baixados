@@ -1,0 +1,91 @@
+//exibe ou esconde o menu lateral, se esta aberto esconde, se esta escondido abre.
+function A_showMenuLateral(obj){
+	var framesetContent = parent.document.getElementById("frameContent");
+	var imgSeta;
+	var frameBottom = parent.document.getElementById("frameBottom");
+	if(frameBottom.contentDocument){
+		//firefox
+		imgSeta = frameBottom.contentDocument.getElementById("seta");
+	}else{
+		//explorer
+		imgSeta = parent.document.frames["frameBottom"].document.getElementById("seta");
+	}
+	var srcSeta = new String(imgSeta.src);
+	var posBarra = srcSeta.lastIndexOf("/");
+	if(framesetContent.cols != "0,*"){
+		framesetContent.setAttribute("colsContentMenuAberto", new String(framesetContent.cols));
+		framesetContent.cols = "0,*";
+		imgSeta.src = srcSeta.substr(0, posBarra) + "/setaExpand.gif";
+	}else{
+		framesetContent.cols = framesetContent.getAttribute("colsContentMenuAberto");
+		imgSeta.src = srcSeta.substr(0, posBarra) + "/setaContract.gif";
+	}
+}
+
+// Verifica se o menu esta aberto
+function A_menuLateralEstaAberto(){
+	var framesetContent = parent.document.getElementById("frameContent");
+	return (framesetContent.cols != "0,*");
+}
+
+// Abre o menu somente se ele estiver fechado, se estiver aberto não faz nada
+function A_abreMenuLateral(){
+	if(!A_MenuLateralEstaAberto()){
+		A_showMenuLateral(null)
+	}
+}
+
+// Fecha o menu somente se ele estiver aberto, se estiver fechado não faz nada
+function A_fechaMenuLateral(){
+	if(A_MenuLateralEstaAberto()){
+		A_showMenuLateral(null)
+	}
+}
+
+//teclas de atalho
+function A_ShortCut(evento){
+	if(evento.ctrlKey){
+		tecla = evento.keyCode
+		//window.status = tecla
+		
+		//M - contract/expand menu side
+		if(tecla == 77){
+			A_changeLateralSize()
+		}
+	}
+}
+
+function destacaSelecionado(obj) {
+	jQuery(".menuText-selecionado").removeClass("menuText-selecionado");
+	jQuery(obj).addClass("menuText-selecionado");
+}
+
+//coloca o texto no caminho quando o menu é clicado
+function A_writeInPath(obj){
+	
+	destacaSelecionado(obj);
+	//pega o texto
+	
+	var jObj = jQuery(obj);
+	var textPath = jObj.text();
+	var nivel = jObj.attr("nivel");
+	while(nivel > 0) {
+		jObj = jObj.parents(".nivel"+(nivel-1));
+		textPath = jObj.find(".menuTextPrinc").eq(0).text() + " > " + textPath;
+		nivel = nivel - 1;
+	}
+	
+	
+	//coloca no caminho
+	frameSuperior = parent.window.frames["superior"]
+	objPath = frameSuperior.document.getElementById("path")
+	objPath.childNodes[0].nodeValue = textPath
+
+}
+
+
+
+
+
+
+

@@ -1,0 +1,254 @@
+var needToConfirm = false;
+var ask = false;
+
+	jQuery(function(){
+	
+		var realizadorBusca = buscaSpw.realizaBusca;
+		var menuSearch = menuBusca.carregaComponenteBusca;
+		
+		jQuery('#search').click(function(){
+			jQuery('#idCarregarInic').show()
+			menuSearch(realizadorBusca);
+			jQuery('#idCarregarInic').hide();
+	    });
+	
+	   	jQuery('#q').keypress(function(){
+	   	   jQuery('#q').val('');
+	 	});
+	
+		jQuery("#modalWidgets").dialog({
+			modal: true,
+			autoOpen:false,
+			position: [350,100],
+			width: 800,
+			draggable: true,
+			resizable: false,
+			title: 'Adicionar widgets',
+			dialogClass: 'widgetConfig' 
+		});
+		
+		jQuery('#configApp').dialog({ 
+		   title: 'Configurações',
+		   autoOpen: false,
+		   resizable: false,
+		   'modal':true,	
+		   'width':600,
+		   'height':250
+	    });
+		
+		jQuery('#configApp').bind("dialogbeforeclose", jQuery.spw.spwpreferencias.rollbackSkin);
+	    
+	    jQuery("#skins").dialog({
+			modal: true,
+			autoOpen:false,
+			width: 565,
+			height: 600,
+			draggable: true,
+			resizable: false,
+			title: 'Alterar skin',
+			dialogClass: 'widgetConfig' 
+		});
+		
+		var $linkTemas = jQuery('a[name=skin]');
+	
+		$linkTemas.click(jQuery.spw.spwpreferencias.trocarSkin);
+		$linkTemas.removeClass('linkSelecActive');
+		
+		$linkTemas.each(function(){
+			var temaI = jQuery(this).text();
+			var temaAtual = jQuery('#skinPrevio').val();
+			
+			if(temaI===temaAtual){
+				jQuery(this).addClass('linkSelecActive');
+				return;
+			}
+			
+		});
+		
+		jQuery('#idModalPreferencias').click(jQuery.spw.spwpreferencias.carregarOpcoesPreferencias);
+		
+		/**
+	 	* Tratamento para o botão concluir
+	 	*
+	 	*/
+		jQuery('#btConcluir').click(
+			function(){
+				jQuery.spw.spwpreferencias.atualizarCidade();	
+				jQuery('#skinPrevio').val(jQuery('a.linkSelecActive').text());
+				jQuery('#configApp').dialog('close');
+			
+		});
+		
+		/**
+	 	* Tratamento para o botão Cancelar
+	 	*
+	 	*/
+		jQuery('#btCancelar').click(function(){
+			jQuery.spw.spwpreferencias.rollbackSkin();
+			jQuery('#configApp').dialog('close');
+		});
+			
+		myLayout = jQuery('body').layout({
+				west__size:			204
+			,   north__size:        50
+			,   north__slidable:    false
+			,   north__closable:    false
+			,	north__resizable:	false	// OVERRIDE the pane-default of 'resizable=true'
+			,	west__resizable:	true	
+			,	west__slidable:		false
+			,	west__minSize:			190
+			,	west__maxSize:			500
+			,	north__spacing_open:	0
+			,	west__resizeWhileDragging: true
+			,	fxName:	"none" 	// ('none' or blank), slide, drop, scale
+			,   onclose_end: function() {	
+				jQuery('div.ui-layout-resizer-west-closed').click(
+					function(){
+						myLayout.open('west');
+					}
+				);}
+			,   onresize: function() {
+				}
+		});
+		
+		var resizeAccordionIE = function(){
+			var muralFrame = jQuery('#idFrameMenu').contents();	
+			var accordion = jQuery('#accordion1', muralFrame);
+			var sidebox = accordion.children('.sidebox');
+			var divSearch = jQuery('#search');
+			accordion.css('height','100%');
+			var tabs = jQuery('.tab', muralFrame).size();
+			sidebox.css('height',(divSearch[0].offsetTop-(tabs*24))+'px');
+		};
+		
+		if(jQuery.browser.msie){
+		
+			var initialX = null;
+			var initialY = null;
+			var lastResize = null;
+			var waiting = false;
+			var first = true;
+			var id = 0;
+		
+			function updateResizeTime()
+			{
+			    if (initialX === event.clientX && initialY === event.clientY)
+			    {
+			        return;
+			    }
+			
+			    initialX = event.clientX;
+			    initialY = event.clientY;
+			
+			    if (first)
+			    {
+			        first = false;
+			        return;
+			    }
+			
+			    lastResize = new Date();                    
+			    if (!waiting && id == 0)
+			    {
+			        waiting = true;
+			        id = setInterval(checkForResizeEnd, 200);
+			    }
+			};
+			
+			function checkForResizeEnd()
+			{
+			    if ((new Date()).getTime() - lastResize.getTime() >= 200)
+			    {
+			        waiting = false;
+			        clearInterval(id);
+			        id = 0;
+			        resizeAccordionIE();
+			    }
+			};
+			
+			window.onresize = function()
+			{
+			    updateResizeTime();
+			};
+			
+		};	
+			
+		jQuery.spw.widgets.adicionarEventosWidgets();
+		
+	});
+	
+	/*
+	* Apenas executa as ações relacionados ao iframe cabecalho após o mesmo estiver totalmente carregado 
+	*/
+	function iframe_loaded() {
+	
+		var topIFrame = jQuery('#cabecalho').contents();
+		src = jQuery("#idFrameMural")[0].src;
+		
+		if (src !== ""){
+			
+			var muralFrame = jQuery('#idFrameMenu').contents();	
+		
+			jQuery('#btAcoes', topIFrame).bind('click',function(){
+				var $menuAcoes = jQuery('#menuacoes');
+				var status = $menuAcoes.is(':visible');
+				
+				if(status === false){
+					jQuery('#resultados').fadeOut('fast');
+					
+					if(jQuery.browser.msie){
+						$menuAcoes.show('fast');
+					}else{
+						$menuAcoes.get(0).style.cssText = "";
+						$menuAcoes.css('display', 'block');
+						$menuAcoes.fadeIn('fast');
+					}	
+					
+					jQuery('html', muralFrame).click(function(){
+						jQuery('#q').val(jQuery('#buscar').val());
+						$menuAcoes.fadeOut('fast');
+					});
+					
+				}else{
+					
+					if(jQuery.browser.msie){
+						$menuAcoes.hide();
+					}else{
+						$menuAcoes.fadeOut('fast');
+						
+					}	
+				}
+			});
+			jQuery('#aguardeFrame').hide();
+		}
+	
+		jQuery('#btAcoes', topIFrame).bind('keyup', function(e){
+			if(e.keyCode == 27){
+			   jQuery('#menuacoes').fadeOut('fast');
+			}
+		});
+	
+		jQuery('html').click(function(){
+				jQuery('#menuacoes', top.document).slideUp();
+		});	
+	
+	};
+
+	function iframe_portlel_load(){
+		var muralFrame = jQuery('#idFrameMural').contents();
+		var $cWidgets = jQuery("#cWidgets",muralFrame);
+		
+		$cWidgets.hover(
+			function() {
+				jQuery(this).fadeTo('fast', '1');
+			},
+			function() {
+				jQuery(this).removeAttr('style');
+		});
+		
+		$cWidgets.click(
+			function(){
+				jQuery.spw.widgets.mostrarOpcoesWidgets();
+			}
+		);
+	};
+	

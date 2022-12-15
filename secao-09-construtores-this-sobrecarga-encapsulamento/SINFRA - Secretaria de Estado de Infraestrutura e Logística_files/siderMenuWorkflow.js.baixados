@@ -1,0 +1,299 @@
+jQuery(function(){
+	var F_old_MENU_active = MENU_active;
+	MENU_active = function(obj) {
+		F_old_MENU_active.apply(this, arguments);
+		if(menuWorkflow) {
+			//var F_timeOut = setTimeout(function() {
+				var $tab =  jQuery("#workflowTab");
+				var $div = $tab.find("div");
+				if(jQuery(obj).is(":contains('Fila de Trabalho')") && $div.size() == 0) {
+					menuWorkflow.primeiroLoad = true;
+					menuWorkflow.mostraProcessando();
+				} else {
+					menuWorkflow.primeiroLoad = false;
+					menuWorkflow.escondeProcessando();
+				}
+			//},200);
+		}
+	};
+	
+});
+
+
+
+
+function MenuWorkflow(elementoDom, actionMenuWorkflow, refreshTime) {
+	this.elementoDom = elementoDom;
+	this.actionMenuWorkflow = actionMenuWorkflow;
+	this.refreshTime = refreshTime;
+	this.update();
+	this.scheduleNextUpdate();
+	this.objLayerProcessando = null;
+	this.ultimoUsuario = null;
+	this.menuWorkflowUsuario = {};
+}
+
+MenuWorkflow.refresh = function() {
+	jQuery("#refreshWorkflow",top.menu.document).trigger('click');
+};
+
+MenuWorkflow.prototype.getMenuWorkflowUsuario = function (cdUsuario) {
+	if(cdUsuario) {
+		return this.menuWorkflowUsuario[cdUsuario];
+	}
+	return null;
+};
+
+MenuWorkflow.prototype.update = function (vForcarRefresh) {
+	var menu = menuWorkflow || this;
+	menu.mostraProcessando();
+	menu.elementoDom.children().hide();
+
+	var cdUsuario = menu.ultimoUsuario ? menu.ultimoUsuario.split(";")[1] : null;
+	var menuUsuario = menu.getMenuWorkflowUsuario(cdUsuario);
+	var refresh = vForcarRefresh === true; 
+	
+	if(!refresh && cdUsuario && menuUsuario) {
+		jQuery(menuUsuario).show();
+		menu.escondeProcessando();
+	} else {
+		var parameter = (menu.ultimoUsuario? "&cdUsuario=" + menu.ultimoUsuario : "");
+		jQuery.get(menu.actionMenuWorkflow+parameter, function(dados){
+			menu.render(dados,refresh);
+			if(menu.refreshTime != null) {
+				menu.scheduleNextUpdate();
+			}
+			menu.escondeProcessando();
+		});
+	}
+	
+	
+}
+
+MenuWorkflow.prototype.scheduleNextUpdate = function () {
+	// var menu = menuWorkflow || this;
+	// setTimeout(menu.update, menu.refreshTime);
+}
+
+MenuWorkflow.prototype.render = function (itemRaiz,vForcarRefresh) {
+	var thisRef = this;
+	var itens;
+	
+	if(itemRaiz) {
+		if(!document.getElementById("comboUsuarioWf")) {
+			var label = jQuery('<label>Fila de trabalho:</label>');
+			
+			var combo = jQuery('<select id="comboUsuarioWf" style="width:100%;"></select>');
+				combo.change(thisRef.changeComboUsuarios);
+			
+			var divCombo = jQuery('<div class="combomodulos"></div>');
+				divCombo.append(label);
+				divCombo.append(combo);
+			
+			jQuery('#workflowTab').parent().prepend(divCombo);
+			var cdUsuario;
+			var count = 0;
+			jQuery(itemRaiz.getElementsByTagName("MenuWF")[0]).children("Item").each(function() {
+				if(this.tagName == 'Item') {
+			 		var item = jQuery(this);
+			 		var value = item.attr('Valor');
+			 		var valueArray = value.split(";");
+			 		var nmUsuario = valueArray[0];
+			 		var option = jQuery('<option value="'+value+'">'+nmUsuario+'</option>');
+			 		var usuarioSelecionado = thisRef.ultimoUsuario ? thisRef.ultimoUsuario == value : count == 0;
+			 	
+			  		if(usuarioSelecionado) {
+						option.attr('selected','selected');	  	
+				  		itens = item.children("Item");
+				 		cdUsuario = valueArray[1];
+			  		}
+			  		count++
+			  		combo.append(option);
+				}
+			});
+			
+		} else {
+			var count = 0;
+			jQuery(itemRaiz.getElementsByTagName("MenuWF")[0]).children("Item").each(function() {
+				if(this.tagName == 'Item') {
+			 		var item = jQuery(this);
+			 		var value = item.attr('Valor');
+			 		var valueArray = value.split(";");
+			 		var usuarioSelecionado = thisRef.ultimoUsuario ? thisRef.ultimoUsuario == value : count == 0;
+			  		if(usuarioSelecionado) {
+				  		itens = item.children("Item");
+				 		cdUsuario = valueArray[1];
+			  		}
+			  		count++
+				}
+			});
+		}
+		
+		if(vForcarRefresh) {
+			jQuery("#menuWF-"+cdUsuario).remove();
+			delete thisRef.menuWorkflowUsuario[cdUsuario];
+		}
+		
+		var menuUsuario = thisRef.menuWorkflowUsuario[cdUsuario] = jQuery("<div id='menuWF-"+cdUsuario+"'>");
+	 	for(var i = 0; i < itens.length; i++){
+			this.criaItensRecursivo(i,itens[i],1,menuUsuario);
+		}
+	 	this.elementoDom.append(menuUsuario);
+	}
+	jQuery(document).ready(function() {
+			$("#workflowTab a").click(function() {
+				if(isChamadaSistemaZion(this)){
+					return false;
+				}
+			});	
+		});
+ 	
+}
+  	
+MenuWorkflow.prototype.criaItensRecursivo = function (id,item,nivel,divPai, valorPai) {
+  	var quantidade = this.getQuantidade(item);
+	var valor = this.getValor(item);
+	var oldValor = valor;
+	if(quantidade != ""){
+		valor += " (" + quantidade + ") ";	
+	}
+  	if(this.ehFolha(item)){
+  		var ul = jQuery("<ul itenspai='"+valorPai+"'></ul>");
+  		var li = jQuery("<li></li>");
+  		var link = this.getLink(item);
+  		
+  		var a = document.createElement('a');
+		var linkText = document.createTextNode(valor);
+		a.id = "wf_" + id;
+		a.appendChild(linkText);
+		a.href = link;
+		a.name="itemMenu";
+		a.target="page";
+		a.onclick = function () {
+			storeButtonClick('Portal', valorPai + '/' + oldValor);
+		}
+		//a.click(this.tratarCliqueItem);
+
+  	  	li.append(a);
+  		ul.append(li);
+  		divPai.append(ul);
+  	} else {
+  		var ul = jQuery("<ul>");
+  		if(nivel != 1) {
+			ul.attr("itenspai", valorPai);
+		}
+		var div = jQuery("<div name='raiz'>");
+			div.toggle(fecharEstrutura, abrirEstrutura);
+			
+		var li = jQuery("<li nomegrupo='"+valor+"' class='nivel aberto'>");
+		li.text(valor);
+		divPai.append(ul);
+		ul.append(div)
+		div.append(li);
+		
+		var filhos = item.childNodes;
+		for(var j = 0; j < filhos.length; j++){
+			this.criaItensRecursivo(id + "_" + j, filhos[j],nivel+1,ul, valor);
+		}
+	}
+}
+
+MenuWorkflow.prototype.getValor = function (item) {
+	return item.getAttribute("Valor");
+}
+  	
+MenuWorkflow.prototype.getQuantidade = function (item) { 	
+	return item.getAttribute("Qtd");
+}
+  	
+MenuWorkflow.prototype.getLink = function (item) { 	
+	return item.getAttribute("Link");
+}
+  	
+MenuWorkflow.prototype.ehFolha = function (item) { 	  	
+	return (item.childNodes.length < 1);
+}
+
+MenuWorkflow.prototype.changeComboUsuarios = function () { 	  	  	
+	var selecionado = jQuery('#comboUsuarioWf').attr('value');
+	var menu = menuWorkflow || this;
+	menu.ultimoUsuario = selecionado;
+	menu.update();
+}
+  	
+MenuWorkflow.prototype.encolherArvoreWF = function (e) { 	  	  	
+	var $this = jQuery(this); 
+	
+	$this.attr('src','imagens/base/icoFecharMenu-a.png');
+	$this.prev().attr('src','imagens/base/icoAbrirMenu.png');
+
+	var $item = jQuery('#workflowTab [nomegrupo]'); 
+	$item.addClass('fechado').removeClass('aberto');
+	
+	$item.parent().siblings('ul').each(function(){
+		this.style.display = 'none';	
+	});
+	
+	e.preventDefault();
+	return false;
+}
+
+MenuWorkflow.prototype.abrirArvoreWF = function (e) { 	  	
+
+	var $this = jQuery(this); 
+
+	$this.attr('src','imagens/base/icoAbrirMenu-a.png');
+	$this.next().attr('src','imagens/base/icoFecharMenu.png');
+
+	var $item = jQuery('#workflowTab [nomegrupo]'); 
+	$item.addClass('aberto').removeClass('fechado');
+	$item.parent().siblings('ul').fadeIn(0);
+	
+	e.preventDefault();
+	return false;
+}
+
+MenuWorkflow.prototype.mostraProcessando = function () {
+	var thisRef = this;
+	var combo = document.getElementById("comboUsuarioWf");
+	combo && combo.setAttribute("disabled","disabled");
+	
+	if(thisRef.isMenuWorkflowVisible() || thisRef.primeiroLoad === true) {
+		if (thisRef.objLayerProcessando != null) {
+			thisRef.objLayerProcessando.css('display','');
+		} else {
+			thisRef.objLayerProcessando = jQuery("<div class='processando'></div>");
+			jQuery("body").append(thisRef.objLayerProcessando);
+		}
+		var $window = jQuery(window);
+		var alturaPag = $window.height();
+		var larguraPag = $window.width();
+		var posScroll = document.body.scrollTop;
+
+		var largura = 200;
+		var altura = 40;	
+
+		thisRef.objLayerProcessando.css({
+			'left' : ((larguraPag - largura) / 2) + "px",
+			'top' : ((alturaPag - altura) / 2 + posScroll) + "px"
+		});
+	}
+	thisRef.primeiroLoad = false;
+}
+
+
+MenuWorkflow.prototype.escondeProcessando = function () { 
+	var thisRef = this;
+	if( thisRef.objLayerProcessando != null ) {
+		thisRef.objLayerProcessando.css('display','none');
+	}
+	var combo = document.getElementById("comboUsuarioWf");
+	combo && combo.removeAttribute("disabled");
+}
+
+MenuWorkflow.prototype.isMenuWorkflowVisible = function () {
+	return jQuery("#comboUsuarioWf").is(':visible');
+}
+
+MenuWorkflow.prototype.primeiroLoad = false;
+		

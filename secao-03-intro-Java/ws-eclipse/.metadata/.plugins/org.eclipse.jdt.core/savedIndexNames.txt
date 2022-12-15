@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\Marcelo\OneDrive - Softplan\cursos\java-completo-udemy\secao-03-Intro-Java\ws-eclipse\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+3510846143.index
+1172522056.index

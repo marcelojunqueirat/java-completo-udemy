@@ -1,0 +1,7 @@
+jQuery(function() {
+      jQuery('table#tabelaResultado tr').each(function() {
+            var strHtml = jQuery(this).html();
+            strHtml = strHtml.replace(/hidden=\"false\"/g,"");
+            jQuery(this).html((strHtml));
+      });
+});

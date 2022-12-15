@@ -1,0 +1,35 @@
+(function($){
+
+/**
+ * Verifica se a variavel é um valor vazio ou seja, retorna true para os seguintes valores:
+ * "", "0", [] (array vazio), NaN (not a number), 0 (número zero), null, false, undefined
+ *
+ * @param {mixed} value
+ * @type Boolean
+ */
+$.isEmpty = function(value) {
+	 	switch(true) {
+			case typeof value == "undefined" 													:
+			case value === 0																	:
+			case value === "" 																	:
+			case value === "0" 																	:
+			case typeof value == "number" && isNaN(value) 										:
+			case value === null																	:
+			case value === false																:
+			case (typeof value == "object" && value.constructor == Array && value.length == 0) 	: return true;
+			default 																			: return false;
+	} 
+ }
+ 
+$.upperFirstLetter = function(str) {
+	str = str.toString();
+	if(str.length > 0){
+		str = str.charAt(0).toUpperCase() + str.substring(1);
+	}
+	
+	return str;
+ }
+
+})(jQuery);
+
+

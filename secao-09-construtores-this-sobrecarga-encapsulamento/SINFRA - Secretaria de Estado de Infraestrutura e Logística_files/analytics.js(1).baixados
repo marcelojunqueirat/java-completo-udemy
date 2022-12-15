@@ -1,0 +1,23 @@
+var storeWidgetChange = function(label, description) {
+	ga('send', 'event', label, 'Widget', description);
+};
+
+var storeButtonClick = function(label, description) {
+	ga('send', 'event', label, 'Button_Click', description);
+};
+
+var storeSelectOption = function(label, description) {
+	ga('send', 'event', label, 'Select_Option', description);
+};
+
+var storeRadioSelect = function(label, description) {
+	ga('send', 'event', label, 'Radio_Select', description);
+};
+
+var storeInputFocus = function(label, description) {
+	ga('send', 'event', label, 'Input_Focus', description);
+};
+
+var storeCheckboxSelect = function(label, description) {
+	ga('send', 'event', label, 'Checkbox_Select', description);
+};

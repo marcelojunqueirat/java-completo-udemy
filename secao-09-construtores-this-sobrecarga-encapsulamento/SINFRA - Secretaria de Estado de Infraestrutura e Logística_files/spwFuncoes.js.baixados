@@ -1,0 +1,134 @@
+/**
+ * 
+ */
+function F_getBrowserHeight() {
+  var test1 = document.body.clientHeight;
+  var test2 = document.documentElement.clientHeight;
+  if(F_haveDoctype()) {
+    return test2;
+  }
+  else {
+    return test1;
+  }
+}
+
+/**
+ * 
+ */
+function F_getBrowserWidth() {
+  var test1 = document.body.clientWidth;
+  var test2 = document.documentElement.clientWidth;
+  if(F_haveDoctype()) {
+    return test2;
+  }
+  else {
+    return test1;
+  }
+}
+
+/**
+ * 
+ */
+function F_haveDoctype(){
+	if(jQuery.browser.msie){
+		var doctype = null;
+		if (document.all[0].text) 
+			doctype = (document.all[0].text.indexOf('<!DOCTYPE') == 0);
+		
+		if (doctype == false || doctype == null) {
+			var metaTag = jQuery('meta[http-equiv=X-UA-Compatible]');
+			if (metaTag.length != 0) {
+				return true;
+			}
+		}
+		if(doctype){
+			return true;	
+		}else{
+			return false;	
+		}
+	}else{
+		if(document.doctype){
+			return true;	
+		}else{
+			return false;	
+		}
+	}
+}
+
+
+/**
+ * Retorna TRUE se o browser for Internet Explorer.
+ */
+function F_isIExplorer() {
+    return (navigator.appName != "Netscape");
+}
+
+/** Pega o valor de um atributo do objeto * */
+function getAttribute(obj, attrName) {
+	if(obj == null) return null;
+	if(obj.attributes) return obj.getAttribute(attrName);
+	return null;
+}
+
+function getTBody(obj) {
+  if(obj != null){		
+	  nTBody = obj.childNodes.length;
+	  for (iTBody = 0; iTBody < nTBody; iTBody++) {
+	      if (obj.childNodes[iTBody].nodeName == 'TBODY') {
+	         return obj.childNodes[iTBody];
+	      }
+	  }
+  }
+  return null;
+}
+
+function isTextNode(node) {
+  return (node.nodeName == '#text');
+}
+
+function F_openPage(url){
+	// contexto absoluto
+	if(url.indexOf("/") == 0 || url.indexOf("http://") == 0){
+		document.location.href = url
+		return
+	}
+	
+	// verifica se existe a tag "base"
+	arrayBase = document.getElementsByTagName("BASE")
+	if(arrayBase == null || arrayBase[0] == null){
+		document.location.href = url
+	}else{
+		objBase = arrayBase[0]
+		hrefBase = new String(objBase.href)
+		posBarra = hrefBase.lastIndexOf("/")
+		hrefBase = hrefBase.substring(0, posBarra + 1)
+		document.location.href = hrefBase + url
+	}
+}
+
+function F_getElementByNameOrId(doc,nameOrId){
+	var obj = doc.getElementById(nameOrId);
+	if(obj == null){
+		var objs = doc.getElementsByName(nameOrId);
+		if((objs==null)||(objs.childNodes)){
+			return null;
+		}
+		return jQuery(objs).filter('input:first').get(0);
+	}
+	return obj;
+}
+function F_strPad(string,size,fill) {
+	if (!fill) { fill = '0'; }
+	while (string.length < size) {
+		string += fill;
+	}
+	return string;
+};
+
+var alternarMostrarEsconder = function() {
+	if (jQuery(this).parents('div.subTitulo').next('div').is(':visible')) {
+		divEsconder();
+	} else {
+		divMostrar();
+	}
+}

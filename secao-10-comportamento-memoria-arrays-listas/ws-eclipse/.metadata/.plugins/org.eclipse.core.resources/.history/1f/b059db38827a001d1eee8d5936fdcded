@@ -1,0 +1,33 @@
+package application;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Program {
+
+	public static void main(String[] args) {
+		
+		/* List é uma interface, por isso para instancia-la precisa de uma classe, no exemplo abaixo usado a classe ArrayList */
+		List<String> list = new ArrayList<>();
+		
+		/*Adicionar Elemento*/
+		list.add("Maria");
+		list.add("Alex");
+		list.add("Bob");
+		list.add("Ana");
+		
+		/*Adicionar Elemento na posição 2 da lista, depois do Alex*/
+		list.add(2, "Marco");
+		
+		/*Tamanho da lista*/
+		System.out.println(list.size());
+		
+		/*Remover elemento da lista, removendo Ana*/
+		list.remove("Ana")
+		
+		
+		for (String nome : list) {
+			System.out.println(nome);
+		}
+	}
+}

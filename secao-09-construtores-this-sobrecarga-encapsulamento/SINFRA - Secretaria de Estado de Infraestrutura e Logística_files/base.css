@@ -1,0 +1,1354 @@
+/* 
+BASE.CSS
+------------
+Documento com as definições básicas de estilos relacionados a ESTRUTURA e a VISUALIZACAO BASICA do sistema.
+É recomendado que este arquivo nao seja modificado. 
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+  font: Arial, sans-serif;
+}
+
+body {
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  font-family: Arial, Tahoma, sans-serif;
+  font-size: 62.5%;
+}
+
+img {
+  border: 0;
+}
+
+p {
+  margin: 9px;
+}
+
+/** estrutura inicial das divs absolutas - ALTAMENTE RECOMENDADO **NÃO** ALTERAR! 
+estilizações de cor e imagem estao nos blocos de css mais abaixo **/
+
+#header {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100px !important;
+  overflow: hidden;
+  z-index: 1;
+}
+
+div.spwAlertaAviso,
+div.spwAlertaSucesso,
+div.spwAlertaErro {
+  padding: 10px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border: 1px solid #c1c1c1;
+  font: 11px Arial, sans-serif;
+  min-height: 32px;
+  position: relative;
+  *position: inherit;
+  margin-top: 0px;
+}
+
+div.spwAlertaAviso {
+  background: #fef9d6;
+}
+div.spwAlertaSucesso {
+  background: #e6f2df;
+}
+div.spwAlertaErro {
+  background: #fdd7d7;
+}
+
+div.spwAlertaAviso img,
+div.spwAlertaSucesso img,
+div.spwAlertaErro img {
+  float: left;
+  margin-right: 10px;
+}
+
+div.spwAlertaAviso span,
+div.spwAlertaSucesso span,
+div.spwAlertaErro span {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 42px;
+}
+
+div.spwAlertaSucesso span {
+  color: #4f8a1e;
+}
+div.spwAlertaErro span {
+  color: #cd2417;
+}
+
+div.spwAlertaAviso p,
+div.spwAlertaSucesso p,
+div.spwAlertaErro p {
+  margin: 0px;
+  margin-left: 42px;
+}
+
+#side {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 53px;
+  left: 0px;
+  bottom: 0px;
+  inset: 102px auto 0 0 !important;
+  overflow: hidden;
+  width: 184px; /** LARGURA VARIAVEL posteriormente alterada por scripts para redimensionamento da lateral **/
+  background: #f2f2f2 !important;
+  z-index: 5;
+}
+
+#menu {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 37px;
+  z-index: 9;
+}
+
+#search {
+  width: 100%; /** LARGURA VARIAVEL posteriormente alterada por scripts para redimensionamento da lateral **/
+  height: 37px;
+  position: absolute;
+  bottom: 0px;
+  z-index: 10;
+}
+
+#container {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 53px;
+  left: 184px;
+  right: 0px;
+  bottom: 0px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+#content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 17px;
+  overflow: hidden;
+  z-index: 3;
+}
+
+#footer {
+  position: absolute;
+  height: 17px;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  font-size: 10px;
+  background-repeat: repeat-x;
+  overflow: hidden;
+  z-index: 4;
+}
+
+#footer #user,
+#footer #version,
+#footer #caminhoMenu {
+  padding-left: 18px;
+  float: right;
+  margin-right: 30px;
+  margin-top: 0px;
+  line-height: 16px;
+  background-position: left center;
+  background-repeat: no-repeat;
+  text-transform: uppercase;
+}
+
+#footer #caminhoMenu {
+  float: left;
+}
+
+iframe#cabecalho,
+iframe#idFrameMural,
+iframe#idFrameMenu {
+  border: medium none;
+  height: 100%;
+  width: 100%;
+  z-index: 8;
+}
+content iframe {
+  /*overflow: auto;*/
+}
+
+/** estilizacao dos blocos principais **/
+
+#bodyheader {
+  height: 53px;
+  background-repeat: repeat-x;
+}
+
+#bodyheader h1,
+#bodyheader h2 {
+  display: inline;
+  float: left;
+  line-height: 48px;
+}
+#bodyheader h2 {
+  margin-left: 12px;
+}
+#bodyheader #logo {
+  float: left;
+  margin-top: 12px;
+  margin-left: 20px;
+}
+
+#headbuttons {
+  display: block;
+  float: right;
+  text-align: right;
+  height: 53px;
+  padding-top: 12px;
+  margin-right: 15px;
+}
+
+.bt-acoes {
+  font: 11px Arial, sans-serif !important;
+  display: inline-block;
+  width: 56px;
+  height: 21px;
+  padding-top: 5px;
+  padding-left: 8px;
+  text-decoration: none;
+  margin-right: 7px;
+  text-align: left;
+  background-repeat: no-repeat;
+  background-position: top left;
+  cursor: pointer;
+}
+.bt-acoes:hover {
+  background-position: 0px -30px;
+}
+.bt-acoes:active {
+  background-position: 0px -62px;
+}
+
+.bt-sair {
+  font: 11px Arial, sans-serif !important;
+  display: inline-block;
+  width: 29px;
+  height: 21px;
+  padding-top: 5px;
+  padding-left: 28px;
+  text-decoration: none;
+  text-align: left;
+  background-repeat: no-repeat;
+  background-position: top left;
+}
+.bt-sair:hover {
+  background-position: 0px -30px;
+}
+.bt-sair:active {
+  background-position: 0px -62px;
+}
+
+#side {
+  background: #bbb;
+}
+
+#bodyfooter {
+  height: 17px;
+  font-size: 10px;
+  background-repeat: repeat-x;
+}
+
+#bodyfooter #user {
+  padding-left: 18px;
+  float: right;
+  margin-right: 30px;
+  margin-top: 1px;
+  line-height: 16px;
+  background-position: left center;
+  background-repeat: no-repeat;
+  text-transform: uppercase;
+}
+
+/** fim da estilização dos blocos principais **/
+
+/** estilização da tela de resultados da busca **/
+#resultados {
+  width: 421px;
+  height: 426px;
+  position: absolute;
+  z-index: 66;
+  bottom: 10px;
+  left: 10px;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+}
+
+.restitulo {
+  margin-top: 10px;
+  margin-left: 11px;
+  width: 396px;
+}
+
+.restitulo h2 {
+  font-weight: bold;
+  font-size: 13px;
+  display: inline;
+  float: left;
+  line-height: 20px;
+}
+
+.restitulo img {
+  float: right;
+}
+
+.resconteudomain {
+  width: 396px;
+  position: absolute;
+  left: 7px;
+  top: 40px;
+  height: 346px;
+  overflow: hidden;
+  margin-left: 4px;
+  background-repeat: no-repeat;
+}
+
+.resconteudot {
+  width: 374px;
+  height: 325px;
+  overflow-y: auto;
+  margin-left: 13px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: #373737;
+}
+
+.resconteudot label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 11px 0px 8px 0px;
+}
+
+.resconteudot ul li {
+  line-height: 170%;
+  list-style: none;
+  padding-left: 15px;
+  background-repeat: no-repeat;
+  background-position: 5px center;
+  margin-right: 5px;
+}
+
+.resconteudot ul li a {
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.rescampos {
+  width: 400px;
+  position: absolute;
+  bottom: 7px;
+  left: 6px;
+  *bottom: 8px;
+}
+
+.rescampos .campobusca {
+  background-image: url(../../imagens/base/busca-input.png);
+  background-repeat: no-repeat;
+  width: 166px;
+  height: 18px;
+  padding-top: 3px;
+  float: left;
+}
+
+input,
+textarea,
+select {
+  border: 1px solid #9a9a9a;
+  border-radius: 4px 4px 4px 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+  border: none !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+input[type="radio"] {
+  border: none !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.rescampos .campobusca input {
+  width: 130px;
+  background: none;
+  border: none;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #2c2c2c;
+  margin-left: 6px;
+  float: left;
+}
+
+.rescampos .campobusca img {
+  float: right;
+  margin-right: 5px;
+  *margin-top: -1px;
+}
+
+.rescampos .camposeleciona {
+  float: right;
+  font-size: 10px;
+  color: #ccc;
+  line-height: 20px;
+}
+.rescampos .camposeleciona select {
+  padding: 2px;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  width: 160px;
+}
+
+/******* end of resultados da busca ******/
+
+#search .subsearch1 {
+  height: 37px;
+  width: 100%;
+}
+
+#search .campobusca {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+
+#search .campobusca input {
+  width: 100%;
+  height: 27px;
+  padding-right: 30px;
+  border: solid 1px #ced4da;
+  font-size: 16px;
+  font-weight: 400;
+  color: #4a4a4a;
+  background: #ffffff;
+}
+
+#search .campobusca a {
+  display: flex;
+  position: absolute;
+  right: 10px;
+  width: 27px;
+  height: 27px;
+}
+
+#search .campobusca a:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 15px;
+  height: 15px;
+  background-color: #4a4a4a;
+  -webkit-mask: url(../../imagens/search.svg) no-repeat center;
+  mask: url(../../imagens/search.svg) no-repeat center;
+  transform: translateY(-50%);
+}
+
+#search .campobusca img {
+  display: none;
+  float: right;
+  margin-right: 7px;
+}
+
+/******* menuacoes *********/
+#menuacoes {
+  width: 202px;
+  position: absolute;
+  z-index: 65;
+  top: 50px;
+  right: 75px;
+  background: url(../../imagens/base/bg-menuacoes.png) no-repeat center bottom;
+  padding: 0px 7px 15px 7px;
+}
+
+#menuacoes ul {
+  list-style: none;
+  background: url(../../imagens/base/bg-lateral-menuacoes.png) no-repeat right
+    bottom;
+  font: 11px Arial, sans-serif;
+  padding-left: 8px;
+  padding-top: 5px;
+}
+
+#menuacoes ul li a {
+  text-decoration: none;
+  color: #2c2c2c;
+  display: block;
+  height: 25px;
+  line-height: 25px;
+  text-align: right;
+  padding-right: 57px;
+  cursor: pointer;
+}
+
+#menuacoes ul li a .alertaavisos {
+  color: #f00;
+}
+
+#menuacoes .versao {
+  font: 9px Arial, sans-serif;
+  color: #989898;
+  line-height: 22px;
+  margin-left: 12px;
+  margin-bottom: 2px;
+  margin-top: 10px;
+  padding-left: 23px;
+  display: block;
+  background: url(../../imagens/base/ico-versao.png) no-repeat left;
+}
+
+/** botao padrao das telas **/
+.spwButtonDefault {
+  cursor: pointer;
+  text-decoration: none;
+  background-image: url(../../imagens/base/spwButton-r.png);
+  background-repeat: no-repeat;
+  background-position: right top;
+  padding-right: 10px;
+  display: inline-block;
+  line-height: 22px;
+  height: 22px;
+  font: 11px Arial, sans-serif;
+  color: #333;
+}
+
+span.spwButtonDefault {
+  vertical-align: middle;
+}
+
+.spwButtonDefault span {
+  background-image: url(../../imagens/base/spwButton.png);
+  background-repeat: no-repeat;
+  background-position: left top;
+  padding-left: 10px;
+  line-height: 22px;
+  height: 22px;
+  display: inline-block;
+  margin-left: 0px;
+}
+
+.spwButtonDefault span span {
+  background: transparent;
+  padding: 0;
+  font: 11px Arial, sans-serif;
+  color: #333;
+}
+
+.spwButtonDefault span input {
+  cursor: pointer;
+  font-family: inherit;
+  background: transparent;
+  border: 0;
+  padding-top: 0px;
+  font: 11px Arial, sans-serif;
+  color: #333;
+  overflow: visible;
+}
+
+/** hack para chrome **/
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .spwButtonDefault span input {
+    padding-top: 2px;
+  }
+} /** **/
+
+/** botao padrao das telas - MODO OVER **/
+.spwButtonDefault-o {
+  cursor: pointer;
+  text-decoration: none;
+  background-image: url(../../imagens/base/spwButton-r.png);
+  background-repeat: no-repeat;
+  background-position: right -30px;
+  padding-right: 10px;
+  display: inline-block;
+  line-height: 22px;
+  height: 22px;
+  font: 11px Arial, sans-serif;
+  color: #333;
+}
+
+span.spwButtonDefault-o {
+  vertical-align: middle;
+}
+.spwButtonDefault-o span {
+  background-image: url(../../imagens/base/spwButton.png);
+  background-repeat: no-repeat;
+  background-position: left -30px;
+  padding-left: 10px;
+  line-height: 22px;
+  height: 22px;
+  display: inline-block;
+  margin-left: 0px;
+}
+
+.spwButtonDefault-o span span {
+  background: transparent;
+  padding: 0;
+  font: 11px Arial, sans-serif;
+  color: #333;
+}
+
+.spwButtonDefault-o span input {
+  cursor: pointer;
+  font-family: inherit;
+  background: transparent;
+  border: 0;
+  padding-top: 0px;
+  font: 11px Arial, sans-serif;
+  color: #333;
+  overflow: visible;
+}
+
+/** hack para chrome **/
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .spwButtonDefault-o span input {
+    padding-top: 2px;
+  }
+} /** **/
+
+/** botao padrao para rodape das grids **/
+.spwButtonGrid {
+  cursor: pointer;
+  text-decoration: none;
+  background-image: url(../../imagens/base/spwButtonGrid-r.png);
+  background-repeat: no-repeat;
+  background-position: right top;
+  padding-right: 5px;
+  display: inline-block;
+  line-height: 18px;
+  height: 18px;
+  font: 11px Arial, sans-serif;
+  color: #333;
+}
+
+span.spwButtonGrid {
+  vertical-align: middle;
+}
+.spwButtonGrid span {
+  background-image: url(../../imagens/base/spwButtonGrid.png);
+  background-repeat: no-repeat;
+  background-position: left top;
+  padding-left: 5px;
+  line-height: 18px;
+  height: 18px;
+  display: inline-block;
+  margin-left: 0px;
+}
+
+.spwButtonGrid span span {
+  background: transparent;
+  padding: 0;
+  font: 11px Arial, sans-serif;
+  color: #333;
+}
+
+.spwButtonGrid span input {
+  cursor: pointer;
+  font-family: inherit;
+  background: transparent;
+  border: 0;
+  padding-top: 0px;
+  *padding-top: 2px;
+  font: 11px Arial, sans-serif;
+  color: #333;
+  overflow: visible;
+}
+
+/** hack para chrome **/
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .spwButtonGrid span input {
+    padding-top: 1px;
+  }
+} /** **/
+
+.spwButtonGrid .spwButtonAdd {
+  background: url(../../imagens/base/botAdicionar.png) no-repeat;
+  background-position: left 2px;
+  padding-left: 15px;
+  *padding-left: 17px;
+}
+
+/** botão padrão para rodapés das grids MODO OVER **/
+.spwButtonGrid-o {
+  cursor: pointer;
+  text-decoration: none;
+  background-image: url(../../imagens/base/spwButtonGrid-r.png);
+  background-repeat: no-repeat;
+  background-position: right -30px;
+  padding-right: 5px;
+  display: inline-block;
+  line-height: 18px;
+  height: 18px;
+  font: 11px Arial, sans-serif;
+  color: #333;
+}
+
+span.spwButtonGrid-o {
+  vertical-align: middle;
+}
+.spwButtonGrid-o span {
+  background-image: url(../../imagens/base/spwButtonGrid.png);
+  background-repeat: no-repeat;
+  background-position: left -30px;
+  padding-left: 5px;
+  line-height: 18px;
+  height: 18px;
+  display: inline-block;
+  margin-left: 0px;
+}
+
+.spwButtonGrid-o span span {
+  background: transparent;
+  padding: 0;
+  font: 11px Arial, sans-serif;
+  color: #333;
+}
+
+.spwButtonGrid-o span input {
+  cursor: pointer;
+  font-family: inherit;
+  background: transparent;
+  border: 0;
+  padding-top: 0px;
+  *padding-top: 2px;
+  font: 11px Arial, sans-serif;
+  color: #333;
+  overflow: visible;
+}
+
+/** hack para chrome **/
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .spwButtonGrid-o span input {
+    padding-top: 1px;
+  }
+} /** **/
+
+.spwButtonGrid-o .spwButtonAdd {
+  background: url(../../imagens/base/botAdicionar.png) no-repeat;
+  background-position: left 2px;
+  padding-left: 15px;
+  *padding-left: 17px;
+}
+
+#spwResizer {
+  width: 7px;
+  height: 100%;
+  float: right;
+  background: url(../../imagens/base/lateral.png) repeat-y right;
+}
+
+#spwResizer #spwResizer1 {
+  display: block;
+  position: absolute;
+  top: 50%;
+  margin-top: -93px;
+  height: 70px;
+  cursor: e-resize;
+}
+
+#spwResizer #spwResizer2 {
+  display: block;
+  position: absolute;
+  top: 50%;
+  margin-top: 23px;
+  height: 70px;
+  cursor: e-resize;
+}
+
+#spwResizer #spwResizerArrow {
+  display: block;
+  position: absolute;
+  top: 50%;
+  margin-top: -23px;
+  height: 46px;
+}
+
+.menutabbuttons {
+  position: absolute;
+  right: 0px;
+  height: 16px;
+  margin-top: -1px;
+  margin-right: 10px;
+  padding-left: 6px;
+}
+
+#holderConteudo1 {
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#holderConteudo2 {
+  padding: 10px;
+  *width: 100%;
+}
+
+.wrapperGridFooter {
+  background: url(../../imagens/base/gridfooter.png) bottom left no-repeat;
+}
+
+.spwRodapeGridRound {
+  background: url(../../imagens/base/gridfooter-r.png) bottom right no-repeat;
+  border: none;
+  font-size: 10px;
+  height: 22px;
+}
+
+/** Modal Widgets **/
+#divisor {
+  clear: both;
+}
+
+#widgets {
+  padding: 10px 15px 15px 15px;
+  float: left;
+}
+
+.unidadeWidget p {
+  font-family: arial, Helvetica, sans-serif;
+  font-size: 11px;
+  color: #666666;
+  padding: 0;
+  margin: 0;
+  line-height: 150%;
+}
+
+.widgetConfig {
+  background-image: url(../../imagens/base/bg_modal_widgets.png);
+  background-repeat: no-repeat;
+}
+
+#btFecharModal {
+  padding: 3px 0 0 0;
+  float: right;
+}
+
+#btFechar {
+  cursor: pointer;
+}
+
+#tituloModal h1 {
+  font-family: arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bolder;
+  color: #666666;
+  padding: 0;
+  margin: 0;
+}
+
+#widgets {
+  margin: 10px 0 10px 0;
+  float: left;
+  width: 97%;
+}
+
+.unidadeWidget {
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  background-color: #f1f1f1;
+  border: 1px solid #c6c6c6;
+  float: left;
+  height: 60px;
+  margin: 0 5px 10px 0;
+  padding-left: 8px;
+  padding-top: 10px;
+  width: 330px;
+}
+
+.unidadeWidget input {
+  float: left;
+  margin: 10px 10px 0 0;
+}
+
+.unidadeWidget img {
+  float: left;
+  margin: 0 10px 20px 0;
+}
+.unidadeWidget div {
+  width: 250px;
+  *width: 210px;
+  float: left;
+  display: block;
+  color: #666666;
+}
+.unidadeWidget h2 {
+  /*float: left;*/
+  font-family: arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bolder;
+  color: #666666;
+  padding: 0;
+  margin: 0 0 3px 0;
+}
+
+#RodapeModal {
+  float: left;
+  width: 540px;
+  height: 15px;
+  margin: 3px 0 13px 0;
+  color: #afd653;
+}
+#RodapeModal p {
+  color: #7ca518;
+}
+#btsRodapeModal {
+  padding: 1px 0 0 0;
+  float: right;
+}
+
+#btsRodapeModal input {
+  padding-top: 0px;
+}
+/** end of Modal Widgets **/
+
+#gridRodapeSmall {
+  background: url(../../imagens/base/footerSmall.jpg) no-repeat bottom left;
+  height: 6px;
+  font-size: 1px;
+}
+
+#gridRodapeSmall .grsright {
+  width: 20px;
+  background: url(../../imagens/base/footerSmall-r.jpg) no-repeat bottom right;
+}
+
+/**** WIDGETS - estilizacao que sobrepoe os estilos do UI do jquery que lida com eles ****/
+
+.ui-widget {
+  font-family: Arial, sans-serif !important;
+}
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button {
+  font-family: Arial, sans-serif !important;
+}
+
+.ui-widget-tabs {
+  color: #222222 !important;
+  background: #ffffff url(ui/base/images/bg-bottom.png) repeat-x bottom !important;
+}
+
+.ui-widget-header img {
+  margin-right: 6px !important;
+  margin-top: -8px !important;
+  float: left !important;
+}
+
+div.subTitulo {
+  padding-left: 5px;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  height: 20px;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+div.subTitulo h2 {
+  font-size: 13px;
+  font-weight: bold;
+  cursor: default;
+}
+
+div.subTitulo span {
+  float: right;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  width: 20px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+  text-align: center;
+}
+
+img.spwAlertaFechar {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 8px;
+  *right: 5px;
+  *top: 54px;
+  *margin-top: 1px;
+}
+
+div.fundoSuperior {
+  background: url("../../imagens/base/fundoSuperior.png") no-repeat top right;
+  min-height: 22px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 9px;
+  margin-top: -15px;
+  margin-left: -15px;
+  margin-bottom: -14px;
+  position: relative;
+  *position: inherit;
+  line-height: 24px;
+}
+
+div.fundoSuperior h1 {
+  background-repeat: no-repeat;
+  background-position: 2px 6px;
+  font-size: 16px;
+  padding-left: 20px;
+}
+
+div.fundoSuperior img {
+  margin-right: 5px;
+}
+
+div.fundoSuperior a.icoHelp {
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+  display: block;
+  position: absolute;
+  right: 14px;
+  top: 14px;
+}
+
+/***** MENU *****/
+
+#divMenuGeral {
+  background: #bbb;
+  font: 11px Arial, sans-serif;
+}
+
+.menutabbuttons {
+  height: 16px;
+  margin-right: 10px;
+  margin-top: -1px;
+  padding-left: 6px;
+  position: absolute;
+  right: 0;
+}
+
+.basic a.tab,
+.basic a.tab.selected,
+.basic a.tab.active,
+.basic a.tab:hover {
+  color: black;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  font-size: 12px;
+  padding: 4px 12px 4px;
+}
+.basic a.tab.selected,
+.basic a.tab.active,
+.basic a.tab:hover {
+  color: #666;
+}
+.basic a.tab.active {
+  color: #00c;
+}
+.basic div {
+}
+.basic div.scrolling {
+  overflow: auto !important;
+}
+.basic a.tab .tabend {
+  position: absolute;
+  right: 0px;
+  width: 10px;
+  height: 22px;
+  margin-top: -3px;
+}
+
+.combomodulos {
+  background: url(../../imagens/base/divisor-modulos.png) no-repeat center
+    bottom;
+  padding: 5px 0px 15px 0px;
+  margin: 0px 10px 5px 10px;
+}
+.combomodulos select {
+  width: 100%;
+  font: 10px Verdana, sans-serif;
+  padding: 2px;
+  *width: 83%;
+}
+
+div.arvoremenu {
+  margin: 10px;
+}
+div.arvoremenu ul {
+  margin: 0;
+  padding: 0;
+}
+div.arvoremenu li {
+  line-height: 120%;
+  list-style: none;
+  padding-left: 13px;
+  color: #333;
+  margin: 2px 0px;
+}
+
+div.arvoremenu ul ul {
+  margin-left: 15px;
+  /*margin-left: 0px;*/
+  margin-bottom: 5px;
+  margin-bottom/*\**/: 0px \9;
+  margin-top: 0px;
+}
+
+div.arvoremenu li a {
+  text-decoration: none;
+}
+/* div.arvoremenu li a:hover { background: #DDD;} */
+
+/* div.arvoremenu li.nivel:hover{ background: #DDD;} */
+div.arvoremenu li.nivel {
+  font-weight: bold;
+  display: block;
+  margin-top: 4px;
+}
+div.arvoremenu li.nivel li.nivel {
+  font-weight: bold;
+}
+div.arvoremenu li.nivel li {
+  font-weight: normal;
+}
+
+/* div.arvoremenu li.nivel.aberto { background:url(../../imagens/base/menu-aberto.gif) no-repeat; line-height: 140%; background-position: 1px 3px; padding-left:15px; cursor: pointer;} */
+/* div.arvoremenu li.nivel.aberto:hover{ background: url(../../imagens/base/menu-aberto.gif) no-repeat #DDD; line-height: 140%; background-position: 1px 3px; padding-left:15px;} */
+
+div.arvoremenu li.nivel.fechado {
+  line-height: 140%;
+  cursor: pointer;
+}
+
+.tableGridSearch .tabelaExtraFiltros {
+  border-bottom: none;
+}
+
+.tableGridSearch .spwConsultaSearch {
+  border-left: 1px solid #c1c1c1;
+  border-right: 1px solid #c1c1c1;
+  background: #e9e9e9;
+  padding-bottom: 2px;
+  padding-right: 3px;
+}
+
+#laConsulta {
+  border-left: 1px solid #c1c1c1 !important;
+  border-right: 1px solid #c1c1c1 !important;
+  background-color: #ffffff !important;
+}
+
+.tableGridSearch .spwConsultaSearch .spwCampoTextoGrid {
+  border: 1px solid #9a9a9a;
+  background: white;
+  height: 20px;
+}
+
+.tableGridSearch .spwConsultaSearch .spwCabecalhoGrid {
+  height: 15px;
+}
+
+.tableGridSearch .spwConsultaSearch .spwCabecalhoGrid b {
+  color: #666;
+}
+
+.tableGridSearch .spwLayerGrid .spwCelulaGrid {
+  font-size: 11px !important;
+  padding-left: 2px;
+  padding-right: 2px;
+  height: 20px !important;
+}
+
+.spwRodapePaginacaoGridSearch {
+  background: #e9e9e9;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 2px;
+  padding-bottom: 1px;
+}
+
+#tabelaPaginacao {
+  border-left: 1px solid #c1c1c1;
+  border-right: 1px solid #c1c1c1;
+}
+
+/** botao padrao para rodape das grids **/
+.spwButtonGridMain {
+  cursor: pointer;
+  text-decoration: none;
+  background-image: url(../../imagens/base/spwButtonGrid-r.png);
+  background-repeat: no-repeat;
+  background-position: right top;
+  padding-right: 5px;
+  display: inline-block;
+  line-height: 18px;
+  height: 18px;
+  font: 11px Arial, sans-serif;
+  color: #333;
+}
+
+span.spwButtonGridMain {
+  vertical-align: middle;
+}
+.spwButtonGridMain span {
+  background-image: url(../../imagens/base/spwButtonGrid.png);
+  background-repeat: no-repeat;
+  background-position: left top;
+  padding-left: 5px;
+  line-height: 18px;
+  height: 18px;
+  display: inline-block;
+  margin-left: 0px;
+}
+
+.spwButtonGridMain span span {
+  background: transparent;
+  padding: 0;
+  font: 11px Arial, sans-serif;
+  color: #333;
+}
+
+.spwButtonGridMain span input {
+  cursor: pointer;
+  font-family: inherit;
+  background: transparent;
+  border: 0;
+  padding-top: 0px;
+  *padding-top: 2px;
+  font: 11px Arial, sans-serif;
+  color: #333;
+  overflow: visible;
+}
+
+#comboTema {
+  width: 35%;
+}
+
+#comboCidade {
+  width: 178px;
+}
+
+.icoTitSuperior {
+  display: block;
+  float: left;
+  width: 14px;
+  height: 26px;
+  margin-right: 5px;
+  margin-left: 7px;
+}
+
+.sidebox {
+  background: transparent url(../../imagens/base/sbbody-r.jpg) no-repeat bottom
+    right !important;
+  font-size: 100%;
+  width: 100%;
+}
+
+.spwBotaoProximo,
+.spwBotaoProximo-o,
+.spwBotaoProximo-d,
+.spwBotaoUltimo,
+.spwBotaoUltimo-o,
+.spwBotaoUltimo-d,
+.spwBotaoAnterior,
+.spwBotaoAnterior-o,
+.spwBotaoAnterior-d,
+.spwBotaoPrimeiro,
+.spwBotaoPrimeiro-o,
+.spwBotaoPrimeiro-d {
+  width: 16px;
+  height: 16px;
+}
+
+.spwRodapeGridRound > tbody > tr:first-child {
+  text-align: left;
+}
+
+.spwCelulaGrid > input,
+.spwCelulaGrid {
+  line-height: 22px;
+}
+
+.spwBotao,
+.spwBotao-d,
+.spwBotao-o,
+.spwBotaoDefault,
+.spwBotaoDefault-o,
+.spwBotaoDefault-d,
+.spwBtButtonDefault {
+  font-size: 11px;
+  padding-left: 1px;
+  padding-right: 1px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  height: 20px;
+  font-weight: bold;
+}
+
+.spwBotaoDefault {
+  padding-top/*\**/: 1px\9 !important;
+}
+
+input[formattype="DATE"] {
+  width: 65px;
+}
+
+input[formattype="DATE"].spwCampoTextoGrid {
+  width: 100% !important;
+}
+
+table.tableCalendario tbody tr td a[class*="spwHtmlCalendarIcon-d"] {
+  cursor: default !important;
+}
+
+.spwBotao-d,
+.spwBotaoGrid-d,
+input[type="button"].disabled {
+  color: #808080 !important;
+  text-shadow: 0 0 0 #808080;
+}
+
+.spwLinhaGridImparDisabled {
+  background-color: #e6e6e6 !important;
+}
+
+.spwLinhaGridParDisabled {
+  background-color: #d4d4d4 !important;
+}

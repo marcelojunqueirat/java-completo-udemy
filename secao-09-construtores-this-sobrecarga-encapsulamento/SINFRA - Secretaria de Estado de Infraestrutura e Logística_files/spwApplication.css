@@ -1,0 +1,110 @@
+/* titulo da pagina  */
+.titulo {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+/* sub-titulo da pagina  */
+.subtitle {
+	font-size: 13px;
+	font-weight: bold;
+}
+
+/* caminho da aplicação  */
+.caminho {
+color:#FFFFFF;
+background-color:#000000;
+font-weight: bold;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 11px;
+}
+
+/* fundo do Cabecalho  */
+.fundoSuperior {
+background-image: url(../imagens/fundoSuperior.jpg);
+background-repeat: no-repeat;
+background-position: right top;
+background-color:#AB1B1B;
+}
+
+/* fundo do rodape  */
+.fundoRodape {
+background-color:#000000;
+color:#FFFFFF;
+}
+
+/* Texto da etapa  */
+.etapaTexto {
+	padding-top: 0px;
+	padding-right: 5px;
+	padding-bottom: 0px;
+	padding-left: 2px;
+	background-image: url(../imagens/etapaFundo.gif);
+	font-weight: bold;
+}
+
+/* Seta da etapa  */
+.etapaSeta {
+	background-image: url(../imagens/etapaSeta.gif);
+	width: 20px;
+}
+
+/* Numero da etapa  */
+.etapaNumero {
+	height: 27px;
+	width: 27px;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	background-image: url(../imagens/etapa.gif);
+}
+
+/* Numero atual da etapa  */
+.etapaNumeroAtual {
+	height: 27px;
+	width: 27px;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	background-image: url(../imagens/etapaAtual.gif);
+}
+
+/* Fundo da etapa  */
+.etapaFundo{
+	background-image: url(../imagens/etapaFundo.gif);
+}
+
+/* Parte final da etapa  */
+.etapaFinal{
+	background-image: url(../imagens/etapaFinal.gif);
+	width: 20px;
+}
+
+/* Titulo etapa  */
+.etapaTit{
+	background-image: url(../imagens/etapaTit.gif);
+	background-repeat: no-repeat;
+
+	height: 40px;
+}
+
+/* Fundo da pagina */
+.fundo{
+}
+
+/* Label */
+.label {
+font-size: 11px;
+font-weight: bold;
+}
+
+/* Label Maior */
+.labelGrande {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+/* Título da Mensagem */
+.tituloMensagem {
+	font-size: 11px;
+}

@@ -1,0 +1,779 @@
+/**
+ * @author felix
+ * @version V-01.00.11-01
+ * @date 18/09/2012 10:57:58
+ */
+var FMT_TIPO_PROCESSO = 'P';
+var FMT_TIPO_DOCUMENTO = 'D';
+var FMT_TIPO_CORRESPONDENCIA = 'C';
+
+var CamposTela = {
+	CD_ORGAOSETOR : 'cdOrgaoSetor',
+	NU_PROCESSO_OFICIAL : 'nuProcessoOficial',
+	NU_ANO : 'nuAno',
+	NU_DIGITO_VERIFICADOR : 'nuDigitoVerificador',
+	NU_UNIDADE_ORIGEM : 'nuUnidadeOrigem',
+	CD_TIPO_EXPEDIENTE : 'cdTipoexpediente',
+	NU_EXPEDIENTE : 'nuExpediente',
+	CD_SETOR_ABERTURA : 'cdSetorAbertura',
+	FL_PROCEDENCIA : 'flProcedencia'
+};
+
+var fmtTeclaEspecial = false;
+var fmtIdFrameCorrente = '';
+/** Cria a caixa de consulta **/
+function fmtAbrirConsultaID(obj, url, largura, altura, titulo, idFrame){
+	fmtIdFrameCorrente = idFrame
+
+	if (fmtHaveDoctype()) {
+		abrirConsulta(obj, url, largura, altura, titulo);
+		return;
+	}
+	
+	if(obj == null || obj.tagName != 'IMG' || (obj.tagName == 'IMG' && IMG_isEnabled(obj))){
+	    alturaTitulo = 18;
+		//verifica se a consulta ja esta aberta(default -> spwConsulta e caso não tenha verifica quaquer div que contenha spwConsulta)
+		if(document.getElementById("spwConsulta"+ idFrame) != null || fmtVerificaIframeDivID( idFrame )) {
+			return;
+		}
+
+		//pega dados da pag
+		var objBody = document.getElementsByTagName("BODY")[0];
+		var alturaPag = document.body.clientHeight;
+		var larguraPag = document.body.clientWidth;
+		var posScroll = document.body.scrollTop	;
+
+		//cria a layer
+		var laConsulta = document.createElement("DIV");
+		laConsulta.id = "spwConsulta"+ idFrame;
+		laConsulta.style.position = "absolute";
+		laConsulta.style.width = largura;
+		laConsulta.style.height = altura;
+		laConsulta.style.left = (larguraPag - largura) / 2;
+		laConsulta.style.top = (alturaPag - altura) / 2 + posScroll;
+		laConsulta.className = "spwTabelaGrid";
+		laConsulta.style.backgroundColor = "#ffffff";
+		laConsulta.style.zIndex = 99;
+	    objBody.appendChild(laConsulta);
+
+		//cria a tabela superior
+		var tabelaCons = document.createElement("TABLE");
+		tabelaCons.cellPadding = 0;
+		tabelaCons.cellSpacing = 0;
+		tabelaCons.style.width = '100%';
+		tabelaCons.className = "spwTituloGrid";
+		var cabCons = document.createElement("TBODY");
+		tabelaCons.appendChild(cabCons);
+
+		//cria a linha da tabela
+		var linhaCons = document.createElement("TR");
+		cabCons.appendChild(linhaCons);
+
+		//cria a primeira celula
+		var celula1Cons = document.createElement("TD");
+		celula1Cons.height = alturaTitulo;
+		linhaCons.appendChild(celula1Cons);
+		texto1 = document.createTextNode(titulo);
+		celula1Cons.appendChild(texto1);
+
+		objBody.onmousemove = fmtMoverLayer;
+		celula1Cons.onmousedown = fmtIniciaMover;
+		objBody.onmouseup = fmtTerminaMover;
+
+		//cria a segunda celula
+		var celula2Cons = document.createElement("TD");
+		linhaCons.appendChild(celula2Cons);
+
+		celula2Cons.style.width = '20px';
+		laConsulta.appendChild(tabelaCons);
+
+	    var botaoFechar = document.createElement("BUTTON");
+	    botaoFechar.className = "spwBotaoGrid";
+	    if (F_isIExplorer()) {
+	      botaoFechar.value="&nbsp;X&nbsp;";
+	    } else {
+	      botaoFechar.appendChild(document.createTextNode('X'));
+	      botaoFechar.style.width="100%";
+	      botaoFechar.style.height="100%";
+	      botaoFechar.type="button";
+	    }
+
+	    //botaoFechar.onclick = fecharConsultaById( idFrame );
+	    if( navigator.appName == "Netscape" ) {
+			botaoFechar.setAttribute("onclick", "fmtFecharConsultaID('"+ idFrame +"')");
+		}else{
+			botaoFechar.setAttribute("onclick", function(){eval("fmtFecharConsultaID('"+ idFrame +"')")});
+		}
+
+		celula2Cons.appendChild(botaoFechar);
+
+		//cria tabela para conter o iframe
+		var tabelaIframe = document.createElement("TABLE");
+		var linhaIframe = document.createElement("TR");
+		var celulaIframe = document.createElement("TD");
+		tabelaIframe.id = "tabelaIframe";
+
+	    //Atualiza os parâmetros
+		var prmIdObjRetorno = '';
+	    //prmIdObjRetorno="idObjRetorno="+obj.id;
+	    var grid = getGrid(obj);
+	    
+	    var prmMultiSelection;
+	    if (grid != null && gridIsMultiselection(grid)) {
+	        prmMultiSelection="multiselection=true&contador=0&gotInputParam=false&contadorMaior=0";
+	    } else {
+	        prmMultiSelection="multiselection=false";
+	    }
+	    
+		url = insertParamUrlAntesConsulta(url,obj.id);
+
+	    if (url.indexOf("?") < 0) {
+	        url=url+"?";
+	    } else {
+	        url=url+"&";
+	    }
+	    url=url+prmIdObjRetorno+"&"+prmMultiSelection+"&height="+(altura-alturaTitulo);
+
+		//cria o iframe
+		if( navigator.appName == "Netscape" ) {
+			var iframeConsulta = document.createElement("iframe");
+			iframeConsulta.src = url;
+			iframeConsulta.width = "100%";
+			iframeConsulta.height = altura - alturaTitulo;
+			iframeConsulta.frameBorder = "0";
+	        iframeConsulta.id = "layerFormConsulta"+ idFrame;
+	        iframeConsulta.name = "layerFormConsulta"+ idFrame;
+			laConsulta.appendChild(iframeConsulta);
+		} else {
+	        var htmlIframe = "<iframe name='layerFormConsulta"+ idFrame +"' id='layerFormConsulta"+ idFrame +"' frameBorder='0' style='width:100%; height:100%' src='"+url+"' ></iframe>";
+			document.getElementById("spwConsulta"+ idFrame ).insertAdjacentHTML("beforeEnd", htmlIframe);
+		}
+	}
+}
+
+/** Fecha a caixa de consulta **/ 
+function fmtFecharConsultaID(id) {
+	onclosewindow();
+	var idIframe = ("spwConsulta"+id).trim();
+    var layerCon = parent.document.getElementById(idIframe);
+    var doc = parent.document;
+    if (layerCon == null) {
+       layerCon = document.getElementById(idIframe);
+       doc = document;
+    }
+    if (layerCon != null) {
+      layerCon.parentNode.removeChild(layerCon);
+      var objBody = doc.getElementsByTagName("BODY")[0];
+      objBody.onmouseup = null;
+      objBody.onmousemove = null;
+    }
+    fmtIdFrameCorrente = '';
+}
+
+/**
+ * Verifica se contém algum iframe da search
+ * */
+function fmtVerificaIframeDivID( idFrame ){
+	var divs = document.getElementsByTagName("DIV");
+	for(var i = 0; i < divs.length; i++){
+		if(String(divs[i].getAttribute("id")).indexOf("spwConsulta"+ idFrame) != -1){
+			return true
+		}
+	}
+	return false;
+
+}
+
+/** seta as variaveis quando clicado no titulo da consulta **/
+function fmtIniciaMover(aEvent){
+    var theEvent = aEvent ? aEvent : window.event;
+    movendo = true;
+    posXinicial = new Number(theEvent.clientX + document.body.scrollLeft);
+    posYinicial = new Number(theEvent.clientY + document.body.scrollTop);
+    var layerConsulta = document.getElementById("spwConsulta"+ fmtIdFrameCorrente);
+    posXlayer = converteNumero(layerConsulta.style.left);
+    posYlayer = converteNumero(layerConsulta.style.top);
+}
+
+/** exibe o conteudo da consulta quanto termina de mover **/
+function fmtTerminaMover(){
+	document.getElementById("layerFormConsulta"+ fmtIdFrameCorrente).style.display = "";
+	movendo = false;
+}
+
+/** move a layer **/
+function fmtMoverLayer(aEvent){
+    var theEvent = aEvent ? aEvent : window.event;
+    if (movendo == true) {
+        document.getElementById("layerFormConsulta"+ fmtIdFrameCorrente).style.display = "none";
+        var currentX = new Number(theEvent.clientX + document.body.scrollLeft);
+        var currentY = new Number(theEvent.clientY + document.body.scrollTop);
+        var layerConsulta = document.getElementById("spwConsulta"+ fmtIdFrameCorrente);
+        layerConsulta.style.left = posXlayer + (currentX - posXinicial);
+        layerConsulta.style.top = posYlayer + (currentY - posYinicial);
+    }
+}
+
+function fmtPopupSPWComID( url, titulo, idFrame ) {
+	var largura = parent.document.getElementsByName("page")[0].scrollWidth - (parent.document.getElementsByName("page")[0].scrollWidth * 0.05);
+	var altura = parent.document.getElementsByName("page")[0].scrollHeight - (parent.document.getElementsByName("page")[0].scrollHeight * 0.13);
+
+	fmtAbrirConsultaID(this, url, largura, altura, titulo, idFrame);
+}
+
+function fmtPopupSPWDefaultComID( url, titulo, idFrame ) {
+	fmtAbrirConsultaID(this, url, '500', '300', titulo, idFrame);
+}
+
+function fmtHaveDoctype(){
+	if(jQuery.browser.msie){
+		var doctype = null;
+		if (document.all[0].text) 
+			doctype = (document.all[0].text.indexOf('<!DOCTYPE') == 0);
+		
+		if (doctype == false || doctype == null) {
+			var metaTag = jQuery('meta[http-equiv=X-UA-Compatible]');
+			if (metaTag.length != 0) {
+				return true;
+			}
+		}
+		if(doctype){
+			return true;	
+		}else{
+			return false;	
+		}
+	}else{
+		if(document.doctype){
+			return true;	
+		}else{
+			return false;	
+		}
+	}
+}
+
+//#################################################################################################
+//## Funcao que quando colocada em onmouseover="imageChangePtlpbd(this);" onmouseout="imageChangePtlpbd(this);"
+//## mostra a "mao" no mouse
+//#################################################################################################	 
+function imageChangeFormatador(obj ) {
+	if(navigator.appName == "Netscape"){
+		cursor = "pointer";
+	}else{
+		cursor = "hand";
+	}
+	obj.style.cursor = cursor;
+}
+
+function fmtHabilitaBotoes(objForm) {
+	var length = objForm.length;
+	for (var i = 0; i < length; i++) {
+		if (objForm[i].nodeName == "INPUT" && (objForm[i].type == "button" || objForm[i].type=="submit")) {
+			objForm[i].disabled = false;
+			if(objForm[i].getAttribute('oldClassName') != null){
+				objForm[i].className = objForm[i].getAttribute('oldClassName');
+			}           
+		} 
+	}
+}
+
+function fmtDesabilitaBotoes(objForm) {
+	var length = objForm.length;
+	for (var i = 0; i < length; i++) {
+		var obj = objForm[i];
+		fmtDesabilitaBotao(obj);
+	}
+}
+
+function fmtDesabilitaBotao(obj){
+	var objType = obj.type;
+	var objClassName = obj.className;
+	if (obj.nodeName == "INPUT" && (objType == "button" || objType=="submit")) {
+		
+		if(objClassName.indexOf('-o') != -1){
+			obj.setAttribute('oldClassName',objClassName);
+			obj.className = objClassName.substring(0,objClassName.length-2) + '-d';
+		}else if(objClassName.indexOf('-d') == -1){
+			obj.setAttribute('oldClassName',objClassName);
+			obj.className = objClassName + '-d';
+		}
+		obj.disabled = true;
+	} 
+}
+
+function fmtExibeProcessando() {
+	
+	var objBody = document.getElementsByTagName("BODY")[0];
+	var objLayer = document.createElement("DIV");
+	objLayer.className = "processando";
+	objLayer.id = "fmtDivProcessando";
+
+	var alturaPag = document.body.clientHeight;
+	var larguraPag = document.body.clientWidth;
+	var posScroll = document.body.scrollTop;
+	var largura = 200
+	var altura = 40
+	
+	objLayer.style.left = (larguraPag - largura) / 2;
+	objLayer.style.top = (alturaPag - altura) / 2 + posScroll;	
+
+	objBody.appendChild(objLayer);
+	/*
+	var objLayer = document.getElementById("__loading__");
+	
+	if (objLayer == null) {
+		objBody = document.getElementsByTagName("BODY")[0];
+		objLayer = document.createElement("DIV");
+		objLayer.style.display = "none";
+		objLayer.id = "__loading__";
+		alturaPag = document.body.clientHeight;
+		larguraPag = document.body.clientWidth;
+		posScroll = document.body.scrollTop;
+		largura = 200;
+		altura = 40;
+		
+		objLayer.style.left = (larguraPag - largura) / 2;
+		objLayer.style.top = (alturaPag - altura) / 2 + posScroll;		
+		objBody.appendChild(objLayer);
+	}
+	if (objLayer.style.display == "none") {
+		objLayer.className = "processando";
+		objLayer.style.display = "block";
+	}
+	*/
+}
+
+function fmtEscondeProcessando() {
+	var objBody = document.getElementsByTagName("BODY")[0];
+	var fmtDivProcessando = document.getElementById( "fmtDivProcessando" );
+	if ( fmtDivProcessando ) {
+		objBody.removeChild( fmtDivProcessando );
+	}
+	/*
+	var layer = document.getElementById("__loading__");
+	if (layer != null) {
+		layer.className = "";
+		layer.style.display = "none";
+	}
+	*/
+}
+
+//#################################################################################################
+//## DA UM SUBMIT NO FORM SEM VALIDACAO
+//#################################################################################################
+function executeAcaoSemValidacao(acao) {
+	var f = document.forms[0];
+	var old = f.target;
+	f.action = acao;
+	f.submit();
+}
+
+function fmtFormatNuAno( ctrl ){ 
+	if( ctrl.value != ''){  
+		if( ctrl.value.length < 4 ) { 
+			if( ctrl.value.length < 3 ) { 
+				if( ctrl.value.length == 2 ) { 
+					if( ctrl.value < 50 ){  
+						ctrl.value = '20' + ctrl.value; 
+					} else {  
+						ctrl.value = '19' + ctrl.value; 
+				 	}  
+			 	} else {  
+					ctrl.value = '200' + ctrl.value; 
+			 	}  
+			} else { 
+				alert('Ano inválido'); 
+				ctrl.select();  
+				ctrl.focus();  
+			}  
+		} else {  
+			if( ctrl.value < 1900 || ctrl.value > 2900 ){ 
+				alert('Preencha o campo com um ano entre 1900 e 2900'); 
+				ctrl.value = '';  
+				ctrl.focus();  
+			}  
+		} 
+	}  
+}  
+
+function fmtHabilitaCampo( idCampo ){
+	var campo = document.getElementById(idCampo);
+	if ( campo ) {
+		campo.readOnly = false;
+		campo.className = 'spwCampoTexto';
+	}
+}
+
+function fmtDesabilitaCampo( idCampo ){
+	var campo = document.getElementById(idCampo);
+	if ( campo ) {
+		campo.readOnly = true;
+		campo.className = 'spwCampoTexto disabled';
+		try {
+			//campo.focus();
+		} catch(e){}
+	}
+}
+
+function fmtHabilitaIS( idImg ){
+	var is = document.getElementById(idImg);
+	if ( is ) {
+		var isDisabled = document.getElementById(idImg+'-disabled');
+		
+		is.style.display = 'inline';
+		isDisabled.style.display =  'none';
+	}
+}
+
+function fmtDesabilitaIS( idImg ){
+	var is = document.getElementById(idImg);
+	if ( is ) {
+		var isDisabled = document.getElementById(idImg+'-disabled');
+		
+		is.style.display = 'none';
+		isDisabled.style.display = 'inline';
+	}
+}
+
+function fmtLimparCampo( id ) {
+	 var campo = document.getElementById(id); 
+	 if ( campo ) {
+		 campo.value = '';
+		 campo.setAttribute('fmtOldValue', ''); 
+	 } 
+} 
+
+function fmtLimparCampoReadOnly( id ) {
+	 var campo = document.getElementById(id); 
+	 if ( campo ) {
+		 if ( campo.readOnly == false ) {
+			 campo.value = '';
+			 campo.setAttribute('fmtOldValue', ''); 
+		 }
+	 } 
+} 
+
+function fmtSetStyleDisplayInline( campo ) {
+	fmtSetStyleDisplay( campo, 'inline' );
+}
+
+function fmtSetStyleDisplayNone( campo ) {
+	fmtSetStyleDisplay( campo, 'none' );
+}
+
+function fmtSetStyleDisplay( campo, valor ) {
+	if ( campo ) {
+		campo.style.display = valor;
+	}
+}
+
+function fmtIsNotBlank(str) { 
+ 	return (!fmtIsBlank(str));
+} 
+ 
+function fmtIsBlank(str) { 
+	if ( str == '' ){  
+		return true;
+	} 
+	return false;
+}
+ 
+function fmtGetValue( idCampo ){
+	var campo = document.getElementById(idCampo);
+	if ( campo ) {
+		return campo.value;
+	}
+	return '';
+} 
+
+function fmtIsEqualOldValue( campo ){
+	 var fmtOldValue = campo.getAttribute('fmtOldValue'); 
+	 if ( //_isNotBlank(campo.value) && //_isNotBlank(fmtOldValue) && 
+	 	  new String(fmtOldValue).toUpperCase() != campo.value.toUpperCase() ) {
+		 return false
+	 } else { 
+		 campo.value = fmtOldValue; 
+		 return true;
+	 } 
+}
+
+function fmtSetValue( idCampo, vlCampo ){
+	var campo = document.getElementById(idCampo);
+	if ( campo ) {
+		campo.value = vlCampo;
+		campo.setAttribute('fmtOldValue', vlCampo);
+	}
+}
+
+function fmtSetTitle( campo, label ){
+	if ( campo ) {
+		campo.setAttribute('rotulo', label);
+		campo.setAttribute('title', label);
+	}
+}
+
+function fmtObrigatorio( campo, isObrigatorio ){
+	if ( campo ) {
+		campo.setAttribute('obrigatorio', isObrigatorio);
+	}
+}
+
+function fmtObrigatorioById( id, isObrigatorio ) {
+	 var campo = document.getElementById(id); 
+	 if ( campo ) {
+		 campo.setAttribute('obrigatorio', isObrigatorio);
+	 } 
+} 
+
+function fmtFillZerosEsquerda( obj, tamanho ) { 
+	var objLen = obj.value.length;  
+	if( objLen == 0 ) return;  
+	for (i = objLen; i < tamanho; i++) { 
+		obj.value = '0' + obj.value; 
+	} 
+} 
+
+function fmtGetId( id ){
+	var result = ids.get(id);
+	if ( fmtIsBlank(result) ) {
+		alert('Não foi possível encontrar o id : '+ id);
+	} else {
+		return result;
+	}
+}
+
+function fmtCopiarValor( objOrigem, idDestino ){
+	document.getElementById(idDestino).value = objOrigem.value;
+}
+
+function fmtControleCampoIS( idCampo, idImg, habilita ) {
+	if ( habilita ) { 
+		fmtHabilitaCampo( idCampo );
+		fmtHabilitaIS( idImg );
+	} else { 
+		fmtDesabilitaCampo( idCampo );
+		fmtDesabilitaIS( idImg );
+	} 
+}
+
+function fmtGetBrowser() { 
+   	agt=navigator.userAgent.toLowerCase();
+   	if( agt.indexOf("msie") > -1 ) {
+     	    return "IE";
+    } else {
+          return "Mozilla";
+    }
+}
+
+function fmtOnchange( campo ) {
+	if(fmtGetBrowser() == "IE") {
+		campo.fireEvent("onchange");  
+	} else { 
+		campo.onchange(campo.value);
+	}
+}
+
+function fmtTecla( ctrl, event, id ){
+	var tecla;
+	if ( fmtGetBrowser() == "IE" ) {
+		tecla = event.keyCode;
+		if ( tecla == 13 ) { //Enter
+			fmtTeclaEspecial = true;
+			fmtOnchange( ctrl );
+			return;
+		}
+	} else {
+		tecla = event.which;//event.charCode;
+		if ( tecla == 13 ) { //Enter
+			fmtTeclaEspecial = true;
+			fmtOnchange( ctrl );
+			return;
+		}
+	}
+	fmtTeclaEspecial = false;
+}
+
+function fmtValidaIdFormato( ctrl, id, tamanho ) {
+	 if ( ctrl.id == id && ctrl.value.length == tamanho ) {
+		 return true; 
+	 } 
+	 return false; 
+} 
+
+function fmtSelectValue( ctrl , start, end){ 
+	 if ( fmtGetBrowser() == "IE" ) { 
+		 var range = ctrl.createTextRange(); 
+		 range.collapse(true); 
+		 range.moveStart("character", start); 
+		 range.moveEnd("character", end); 
+		 range.select();  
+	 } else { 
+		 ctrl.setSelectionRange(start, end); 
+	 } 
+} 
+
+function fmtTeclaNavegacao( ctrl, event ){ 
+	 var tecla; 
+	 if ( fmtGetBrowser() == "IE" ) { 
+		 tecla = event.keyCode; 
+	 } else { 
+		 tecla = event.which; 
+	 } 
+	 // 48 = 0; 57 = 9;
+	 // 65 = a; 90 = z;
+	 if ( tecla == 9 || tecla == 16 || tecla == 37 || tecla == 38 || tecla == 39 || tecla == 40 ) {  
+		 return true; 
+	 } 
+	 return false; 
+} 
+
+function fmtDeTipoexpediente(id){
+  	var cdTipoexpediente = document.getElementById(fmtGetId( id ) +'.cdTipoexpediente');
+  	if ( cdTipoexpediente ) {
+  	  	return cdTipoexpediente.options[cdTipoexpediente.options.selectedIndex].text;
+  	}
+	return '';
+}
+
+function fmtCdTipoexpediente(id){
+  	var cdTipoexpediente = document.getElementById(fmtGetId( id ) +'.cdTipoexpediente');
+  	if ( cdTipoexpediente ) {
+  	  	return cdTipoexpediente.value;
+  	}
+	return '';
+}
+
+/**
+ *  Função para ser SOBRESCRITA depois de selecionar o PROCESSO 
+ */
+function onchangeProcesso(id){
+}
+
+/**
+ *  Função para ser SOBRESCRITA depois de selecionar a CORRESPONDENCIA 
+ */
+function onchangeCorrespondencia(id){
+}
+
+/**
+ *  Função para ser SOBRESCRITA depois de selecionar o TIPO
+ */
+function onchangeTipoprocesso(id){
+}
+
+function fmtConsulta( id ){
+	eval(  "_"+ fmtGetId( id ) +"_onchangeCamposEscondidos();");
+}
+
+/**
+ *  Limpa todos os campos 
+ */
+function fmtLimpar(id){
+	eval( "_"+ fmtGetId( id ) +"_fmtLimparCampos();");
+}
+
+/**
+ *  Seta ou retira a obrigatoriedade dos campos 
+ */
+function fmtObrigatorios(id, obrigatorio){
+	eval( "_"+ fmtGetId( id ) + "_fmtInitCamposObrigatorios( "+ obrigatorio +" );");	
+}
+
+/**
+ *  Retorna o valor do campo nuFormatado 
+ */ 
+function fmtGetNuFormatado( id ){
+	var nuFormatado = null;
+	eval( "nuFormatado = document.getElementById('"+ fmtGetId( id ) +".nuFormatado');");
+	if (nuFormatado) {
+		return nuFormatado.value;
+	} else {
+		return "";
+	}
+}
+
+/**
+ *  Retorna o valor do campo nuFormatado 
+ */ 
+function fmtGetFlTipoprocesso( id ){
+	var flTipoProcesso = null;
+	eval( "flTipoProcesso = document.getElementById('"+ fmtGetId( id ) +".flTipoprocesso');");
+	if (flTipoProcesso) {
+		return flTipoProcesso.value;
+	} else {
+		return "";
+	}
+}
+
+function fmtIsProcesso( id ){
+	var vlFlTipoprocesso = fmtGetFlTipoprocesso( id );
+	if ( FMT_TIPO_PROCESSO == vlFlTipoprocesso ) {
+		return true;
+	}
+	return false;
+}
+
+function fmtIsDocumento( id ){
+	var vlFlTipoprocesso = fmtGetFlTipoprocesso( id );
+	if ( FMT_TIPO_DOCUMENTO == vlFlTipoprocesso ) {
+		return true;
+	}
+	return false;
+}
+
+function fmtIsCorrespondencia( id ){
+	var vlFlTipoprocesso = fmtGetFlTipoprocesso( id );
+	if ( FMT_TIPO_CORRESPONDENCIA == vlFlTipoprocesso ) {
+		return true;
+	}
+	return false;
+}
+
+function fmtDesabilitaCampos( id ) {
+	eval( "_"+ fmtGetId( id ) + "_fmtHabilitaDesabilitaCampos( true );");	
+}
+
+function fmtHabilitaCampos( id ) {
+	eval( "_"+ fmtGetId( id ) + "_fmtHabilitaDesabilitaCampos( false );");
+}
+
+function fmtConsultaCamposTela( id ){
+	eval(  "_"+ fmtGetId( id ) +"_consultaCamposTela();");
+}
+
+function fmtTodosCamposTelaPreenchidos( id ){
+	var resultado = false;
+	eval(  "resultado = _"+ fmtGetId( id ) +"_todosCamposTelaPreenchidos();");
+	return resultado;
+}
+
+function fmtExisteCamposTelaPreenchidos( id ){
+	var resultado = false;
+	eval(  "resultado = _"+ fmtGetId( id ) +"_existeCamposTelaPreenchidos();");
+	return resultado;
+}
+
+function fmtCamposTelaPreenchidos( id ){
+	var fmtCamposTela = new Hash();
+    var idFormatador = id[0];
+	for (var i = 1; i < arguments.length; i++) {
+	     fmtCamposTela.put(arguments[i], arguments[i]);
+   }
+
+	var resultado = false;
+	eval(  "resultado = _"+ fmtGetId( id ) +"_camposTelaPreenchidos( fmtCamposTela );");
+	return resultado;
+}
+
+function fmtSubmitForm( form ){
+	if ( form ) {
+		form.submit();
+	} else {
+		document.forms[0].submit();
+	}
+}
+
+function fmtDepoisSelecionar( id ){
+}
+
+function fmtDepoisLimpar( id ){
+}

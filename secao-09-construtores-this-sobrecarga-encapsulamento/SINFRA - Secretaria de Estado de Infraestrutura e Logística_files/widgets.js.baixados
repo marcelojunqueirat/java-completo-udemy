@@ -1,0 +1,519 @@
+ (function($) {
+	
+	$.spw = $.spw || {};
+	$.spw.widgets = {};
+	
+	/**
+	 * Realiza o chamado ao servidor, usando a action recebida como par�metro, e 
+	 * adiciona o conte�do retornado no dashboard 
+	 *
+	 * @param {string action}
+	 *            Action do widget que dever� ser carregado
+	 */	
+	var carregarWidget = function(action){
+       var muralFrame = jQuery('#idFrameMural').contents();	
+	   var callbackAjax =  function(responseText){ 
+       	  var nomeColuna = getMenorColunaName();
+       	  jQuery("#"+nomeColuna,muralFrame).prepend(responseText);
+
+       	  jQuery('div[name=raiz]').toggle(fecharEstrutura, abrirEstrutura);
+       	  
+       	  jQuery.spw.widgets.adicionarEventosWidgets(muralFrame);
+       	  jQuery.spw.widgets.salvarDashboard();	
+	   };
+	   
+	   $.get(  
+            action,  
+            callbackAjax,
+            "html"  
+       );  
+  	};	
+  	
+  	var callbackMaximizarERedimensionarWidget = function() {
+	};
+  	
+  	var alteraTamanhoWidget = function(){
+		var $this = jQuery(this);
+		
+		$this.toggleClass('ui-icon-plusthick ui-icon-normalthick maximizado');
+		$this.siblings('span[name=minimizar]').toggle();
+		
+		var $div = $this.parents('div.portlet:first');
+		
+		var isMaximizar = $this.hasClass('maximizado');
+		
+		if(isMaximizar){
+			maximizarWidget($div);
+			alert("D");
+			//maximizarFlash($div.find('object[id$=EKP]'));
+		}
+		else{
+			redimensionaWidgetTamanhoDefault($div);
+			//redimensionaFlashTamanhoDefault($div.find('object[id$=EKP]'));
+		}
+		
+		callbackMaximizarERedimensionarWidget();
+		
+	};
+		
+    var redimensionaWidgetTamanhoDefault = function($div){
+		$div.removeAttr('style');
+		
+		var $objectWidget = $div.find('object');
+		var $objectEmbed = $div.find('embed');
+		
+		if($objectWidget.size() === 1){
+			$objectWidget.css('height', '200px');
+			$objectWidget.css('width', '200px');
+			
+			$objectEmbed.css('height', '200px');
+			$objectEmbed.css('width', '200px');
+		};
+	};
+		
+	/*var redimensionaFlashTamanhoDefault = function($objFlash){
+		$objFlash.attr('height', '270px');
+		$objFlash.attr('width', '270px');
+		
+		var $embed = $objFlash.find('embed');
+		
+		$embed.attr('height', '270px');
+		$embed.attr('width', '270px');
+	};*/
+	
+	var maximizarWidget = function($div){
+		var $w = jQuery(window),
+		   t = $w.scrollTop() + 15,
+		   l = $w.scrollLeft() + 15,
+		   w = $w.width() - ($div.outerWidth() - $div.width()) - 30,
+		   h = $w.height() - ($div.outerHeight() - $div.height()) - 30;
+
+		$div.css( {
+		    position: 'absolute',
+		    top: t,
+		    left: l,
+		    width: w + 'px',
+		    height: h + 'px',
+		    zIndex: 10
+		});
+		
+		var $objectWidget = $div.find('object');
+		var $objectEmbed = $div.find('embed');
+		
+		if($objectWidget.size() === 1){
+			$objectWidget.css('height', $(window).height() - 300 + 'px');
+			$objectWidget.css('width', $(window).width() - 550 + 'px');
+			
+			$objectEmbed.css('height', ($(window).height() - 300) + 'px');
+			$objectEmbed.css('width', ($(window).width() - 550) + 'px');
+		};
+		
+	};	
+		
+	/*var maximizarFlash = function($objFlash){
+		$objFlash.attr('height', $(window).height() -20 + 'px');
+		$objFlash.attr('width', $(window).width() -20 + 'px');
+		
+		var $embed = $objFlash.find('embed');
+		//$embed[0].WIDTH = 500;
+		//$embed[0].MAXIMIZE();
+		
+		$embed.attr('height', $(window).height() -20 + 'px');
+		$embed.attr('width', $(window).width()-20 + 'px');
+	};	*/
+		
+	var isWidgetMaximizado = function($div){
+		var largura	= ( jQuery(window).width() - 256 );
+		var altura  = ( jQuery(window).height() - 216 );
+		
+		return  ($div.width() === largura && $div.height() === altura);
+	};	
+  	
+  	var minimizaWidget = function() {
+	 	var $this = jQuery(this);
+	    var $divPortlet = $this.parent().next();
+	    
+	    $this.toggleClass("ui-icon-minusthick ui-icon-normalthick");
+	    $this.siblings('span[name=maximizar]').toggle();
+		$divPortlet.toggle();
+	};
+	
+	var fechaWidgetESalvaDashboard = function(){
+		jQuery(this).parent().parent().hide('slow', function(){
+			jQuery(this).remove();
+			jQuery.spw.widgets.salvarDashboard();	
+		});
+	};
+	
+	var obterBotaoMinimizarLocalOuEmFrame = function(frame){
+		if (typeof frame=="undefined"){
+			return jQuery("span[name=minimizar]");
+		}else{
+			return jQuery("span[name=minimizar]", frame);
+		}
+	};
+	
+	var obterBotaoFecharLocalOuEmFrame = function(frame){
+		if (typeof frame=="undefined"){
+			return jQuery("span[name=fechar]");
+		}else{
+			return jQuery("span[name=fechar]", frame);
+		}
+	};
+	
+	var obterBotaoDimensaoDefaultLocalOuEmFrame = function(frame){
+		if (typeof frame=="undefined"){
+			return jQuery("span[name=maximizar]");
+		}else{
+			return jQuery("span[name=maximizar]", frame);
+		}
+	};
+	
+	var obterBotaoExpantirLocalOuEmFrame = function(frame) {
+		if (typeof frame=="undefined") {
+			return jQuery("div[name=raiz]");
+		} else {
+			return jQuery("div[name=raiz]", frame);
+		}
+	};
+	
+	var fecharEstrutura = function ($obj) {
+		if (!$obj.jquery) {
+			$obj = jQuery(this);
+		}
+		$obj.find('li:first').addClass('fechado').removeClass('aberto');
+		$obj.parent().children('ul').fadeOut(0);
+	};
+
+	var abrirEstrutura = function ($obj) {
+		if (!$obj.jquery) {
+			$obj = jQuery(this);
+		}
+		$obj.find('li').addClass('aberto').removeClass('fechado');
+		$obj.parent().children('ul').fadeIn(0);
+	};
+	
+	var clickItemMenuWidget = function ($obj) {
+		id = $obj.attr('id');
+		id = id.substring(9, id.length);
+		window.location.href = 'getMenuMuralAvisos.do?cdCategoria='
+				+ id
+				+ '&avisoproviderName=br.com.softplan.seg.muralAvisos.DefaultAvisoProvider';
+	};
+	
+	/**
+	 * Adiciona os eventos padr�es dos widgets (fechar, minimizar) 
+	 *
+	 * @param {string frame}
+	 *            Se passado como par�metro, busca os elementos na frame indicada
+	 */	
+	var adicionarEventosWidgets = function(frame){
+	
+		var $botaoMinimizar = obterBotaoMinimizarLocalOuEmFrame(frame);
+		var $botaoFechar = obterBotaoFecharLocalOuEmFrame(frame);
+		var $botaoDimensaoDefault = obterBotaoDimensaoDefaultLocalOuEmFrame(frame);
+		
+		$botaoMinimizar.unbind('click');
+	 
+		$botaoMinimizar.click(minimizaWidget);
+ 		$botaoFechar.click(fechaWidgetESalvaDashboard);
+ 		$botaoDimensaoDefault.click(alteraTamanhoWidget);
+ 		
+ 		/* Adicionado para funcionar a abertura e fechamendo da
+ 		 * hierarquia do menu do widget de pastas dos avisos
+ 		 */
+ 		var $botaoExpandir = obterBotaoExpantirLocalOuEmFrame(frame);
+ 		$botaoExpandir.toggle(fecharEstrutura, abrirEstrutura);
+ 		
+	};
+	
+	var salvarDashboard = function() {
+		var muralFrame = jQuery('#idFrameMural').contents();
+		var columns = null;
+		if(muralFrame.size() > 0) {
+			columns = $('#corpoWidgets .column',muralFrame);
+		} else {
+			columns = $('#corpoWidgets .column');
+		}
+		var columnsLength = columns.size();
+		var dashboard = '<dashboard>';
+		for(var i = 0; i < columnsLength; i++) {
+			dashboard += '<coluna>';
+			var portlet = jQuery(columns.get(i)).find('div.portlet');
+			var portletLength = portlet.size();
+			for(var j = 0; j < portletLength; j++) {
+				dashboard += '<widget>'+jQuery(portlet.get(j)).attr('codigoWidget')+'</widget>';
+			}
+			dashboard += '</coluna>';
+		}
+		dashboard += '</dashboard>';
+		jQuery.post(  
+	         "saveDashboard.do?dashboard="+dashboard,  
+	         callbackSalvarDashboard,
+	         "html"
+	    ); 
+	}
+
+	var callbackSalvarDashboard = function() {
+	}
+
+	
+	var carregaPrevisaoDados = function(){
+	
+			if(jQuery('#prevtempo').size() === 0){
+				return;	
+			}
+			
+			jQuery.getJSON("getDadosPrevisao.do", function(dadosJson){
+			
+					var portletIFrame = jQuery('#idFrameMural').contents();
+					
+					var cdCid = dadosJson['cdCidade'];
+					
+					if(cdCid === null || cdCid === "0"){
+						jQuery('#prevtempo').hide();
+						return;
+					}
+					
+					jQuery('#cidadePrevisao').text(dadosJson['cidade']);
+					
+					jQuery('#dia1').text(dadosJson['dia'].substring(0,3));
+					jQuery('#dia2').text(dadosJson['diaAmanha'].substring(0,3));
+					
+					
+					jQuery('#maximaHoje').text(dadosJson['maxima']+'�');
+					jQuery('#minimaHoje').text(dadosJson['minima']+'�');
+					
+					jQuery('#maximaAmanha').text(dadosJson['maximaAmanha']+'�');
+					jQuery('#minimaAmanha').text(dadosJson['minimaAmanha']+'�');
+					
+					jQuery('#imgTempo').attr('src','imagens/widgets/' + dadosJson['tempo']+'.png');
+					jQuery('#imgTempo').show();
+					jQuery('#prevtempo', portletIFrame).show();
+			});
+	};
+	
+	
+	var recarregarWidget = function(action, coluna, widgets, index){
+	   var callbackAjax =  function(responseText){
+	     	 var column = jQuery('div.column:eq('+ coluna + ')').append(responseText);
+	     	 column.children('.portlet:last-child').hide().fadeIn(0, function() {
+		     	 loadWidget(widgets, index+1);
+	     	 });
+	     	 
+	   };
+	   
+	   jQuery.post(  
+	           action,  
+	           callbackAjax,
+	           "html"  
+	   ); 
+	};	 
+	
+	var loadWidget = function(widgets, index) {
+		if(widgets && (index < widgets.length)) {
+			
+			var codigo = widgets[index]['cdWidget'];
+			var action = widgets[index]['action']+'?codigoWidget='+codigo;
+			var coluna = widgets[index]['coluna'];
+			
+			recarregarWidget(action,coluna, widgets, index);
+		}else{
+			 adicionarEventosWidgets();
+		}
+	};
+
+	var getMenorColunaName = function() {
+		var muralFrame = jQuery('#idFrameMural').contents();
+		var columns = null;
+		if(muralFrame.size() > 0) {
+			columns = $('#corpoWidgets .column',muralFrame);
+		} else {
+			columns = $('#corpoWidgets .column');
+		}
+		var columnsLength = columns.size();
+		var menorColuna = 'divPrimeiraColuna';
+		var tamanhoMenorColuna = 9999;
+		for(var i = 0; i < columnsLength; i++) {
+			var portlet = jQuery(columns.get(i)).find('.portlet');
+			var portletLength = portlet.size();
+			if(tamanhoMenorColuna > portletLength) {
+				menorColuna = columns.get(i).id;
+				tamanhoMenorColuna = portletLength;
+			}
+		}
+		return menorColuna;
+	};
+	
+    var obterDados = function(data){
+		 	var muralFrame = jQuery('#idFrameMural').contents();
+		 	
+		 	var container = jQuery('#container', muralFrame).not('[status]').filter(':first');	
+		 	container.attr('status', 'carregado');
+		 
+		 	for(var i = 0; i < data.length; i++){
+				
+				var $noticiaHtml = jQuery("#noticiaModelo",muralFrame).filter(':first').clone();
+		 		$noticiaHtml.attr('id', 'noticia_' + i);
+		 		$noticiaHtml.find("#link").attr('href',data[i].link);
+		 		$noticiaHtml.find("#titulo").text(data[i].titulo);
+		 		$noticiaHtml.find("#descricao").text(data[i].descricao);
+		 		$noticiaHtml.show();
+		 		
+		 		container.append($noticiaHtml);
+		 		
+		 	}
+		 	var $wRss = jQuery('#rss').parent();
+		 	$wRss.fadeOut();
+          	$wRss.fadeIn();
+	};
+	
+	var populaDados = function(){
+	
+		jQuery.getJSON('obterDadosWidgets.do', function(data){
+ 	
+	 		var muralFrame = jQuery('#idFrameMural').contents();	
+	 		var $portlet = jQuery("#portletModelo",muralFrame).clone();
+	 
+		 	for(var i = 0; i < data.length; i++){
+		 		$portlet.find("#link").attr('href',data[i].link);
+		 		$portlet.find("#titulo").text(data[i].titulo);
+		 		$portlet.find("#descricao").text(data[i].descricao);
+		 	}
+		 	
+		 	jQuery('#divPrimeiraColuna', muralFrame).prepend($portlet);
+ 		});
+ 	};
+ 	
+ 	var mostrarOpcoesWidgets = function(){
+ 	
+		jQuery.getJSON('carregarWidgetsAutorizados.do', function(dados){
+			var $widgets = jQuery('#widgets');	
+			var dadosLength = dados.length;
+			
+			$widgets.attr('status','cache');
+			$widgets.show();
+			
+			jQuery('input[cdwidget]').parent().remove();
+			jQuery('#modalWidgets').show();
+			
+			for(var i = 0; i < dadosLength; i++){
+				var $divIcone = jQuery('#unidadeWidget').clone();	
+				var cdW = dados[i]['PK']['cdWidget'];
+				
+				var $inputDivIcone = $divIcone.find('input');
+				
+				if(widgetAtivo(cdW)){
+					$inputDivIcone.attr('checked', 'true');
+					$inputDivIcone.attr('ativo', 'true');			
+				}else{
+					$inputDivIcone.removeAttr('checked');
+					$inputDivIcone.removeAttr('ativo');
+				}
+				
+				$inputDivIcone.attr('cdWidget', cdW);
+				$divIcone.find('#imagem').attr('src', dados[i]['deUrlIcone']);
+				$divIcone.find('#descricao').html('<h2>' + dados[i]['nmWidget'] + '</h2>' + '<p>' +  dados[i]['deWidget']  + '</p>');
+				$divIcone.find('input').attr('action', dados[i]['tela']['nmForm']);
+				$divIcone.show();
+				
+				$widgets.append($divIcone);
+			}
+			
+		});
+		
+		var muralFrame = jQuery('#idFrameMural').contents();
+		jQuery("#modalWidgets").dialog('open');
+  	}; 
+  	
+		
+	var widgetAtivo = function(cdWidget){
+	   var muralFrame = jQuery('#idFrameMural').contents();
+	   var jaExiste = false;
+	   
+	   jQuery('div.portlet', muralFrame).each(
+			function(){
+				var cd = jQuery(this).attr('codigowidget');
+		 		if( parseInt(cd) === parseInt(cdWidget)){
+		 			jaExiste = true;
+		 			return jaExiste;
+		 		}
+		 	}
+		);
+		 
+		return jaExiste;
+	};
+	
+	var carregarWidgetsObrigatorios = function(cdWidget){
+	   var muralFrame = jQuery('#idFrameMural').contents();
+	   var jaExiste = false;
+	   
+	   jQuery('div.portlet', muralFrame).each(
+			function(){
+				var cd = jQuery(this).attr('codigowidget');
+		 		if( parseInt(cd) === parseInt(cdWidget)){
+		 			jaExiste = true;
+		 			return jaExiste;
+		 		}
+		 	}
+		);
+		 
+		return jaExiste;
+	};
+  	
+	
+	$.spw.widgets.salvarDashboard = salvarDashboard;
+	$.spw.widgets.loadWidget = loadWidget;
+	$.spw.widgets.carregaPrevisaoDados = carregaPrevisaoDados;
+	
+    $.spw.widgets.mostrarOpcoesWidgets = mostrarOpcoesWidgets; 
+    $.spw.widgets.carregarWidget = carregarWidget; 
+	
+	jQuery.spw.widgets.adicionarEventosWidgets = adicionarEventosWidgets;	
+	
+	
+})(jQuery);
+
+jQuery(function(){
+	
+	/**
+	* Tratamento para o bot�o concluir widget
+	*
+	*/
+	jQuery('#btConcluirWidget').click(
+		function(){
+		
+			var muralFrame = jQuery('#idFrameMural').contents();	
+			
+			jQuery(':checkbox:checked').not('[ativo]').each(function(){
+				  jQuery.spw.widgets.carregarWidget(jQuery(this).attr('action')+".do?codigoWidget=" + jQuery(this).attr('cdWidget'));
+			});
+		
+			jQuery(':checkbox').filter('[ativo]').not(':checked').each(function(){
+				var cdWidget = jQuery(this).attr('cdWidget');
+				
+				jQuery('div.portlet',muralFrame).each(function(){
+					if(jQuery(this).attr('codigowidget') === cdWidget){
+						jQuery(this).remove();
+					}
+				});
+										
+			});
+		
+		
+		jQuery.spw.widgets.salvarDashboard();	
+		
+		jQuery('#modalWidgets').dialog('close');
+	});
+	
+	
+	/**
+	* Tratamento para o bot�o concluir widget
+	*
+	*/
+	jQuery('#btCancelarWidget').click(function(){
+		var muralFrame = jQuery('#idFrameMural').contents();
+		jQuery('#modalWidgets').dialog('close');
+	});
+
+});

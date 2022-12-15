@@ -1,0 +1,140 @@
+
+// Provide a default path to dwr.engine
+if (dwr == null) var dwr = {};
+if (dwr.engine == null) dwr.engine = {};
+if (DWREngine == null) var DWREngine = dwr.engine;
+
+if (MuralAvisosAjax == null) var MuralAvisosAjax = {};
+MuralAvisosAjax._path = '/mural/dwr';
+MuralAvisosAjax.existeAvisoCritico = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'existeAvisoCritico', p0, callback);
+}
+MuralAvisosAjax.marcarComoExcluido = function(p0, p1, p2, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'marcarComoExcluido', p0, p1, p2, callback);
+}
+MuralAvisosAjax.marcarComoLido = function(p0, p1, p2, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'marcarComoLido', p0, p1, p2, callback);
+}
+MuralAvisosAjax.marcarComoNaoLido = function(p0, p1, p2, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'marcarComoNaoLido', p0, p1, p2, callback);
+}
+MuralAvisosAjax.getMuralMenuItens = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getMuralMenuItens', false, callback);
+}
+MuralAvisosAjax.getMuralMenuItens = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getMuralMenuItens', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.getAviso = function(p0, p2, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getAviso', p0, false, p2, callback);
+}
+MuralAvisosAjax.getAvisos = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getAvisos', p0, false, callback);
+}
+MuralAvisosAjax.getAnexoaviso = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getAnexoaviso', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.saveAviso = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'saveAviso', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.listAviso = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'listAviso', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.getAvisosCriticos = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getAvisosCriticos', callback);
+}
+MuralAvisosAjax.getNuAvisosPendentes = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getNuAvisosPendentes', false, callback);
+}
+MuralAvisosAjax.marcarCriticosComoLidos = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'marcarCriticosComoLidos', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.getAlertas = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getAlertas', p0, callback);
+}
+MuralAvisosAjax.getMuralMenuItensParalelo = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getMuralMenuItensParalelo', false, callback);
+}
+MuralAvisosAjax.cadAviso = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'cadAviso', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.formateMensagem = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'formateMensagem', p0, callback);
+}
+MuralAvisosAjax.getMuralAvisos = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getMuralAvisos', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.deleteAviso = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'deleteAviso', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.editAviso = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'editAviso', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.getAudithInfo = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getAudithInfo', p0, false, callback);
+}
+MuralAvisosAjax.getAudithInfoFromPrincipal = function(p0, p2, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getAudithInfoFromPrincipal', p0, false, p2, callback);
+}
+MuralAvisosAjax.execute = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'execute', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.saveErrorMessage = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'saveErrorMessage', p0, false, callback);
+}
+MuralAvisosAjax.saveWarnMessage = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'saveWarnMessage', p0, false, callback);
+}
+MuralAvisosAjax.saveSucessMessage = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'saveSucessMessage', p0, false, callback);
+}
+MuralAvisosAjax.writeAjaxXML = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'writeAjaxXML', p0, false, callback);
+}
+MuralAvisosAjax.writeAjaxXML = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'writeAjaxXML', p0, false, callback);
+}
+MuralAvisosAjax.isResubmittingForm = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'isResubmittingForm', false, callback);
+}
+MuralAvisosAjax.saveException = function(p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'saveException', false, p1, callback);
+}
+MuralAvisosAjax.getApplicationXMLParameters = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getApplicationXMLParameters', callback);
+}
+MuralAvisosAjax.getAudithInfo = function(p0, p2, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getAudithInfo', p0, false, p2, callback);
+}
+MuralAvisosAjax.getAudithInfoFromPrincipal = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getAudithInfoFromPrincipal', p0, false, callback);
+}
+MuralAvisosAjax.getModuleEAR = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getModuleEAR', callback);
+}
+MuralAvisosAjax.getModuleEJB = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getModuleEJB', callback);
+}
+MuralAvisosAjax.getTipoUsuario = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getTipoUsuario', false, callback);
+}
+MuralAvisosAjax.isOrderBySelectedMultSelection = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'isOrderBySelectedMultSelection', false, callback);
+}
+MuralAvisosAjax.addToken = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'addToken', false, callback);
+}
+MuralAvisosAjax.perform = function(p0, p1, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'perform', p0, p1, false, false, callback);
+}
+MuralAvisosAjax.perform = function(p0, p1, p2, p3, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'perform', p0, p1, p2, p3, callback);
+}
+MuralAvisosAjax.getServlet = function(callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'getServlet', callback);
+}
+MuralAvisosAjax.setServlet = function(p0, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'setServlet', p0, callback);
+}
+MuralAvisosAjax.execute = function(p0, p1, p2, p3, callback) {
+  dwr.engine._execute(MuralAvisosAjax._path, 'MuralAvisosAjax', 'execute', p0, p1, p2, p3, callback);
+}

@@ -1,0 +1,116 @@
+/**
+ * Funcoes que auxiliam na manipulação de campos 'Tipo de Pessoa' e 'CPF/CNPJ'.
+ */
+function selecionarTipoPessoa(tpPessoa, idCampoCpf, idCampoCnpj) {
+	var jNuCpf = jQuery("#" + idCampoCpf);
+	var jNuCnpj = jQuery("#" + idCampoCnpj);
+
+	if (tpPessoa == "J") {
+		configCPFCNPJToShow(jNuCnpj, jNuCpf);
+	} else {
+		configCPFCNPJToShow(jNuCpf, jNuCnpj);	
+	}	
+}
+
+function configCPFCNPJToShow(jCampoToShow, jCampoToHide) {
+	jCampoToHide.hide();
+	jCampoToHide.attr("disabled", "disabled");
+	jCampoToHide.val("");
+	jCampoToShow.show();
+	jCampoToShow.removeAttr("disabled");	
+}
+
+/**
+ * Funcao executada para consultar os dados/endereco da pessoa.
+ */
+function onchangeCPFCNPJ(obj, tpSujeito, mapFormSujeito) {
+	if (obj.value != '') {
+		var ehCPFValido = false;
+		if (tpSujeito == 'F' && CCPF_isCPFValido(obj.value)) {
+			ehCPFValido = true;		
+		}
+		var ehCNPJValido = false;
+		if (tpSujeito == 'J' && CCNPJ_isCNPJValido(obj.value)) {
+			ehCNPJValido = true;	
+		}
+		
+		if (ehCPFValido || ehCNPJValido) {
+			var nuCpfcnpj = C_EliminaMascaraCPFCNPJ(obj.value);
+			SujeitoDWR.findSujeitoenderecoCPFCNPJ(nuCpfcnpj, tpSujeito, {
+				async: false,
+				callback:function (sujeitoDTO) {
+					if (sujeitoDTO != null) {
+						SPWUtil.setValues(sujeitoDTO, mapFormSujeito);
+					} else {
+						limparCodigoSujeito(mapFormSujeito);					
+					}
+					depoisConsultarSujeitoenderecoCPFCNPJ();
+				}
+			});
+		}
+	} else {
+		limparCodigoSujeito(mapFormSujeito);	
+	}
+}
+
+function limparCodigoSujeito(mapFormSujeito) {
+	var cdSujeitoId = mapFormSujeito["cdSujeito"];
+    if (cdSujeitoId != null) {
+    	document.getElementById(cdSujeitoId).value = "";
+    }
+}
+
+function depoisConsultarSujeitoenderecoCPFCNPJ() {
+	// Executada após a consulta (pode ser sobrescrita na tela)
+}
+
+function depoisSalvarSujeitoEndereco(sujeitoDTO, objCodigoSujeito) {
+	// Executada após o salvamento (pode ser sobrescrita na tela)	
+}
+
+/**
+ * Valida os campos do cadastro do sujeito.
+ * O id pode ser de um div ou table, por exemplo.
+ */
+function validaCamposSujeitoEndereco(id) {
+	var inputs = jQuery("#" + id).find("input[type=text]");
+	return GF_validaCampos(inputs);
+}
+
+function getSujeitoDTO(idSujeitoDTO, idNuCpf, idNuCnpj) {
+	var tpSujeito = jQuery("#" + idSujeitoDTO + "\\.tpSujeito").val();
+	var nuIdentsujeito = (tpSujeito == "F" ?  jQuery("#" + idNuCpf).val() : jQuery("#" + idNuCnpj).val());
+	var nuCepSemMascara = CM_getConteudoSemMascara("00000-000", jQuery("#" + idSujeitoDTO + "\\.nuCep").val());
+	
+	var sujeitoDTO = { 
+		tpSujeito 		: tpSujeito,
+		nuIdentsujeito 	: nuIdentsujeito,
+		nmSujeito 		: jQuery("#" + idSujeitoDTO + "\\.nmSujeito").val(),
+		nmRua 			: jQuery("#" + idSujeitoDTO + "\\.nmRua").val(),  
+		nuNumero 		: jQuery("#" + idSujeitoDTO + "\\.nuNumero").val(),
+		nmBairro 		: jQuery("#" + idSujeitoDTO + "\\.nmBairro").val(),
+		nuCep 			: nuCepSemMascara,
+		nuTelefone 		: jQuery("#" + idSujeitoDTO + "\\.nuTelefone").val(),
+		cdMunicipio 	: jQuery("#" + idSujeitoDTO + "\\.cdMunicipio").val(),
+		deComplemento 	: jQuery("#" + idSujeitoDTO + "\\.deComplemento").val(),
+		cdSequencial	: jQuery("#" + idSujeitoDTO + "\\.cdSequencial").val(),
+		cdSujeito		: jQuery("#" + idSujeitoDTO + "\\.cdSujeito").val()
+	};
+	return sujeitoDTO;
+}
+
+function configuraMascaraCPFCNPJ(tpSujeito, idCPFCNPJ) {
+	if (tpSujeito == "F") {
+		jQuery("[id=" + idCPFCNPJ + "]").attr("formato", "000.000.000-00");
+	} else if (tpSujeito == "J") {
+		jQuery("[id=" + idCPFCNPJ + "]").attr("formato", "00.000.000/0000-00");		
+	}
+}
+
+function aplicaMascaraCPFCNPJ(tpSujeito, idCPFCNPJ, nuCPFCNPJ) {
+	if (tpSujeito == "F") {
+		jQuery("[id=" + idCPFCNPJ + "]").val(CM_aplicaMascaraAoConteudo("000.000.000-00", C_EliminaMascaraCPFCNPJ(nuCPFCNPJ)));
+	} else if (tpSujeito == "J") {
+		jQuery("[id=" + idCPFCNPJ + "]").val(CM_aplicaMascaraAoConteudo("00.000.000/0000-00", C_EliminaMascaraCPFCNPJ(nuCPFCNPJ)));	
+	}
+}

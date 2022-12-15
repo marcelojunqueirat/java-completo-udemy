@@ -1,0 +1,11 @@
+INDEX VERSION 1.131+C:\Marcelo\OneDrive - Softplan\cursos\java-completo-udemy\secao-08-introducao-orientacao-objetos\ws-eclipse\.metadata\.plugins\org.eclipse.jdt.core
+2994164520.index
+2066358966.index
+2832278153.index
+3755348511.index
+1551446532.index
+2731785745.index
+1865797976.index
+864482754.index
+836268851.index
+3312477118.index

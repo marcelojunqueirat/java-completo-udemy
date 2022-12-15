@@ -1,0 +1,343 @@
+/** Estilo do Form **/
+form {
+    margin: 0px;
+    padding: 0px;
+}
+
+/** Estilo para os links da pagina  **/ 
+a:link {
+	font-family: Arial, Helvetica, sans-serif;  color: #000066; text-decoration: none
+}
+
+/** Estilo para os links da pagina  **/ 
+a:visited {
+	font-family: Arial, Helvetica, sans-serif;  color: #000066; text-decoration: none
+}
+
+/** Estilo para os links da pagina  **/ 
+a:hover {
+	font-family: Arial, Helvetica, sans-serif;  color: #0066CC; text-decoration: none
+}
+
+/** Estilo para o corpo do HTML  **/ 
+body {
+	font-family: Arial, Helvetica, sans-serif; font-size: 10px
+}
+
+/** Estilo para um campo INPUT do form  **/ 
+input {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+/** Estilo para o campo SELECT do form  **/ 
+select {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+/** Estilo para tabelas  **/ 
+table {  
+	font-family: Arial, Helvetica, sans-serif; 
+	font-size: 11px;
+}
+
+/** Estilo para o campo TEXTAREA do form  **/ 
+textarea {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+.spwBotao,.spwBotao-d,.spwBotao-o,.spwBotaoDefault,.spwBotaoDefault-o,.spwBotaoDefault-d,.spwBtButtonDefault {
+	font-size: 11px;
+	padding-left: 1;
+	padding-right: 1;
+	padding-top: 0;
+	padding-bottom: 0;
+	height:20px;
+	font-weight: bold;
+}
+
+/** Estilo para um botao comum do form **/ 
+.spwBotao {
+	background-color: #6699FF;
+	border: 1px solid #0066FF;
+	cursor: POINTER;
+}
+
+/** Estilo para um botao comum do form, com o mouse em cima **/ 
+.spwBotao-o {
+	background-color: #33CCFF;
+	border: 1px solid #0099CC;
+	cursor: POINTER;
+}
+
+/** Estilo para um botao comum do form, com o mouse em cima **/ 
+.spwBotao-d {
+	background-color: #CCCCCC;
+	border: 1px solid #969696;
+}
+
+/** Estilo para um botao default do form **/ 
+.spwBotaoDefault {
+	background-color: #FFCC00;
+	border: 1px solid #FF9900;
+	cursor: POINTER;
+}
+
+/** Estilo para um botao default do form, com o mouse em cima **/ 
+.spwBotaoDefault-o {
+	background-color: #FFDD00;
+	border: 1px solid #FF9900;
+	cursor: POINTER;
+}
+
+/** Estilo para um botao default do form, desabilitado**/ 
+.spwBotaoDefault-d{
+	background-color: #CCCCCC;
+	border: 1px solid #969696;
+}
+
+/** Campo do formulrio **/
+.spwCampoTexto {
+}
+
+/** Qquer coisa alinhada a direita **/
+.alignRight {
+	text-align: right;
+}
+
+/** Qquer coisa alinhada ao centro **/
+.alignCenter {
+	text-align: center;
+}
+
+/** Qquer coisa escondida **/
+.hidden {
+	display:none;
+}
+
+/** Qquer coisa escondida para impressao **/
+.noPrint {
+}
+
+/** layer processando **/
+.processando{
+	position:absolute;
+	height: 40px;
+	width: 200px;
+	background-image: url(../imagens/liveSearch/aguarde.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+/** Qquer coisa errada **/
+.erro {
+	color: #ff0000;
+}
+
+.corFonteDesabilitada {
+	color: #666666;
+}
+
+.hint {
+	color: #FFFFFF;
+	background-color: #000000;
+	border: 1px solid #FF0000;
+}
+
+/** Opção da mensagem **/
+a.opcaoMensagem:link{
+	font-size: 11px;
+    text-decoration: underline;
+    color:#00AA00;
+}
+
+a.opcaoMensagem:visited{
+	font-size: 11px;
+    text-decoration: underline;
+    color:#00AA00;
+}
+
+a.opcaoMensagem:active{
+	font-size: 11px;
+    text-decoration: underline;
+    color:#00AA00;
+}
+
+a.opcaoMensagem:hover{
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.tabelaMensagem{
+	background-color: #FFFFDD;
+}
+
+.toggle{
+	background-image: url(../imagens/abrirSubTitulo.gif);
+}
+
+.toggle-o{
+	background-image: url(../imagens/abrirSubTitulo-o.gif);
+}
+
+.toggle-c{
+	background-image: url(../imagens/fecharSubTitulo.gif);
+}
+
+.toggle-c-o{
+	background-image: url(../imagens/abrirSubTitulo-o.gif);
+}
+
+.menuContexto{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	display:inline;
+	float:left;
+}
+
+.tableCalendario{
+	display:inline-block;
+	vertical-align: middle;
+}
+
+.columnTD {
+	cursor: POINTER;
+}
+
+.campoDddDesabilitado {
+	text-decoration: line-through;
+	background-color: #EBEBEB;
+	border-style: groove;
+}
+
+
+/** Titulo da janela **/
+.spwTituloModal {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #9B9B9B;
+    color: #FFFFFF;
+}
+
+.spwRodapeModal {
+    border: none;
+    font-size: 10px;
+    background-color: #cccccc;
+    color: #000000;
+    height:20;
+    font-weight: bold;
+}
+
+/** Layer da Modal **/
+.spwLayerModal {
+    width:100%; 
+    overflow: auto; 
+    border:1px;
+}
+.spwBotaoModal,.spwBotaoModal-d,.spwBotaoModal-o,.spwBotaoDefaultModal,.spwBotaoDefaultModal-o,.spwBotaoDefaultModal-d {
+    font-size: 10px;
+    padding-left: 1;
+    padding-right: 1;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 16;
+}
+.botaoDisabled{
+	background-color: #FFFFFF;
+	border: 1px dashed #FF9900;	
+}
+
+.avisoCriticoModal{
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:9000;
+	background:#F5F5F5;
+	width:100%;
+	height:100%;		
+}
+#AvisosCriticos{
+    font-family: arial, Helvetica, sans-serif;
+    font-size:10px;
+    margin:10px;
+}
+#AvisosCriticos a{
+    color:#000066;
+    text-decoration: none;
+    width:100%;
+    display:block;
+    font-size:11px;
+    font-family: arial, Helvetica, sans-serif;
+    font-weight: normal;
+    margin:0 0 10px 0;
+    cursor:pointer;
+    }
+#AvisosCriticos a:hover{
+	font-size:11px;
+    font-weight: normal;
+    font-family: arial, Helvetica, sans-serif;
+    text-decoration:underline;
+    
+   
+}
+#AvisosCriticos p{
+padding:0 0 0 10px;
+}
+#AvisosCriticos ul{
+    padding:0;
+    margin:0;
+}
+#AvisosCriticos li{
+    border-bottom:1px solid #cecece;
+    margin: 0 0 20px 0;
+    list-style: none;
+}
+#AvisosCriticos a.avisoLido{
+    background-image: url(../imagens/ic_aviso_lido.gif);
+    background-position: right;
+    background-repeat: no-repeat;
+    color:#000066;
+    text-decoration: none;
+    width:100%;
+    display:block;
+font-size:11px;
+    font-weight: normal;
+}
+/* botao fechar da janela de consulta */    
+.spwBotaoFecharJanela, .spwBotaoFecharJanela:hover{
+	color:#999999;
+	display:block;
+	width:16px;
+	height:16px;
+	line-height:16px;
+	cursor:pointer;
+	text-align:center;
+	font-weight:bold;
+	font-size:12px;
+	font-family:Verdana, Geneva, sans-serif;
+}
+.spwBotaoFecharJanela:hover{
+	color:#555555
+}
+/* tabela do input select, padding 1 para sem doctype */  
+.spwInputSelect > tbody > tr > td:first-child{
+	padding-right: 2px;
+}
+.spwInputSelect a.spwHtmlBotaoProcurar{
+	margin-left: 1px;
+}
+
+.spwInputSelect a.spwHtmlBotaoProcurar-o{
+	margin-left: 1px;
+}
+
+.spwInputSelect a.spwHtmlBotaoProcurar-d{
+	margin-left: 1px;
+}
+
+.spwButtonGrid input, .spwButtonGrid-o input, .spwButtonGrid-d input, .spwButtonGridMain input, .spwButtonGridMain-o input, .spwButtonGridMain-d input {
+     height: 17px;
+}

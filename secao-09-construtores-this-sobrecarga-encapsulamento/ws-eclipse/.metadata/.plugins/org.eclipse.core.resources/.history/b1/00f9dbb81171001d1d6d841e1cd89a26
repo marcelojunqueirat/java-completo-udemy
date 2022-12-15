@@ -1,0 +1,16 @@
+package entities;
+
+import java.util.Date;
+
+public class Order {
+	
+	public Order(Date date, Product product) {
+		super();
+		this.date = date;
+		this.product = product;
+	}
+	private Date date;
+	private Product product;
+	
+	
+}

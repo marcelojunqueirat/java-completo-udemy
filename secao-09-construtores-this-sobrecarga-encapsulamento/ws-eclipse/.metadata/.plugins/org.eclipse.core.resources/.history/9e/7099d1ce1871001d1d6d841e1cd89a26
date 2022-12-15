@@ -1,0 +1,45 @@
+package entities;
+
+public class Account {
+	private int number;
+	private String accountHolder;
+	private double balance;
+	
+	public Account(int accountNumber, String accountHolder) {
+		this.number = accountNumber;
+		this.accountHolder = accountHolder;
+	}
+
+	public int gettNumber() {
+		return number;
+	}
+
+	public String getAccountHolder() {
+		return accountHolder;
+	}
+
+	public void setAccountHolder(String accountHolder) {
+		this.accountHolder = accountHolder;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+	
+	public void deposit(double amount) {
+		
+	}
+	public void withdraw(double amount) {
+		
+	}
+	
+	public String toString() {
+		return "Account"
+				+ number
+				+ ", Holder: "
+				+ accountHolder
+				+ "Balance: "
+				+ balance;
+	}
+	
+}

@@ -1,0 +1,153 @@
+(function($) {
+	
+	$.spw = $.spw || {};
+	$.spw.spwpreferencias = {};
+	
+	/**
+	* Carrega todas as cidades autorizadas para o usuário
+	*/
+	var montaSelectPrevisao= function(){
+	
+			var portletIFrame = jQuery('#idFrameMural').contents();
+			var cidadePrevisaoAtual =  jQuery('#cidadePrevisao', portletIFrame).text();
+			
+			jQuery('#cidadeCorrente').text(cidadePrevisaoAtual);
+			
+			var $comboCidadesOp = jQuery('#comboCidade option');
+			
+			if(jQuery('#prevtempo', portletIFrame).is(':hidden')){
+				$comboCidadesOp.filter('[value=0]').attr('selected', 'selected');
+			}else{
+				$comboCidadesOp.filter(":contains('+cidadePrevisaoAtual+')").attr('selected', 'selected');
+			}	
+	}; 	
+	
+		
+	/**
+	* Carrega todas as divs autorizadas para o usuário
+	*/
+	var carregarOpcoesPreferencias = function(){
+	
+		jQuery('#aguardePortlets').show();
+		jQuery('#idTemaAtivo').html(jQuery('#skinPrevio').val());
+		
+		montaSelectPrevisao();
+		
+		var $linkTemas = jQuery('a[name=skin]');
+		$linkTemas.removeClass('linkSelecActive');
+		
+		$linkTemas.each(function(){
+			var temaI = jQuery(this).text();
+			var temaAtual = jQuery('#skinPrevio').val();
+			
+			if(temaI===temaAtual){
+				jQuery(this).addClass('linkSelecActive');
+				return;
+			}
+			
+		});
+		
+		jQuery('#aguardePortlets').hide();
+		jQuery("#configApp").dialog('open');
+	}; 
+
+	var trocarSkin = function(){
+	
+		var tema = jQuery(this).text();
+		
+		var skinPath =  'skins/' + tema + '/'+ tema+ '.css';
+		var imagens = 'skins/' + tema + '/imagens/'
+		var topIFrame = jQuery('#cabecalho').contents();
+		var menuIFrame = jQuery('#idFrameMenu').contents();
+		var portletIFrame = jQuery('#idFrameMural').contents();
+		var contexto = jQuery("#skin", topIFrame).attr('contexto');
+		
+		jQuery('#imagensSkin').val(imagens);
+		jQuery('#skinPath').val(imagens);
+		
+		jQuery('a[name=skin]').removeClass('linkSelecActive');
+		jQuery(this).addClass('linkSelecActive');
+		
+		jQuery("#skin").attr('href', skinPath);
+		jQuery("#skin", topIFrame).attr('href', contexto + skinPath);
+		jQuery("#skin", menuIFrame).attr('href', skinPath);
+		jQuery("#skin", portletIFrame).attr('href', skinPath);
+		
+		jQuery.get("atualizarTema.do", {skin: ''+tema});
+		
+	};
+	
+	var rollbackSkin = function(){
+		var tema = jQuery('#skinPrevio').val();
+	
+		var skinPath =  'skins/' + tema + '/'+ tema+ '.css';
+		var imagens = 'skins/' + tema + '/imagens/';
+		
+		jQuery('#imagensSkin').val(imagens);
+	
+		var topIFrame = jQuery('#cabecalho').contents();
+		var menuIFrame = jQuery('#idFrameMenu').contents();
+		var portletIFrame = jQuery('#idFrameMural').contents();
+		
+		var contexto = jQuery("#skin", topIFrame).attr('contexto');
+		
+		jQuery('#skinPath').val(imagens);
+	
+		jQuery("#skin").attr('href', skinPath);
+		jQuery("#skin", topIFrame).attr('href', contexto + skinPath);
+		jQuery("#skin", menuIFrame).attr('href', skinPath);
+		jQuery("#skin", portletIFrame).attr('href', skinPath);
+		
+		jQuery.get("atualizarTema.do", {skin: ''+tema});
+		
+		return true;
+		
+	};
+	
+	var atualizarCidade = function(){
+	
+		var cidadeVal = jQuery('#comboCidade').val();
+		
+		jQuery.getJSON("atualizarCidade.do", {cidade: cidadeVal}, function(dadosJson){
+		
+			var portletIFrame = jQuery('#idFrameMural').contents();
+			
+			if(cidadeVal === '0'){
+				jQuery('#prevtempo', portletIFrame).hide();
+				return;
+			}
+		
+			jQuery('#cidadePrevisao', portletIFrame).text(dadosJson['cidade']);
+			
+			jQuery('#dia1',portletIFrame).text(dadosJson['dia'].substring(0,3));
+			jQuery('#dia2',portletIFrame).text(dadosJson['diaAmanha'].substring(0,3));
+			
+			
+			jQuery('#maximaHoje',portletIFrame).text(dadosJson['maxima']+'º');
+			jQuery('#minimaHoje',portletIFrame).text(dadosJson['minima']+'º');
+			
+			jQuery('#maximaAmanha',portletIFrame).text(dadosJson['maximaAmanha']+'º');
+			jQuery('#minimaAmanha',portletIFrame).text(dadosJson['minimaAmanha']+'º');
+			
+			jQuery('#imgTempo',portletIFrame).attr('src','imagens/widgets/' + dadosJson['tempo']+'.png');
+			jQuery('#imgTempo',portletIFrame).show();
+			jQuery('#prevtempo', portletIFrame).show();
+		
+		});
+	};
+	
+	/**
+	* Carrega todas as divs autorizadas para o usuário
+	*/
+	var carregarOpcoesIdiomas = function(){
+		jQuery("#configIdiomas").dialog('open');
+	} ;
+	
+	$.spw.spwpreferencias.trocarSkin = trocarSkin; 
+	$.spw.spwpreferencias.atualizarCidade = atualizarCidade;
+	$.spw.spwpreferencias.rollbackSkin = rollbackSkin;
+	$.spw.spwpreferencias.carregarOpcoesPreferencias = carregarOpcoesPreferencias;
+	$.spw.spwpreferencias.carregarOpcoesIdiomas = carregarOpcoesIdiomas;
+	
+})(jQuery);
+

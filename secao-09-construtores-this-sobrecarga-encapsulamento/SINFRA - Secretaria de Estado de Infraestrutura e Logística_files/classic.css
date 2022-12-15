@@ -1,0 +1,874 @@
+
+.falhaLogin { background-color: #990000; }
+
+input, textarea, select { 	border-radius:0px 0px 0px 0px; }
+
+body {
+	background-color:#fff !important;
+}
+
+#holderConteudo1 {
+	overflow-y: scroll !important;
+	overflow-x: hidden !important;
+}
+
+.bgPortlet #holderConteudo1 {
+	overflow: auto !important;
+}
+
+#homeheader {
+width:100%; 
+height:62px;
+background: url(imagens/bg-widgets-header.png) repeat-x;
+margin-bottom: 10px;
+color: #FFF;
+font-size: 11px;
+}
+
+#resultados {
+background-image: url(imagens/resultados-2.png);
+}
+
+.restitulo h2 { color: #FFF; }
+.resconteudomain {
+background-image: url(imagens/resultados-white.png) 
+}
+.resconteudot {
+color: #666;
+}
+
+#bodyheader {
+background-color: #AEB0B2;
+font: 11px Arial, sans-serif;
+}
+
+#search .subsearch1 {
+background-image: url(imagens/bgsearch.png);
+}
+#search .subsearch2 {
+background-image: url(imagens/bgsearch.png);	
+}
+
+#footer {
+background: #333 url(imagens/bg-footer.jpg);
+color: #FFF;
+}
+
+.wrapperGridHeader {
+background: url(imagens/gridheader.png) top left no-repeat;
+}
+.spwTabelaGrid {
+background: url(imagens/gridheader-r.png) top right no-repeat;
+}
+.spwCabecalhoGridHover {
+background-image: url(imagens/cabecalhoGridHover.png);
+background-repeat: repeat-x;
+}
+.spwCabecalhoGridLeftRoundHover {
+background: url(imagens/cabecalhoGridHover-round.png) top left no-repeat;
+}
+.spwCabecalhoGridLeftRoundClick {
+background: url(imagens/cabecalhoGridClick-round.png) top left no-repeat;
+}
+.spwCabecalhoGridClick {
+background-image: url(imagens/cabecalhoGridClick.png);
+background-repeat: repeat-x;
+}
+td.spwCabecalhoAsc {
+background: url(imagens/gridorder_asc.gif) no-repeat center 2px;
+}
+td.spwCabecalhoDesc {
+background: url(imagens/gridorder_desc.gif) no-repeat center 2px;
+}
+
+#spwModalFooter, #spwModalContent{
+position:absolute;
+left:0;
+top:0;
+z-index:9000;
+background-color:#F5F5F5;
+display:none;
+}
+
+.spwModalDefault{
+background-color:#F5F5F5;
+display:none;
+}
+
+div.subTitulo {
+background-image: url('imagens/subTitulo.jpg');
+}
+
+/********************************************************/
+/* TEMA.CSS */
+/* toda esta parte são declarações existentes no TEMA.CSS aqui sobrescritas para facilitar temporariamente a mudança de skins no protótipo. deve ser organizado posteriormente! */
+
+#bodyheader { background-image: url('imagens/header.jpg'); }
+#bodyheader h2 { color: #FFF; }
+
+a.bt-acoes { 
+background-image: url('imagens/bt-acoes.png') ; 
+color: #FFF ; 
+}
+a.bt-sair { 
+background-image: url('imagens/bt-sair.png') ; 
+color: #FFF ; 
+}
+
+.resconteudot label {
+color: #49758E ; 
+border-bottom: 1px solid #DBDBDB ;
+}
+.resconteudot ul li {
+background-image: url('imagens/busca-arrow-bullet.gif') ;
+}
+.resconteudot ul li.selected {
+background-color: #e2e2e2 ;
+}
+.resconteudot ul li a {
+color: #373737 ;
+}
+
+#footer #user {
+background-image: url('imagens/ico-user.png');
+}
+
+/** botão main **/
+.spwButtonMain {
+background-image: url('imagens/spwButtonMain-r.png');
+color:#FFF ;
+}
+.spwButtonMain span { 
+background-image:url('imagens/spwButtonMain.png');
+}
+.spwButtonMain span span { color:#FFF; }
+.spwButtonMain span input { color:#FFF; }
+
+.spwButtonMain-o {
+background-image:url('imagens/spwButtonMain-r.png');
+color:#FFF ;
+}
+.spwButtonMain-o span { 
+background-image:url('imagens/spwButtonMain.png');
+}
+.spwButtonMain-o span span { color:#FFF; }
+
+/** botão padrão para rodapé das grids **/
+.spwButtonGridMain {
+background-image:url('imagens/spwButtonGridMain-r.png');
+color:#333 ;
+}
+.spwButtonGridMain span { 
+background-image:url('imagens/spwButtonGridMain.png');
+}
+.spwButtonGridMain span span { color:#333; }
+.spwButtonGridMain span input { color:#333; }
+.spwButtonGridMain #btNovaLinhaRow {
+background: url(../../imagens/base/botAdicionar.png) no-repeat;
+}
+.spwButtonGridMain-o {
+background-image:url('imagens/spwButtonGridMain-r.png');
+color:#333;
+}
+.spwButtonGridMain-o span { 
+background-image:url('imagens/spwButtonGridMain.png');
+}
+.spwButtonGridMain-o span span { color:#333; }
+.spwButtonGridMain-o span input { color:#333; }
+.spwButtonGridMain-o #btNovaLinhaRow {
+background: url(../../imagens/base/botAdicionar.png) no-repeat;
+}
+
+.spwBotaoPrimeiro {background-image: url('imagens/primeiro.png') ;}
+.spwBotaoProximo {background-image: url('imagens/proximo.png') ;}
+.spwBotaoUltimo {background-image: url('imagens/ultimo.png') ;}
+.spwBotaoAnterior {background-image: url('imagens/retroceder.png') ;}
+.spwBotaoPrimeiro-o {background-image: url('imagens/primeiro-o.png') ;}
+.spwBotaoProximo-o {background-image: url('imagens/proximo-o.png') ;}
+.spwBotaoUltimo-o {background-image: url('imagens/ultimo-o.png') ;}
+.spwBotaoAnterior-o {background-image: url('imagens/retroceder-o.png') ;}
+.spwBotaoAnterior-d {background-image: url('imagens/retroceder-d.gif');}
+.spwBotaoProximo-d {background-image: url('imagens/proximo-d.gif') ;}
+.spwBotaoPrimeiro-d {background-image: url('imagens/primeiro-d.gif') ;}
+.spwBotaoUltimo-d {background-image: url('imagens/ultimo-d.gif') ;}
+
+.basic a.tab .tabend {
+background: url('imagens/headermenu_normal.gif') no-repeat right ; 
+}
+.basic a.tab:hover {
+background:	url('imagens/headermenu_hover.gif') no-repeat ;
+color: #49758E ;
+}
+.basic a.tab .tabend-hover,
+.basic a.tab .tabend-active {
+background: url('imagens/headermenu_hover.gif') no-repeat right ; 
+}
+.basic a.tab-active {
+background: url('imagens/headermenu_active.gif') no-repeat  ; 
+}
+.basic a.tab {
+background:	url('imagens/headermenu_normal.gif') no-repeat;
+color: #333;
+}
+.ui-widget-header {
+background:url("imagens/bg-widgets-top.png") repeat-x scroll center top #FFFFFF;
+color:#222222;
+font-weight:bold;
+padding:15px 10px 15px 11px;
+border: none ;
+}
+.ui-widget-content  {
+background:url("imagens/bg-widgets-bottom.png") repeat-x scroll center bottom #FFFFFF;
+border:1px solid #DEE3E7;
+color:#222222;
+}
+
+
+.wrapperGridHeader {
+background: url(imagens/gridheader.png) top left no-repeat;
+}
+
+.spwCabecalhoGrid {
+color: #FFF;	
+}
+.spwCabecalhoGridHover {
+background-image: url(imagens/cabecalhoGridHover.png);
+background-repeat: repeat-x;
+}
+.spwCabecalhoGridLeftRoundHover {
+background: url(imagens/cabecalhoGridHover-round.png) top left no-repeat;
+}
+.spwCabecalhoGridLeftRoundClick {
+background: url(imagens/cabecalhoGridClick-round.png) top left no-repeat;
+}
+.spwCabecalhoGridClick {
+background-image: url(imagens/cabecalhoGridClick.png);
+background-repeat: repeat-x;
+}
+
+td.spwCabecalhoAsc {
+background: url(imagens/gridorder_asc.gif) no-repeat center 2px;
+}
+td.spwCabecalhoDesc {
+background: url(imagens/gridorder_desc.gif) no-repeat center 2px;
+}
+
+.tableGridSearch .spwRodapeGrid { 
+background-image: url(imagens/bgGridSearchBR.png) ;
+background-position: bottom right ;
+padding-left: 5px; padding-right: 5px;
+} 
+.spwRodapeGrid {
+background: url(imagens/bgRodapeGrid.png) bottom right no-repeat; 
+border: none;
+font-size: 10px;
+height:22px;
+}
+
+/*Layout para as searchs. Ha uma parte sendo setada via javaScript*/
+.tableGridSearch {  
+background-image: url(imagens/bgGridSearchBL.png) ;
+background-position: bottom left ;
+background-repeat: no-repeat;
+}
+
+.spwTituloGrid { color: #49758E; }
+
+.bgPortlet { background: #999 url("imagens/bg_inicial.jpg") no-repeat top left !important; }
+
+div.arvoremenu li {
+background: url(imagens/busca-arrow-bullet.gif) no-repeat;
+background-position: 3px 5px;
+}
+div.arvoremenu li a {
+color: #49758E ;
+}
+div.arvoremenu li.nivel.fechado { 
+background:url(imagens/menu-fechado.gif) no-repeat;
+background-position: 1px 3px; 
+}
+div.arvoremenu li.nivel.fechado:hover { 
+background:url(imagens/menu-fechado.gif) #DDD no-repeat;
+background-position: 1px 3px; 
+}
+
+.icoTitSuperior {
+background: url(imagens/icoTitSuperior.png) no-repeat center; 
+}
+
+
+
+/********************************************/
+/* TEMA/SKIN CLASSIC - alteracoes a partir daqui */
+
+* {
+font-family: Verdana, Arial, sans-serif;
+font-size: 10px;
+}
+
+input[formattype="DATE"] {
+width: 80px;
+}
+
+body.fundo * { font-family: Verdana, Arial, sans-serif ;
+/*font-size: 10px ; */}
+
+/* grids */
+
+.spwLinhaGridPar { background-color: #FFF !important ; } /* para tirar o zebrado das grids */
+.spwLinhaGridImpar { background-color: #FFF !important ; } /* para tirar o zebrado das grids */
+
+.spwLinhaGridPar.disabled { background-color: #D4D4D4 !important ; } /* para ficar sem zebrado mas com disabled override */
+.spwLinhaGridImpar.disabled { background-color: #D4D4D4 !important ; } 
+.spwLinhaGridPar input.disabled { background-color: #D4D4D4 !important ; } /* para ficar sem zebrado mas com disabled override */
+.spwLinhaGridImpar input.disabled { background-color: #D4D4D4 !important ; } 
+
+td.spwCelulaGrid { border-bottom: 1px solid #e5e5e5 !important; } 
+
+.spwLinhaExcluir { background-color: #FFAEAE !important; }
+.spwLinhaSelecao { background-color: #FFFFCC !important; }
+.spwLinhaExcluir input.disabled { background-color: #F7BFBF !important; }
+.spwLinhaSelecao input.disabled { background-color: #F2F2CE !important; }
+
+.wrapperGridHeader, .wrapperGridFooter { background: none ; }
+.spwCabecalhoGrid { color: #000 !important ; background-color: #CCC ; }
+
+.heightTableRow, .heightTableU, .heightTableU2, .heightTableU3 { border-left: none ; }
+.heightTableAutusuario, .heightTableAutusuario2 { border-left: none ; }
+.spwRodapeGridRound { background-color: #CCC ; background-image: none ; }
+
+.spwCabecalhoGridHover, .spwCabecalhoGridLeftRoundHover {
+background-image: none ;
+background: #e1e1e1 ;
+}
+
+.spwCabecalhoGridLeftRoundClick, .spwCabecalhoGridClick {
+background-image: none ;
+background: #eee ;
+}
+
+#spwConsulta {
+	border: none;
+}
+
+.spwTabelaGrid {
+background-image: none !important;
+background-color: #ccc !important;	
+font-size: 10px;
+}
+.spwTabelaGrid * {
+font-size: 10px;
+}
+.spwTabelaGrid { border: 1px solid #000; }
+
+.label { font-size: 10px !important; }
+
+.spwTituloGrid {
+background-image: none !important;	
+background-color: #9b9b9b !important;	
+color: #000;
+}
+.spwRodapeGrid {
+background-image: none;
+background: #CCC;
+}
+
+.spwCelulaGrid { border-bottom: 1px solid #e5e5e5; }
+
+.tableGridSearch {
+background-image: none ;	
+}
+.tableGridSearch .spwRodapeGrid { 
+background-image: none ;
+}
+
+/* botoes */
+
+.spwButtonMain, .spwButtonMain span, 
+.spwButtonMain-o, .spwButtonMain-o span,
+.spwButtonDefault, .spwButtonDefault span,
+.spwButtonDefault-o, .spwButtonDefault-o span 
+{ 
+background: none; 
+padding: 0;
+height: 20px;
+}
+
+.spwButtonMain span input, .spwButtonMain-o span input, 
+.spwButtonDefault span input, .spwButtonDefault-o span input { 
+background: none;
+font: bold 10px Verdana, sans-serif;
+}
+
+.spwButtonGridMain, .spwButtonGridMain span, 
+.spwButtonGridMain-o, .spwButtonGridMain-o span,
+.spwButtonGrid, .spwButtonGrid span,
+.spwButtonGrid-o, .spwButtonGrid-o span 
+{ 
+background: none; 
+padding: 0;
+height: 17px;
+}
+
+.spwButtonGridMain span input, .spwButtonGridMain-o span input, 
+.spwButtonGrid span input, .spwButtonGrid-o span input { 
+background: none;
+font: bold 10px Verdana, sans-serif;
+border: 0;
+height: 17px;
+}
+.spwButtonGridMain #btNovaLinhaRow, .spwButtonGridMain-o #btNovaLinhaRow { background: none; }
+
+/*.spwBotaoGrid { height: 17px; } */
+
+/*
+.spwButtonGridMain { background: none ; color: #000 ;  }
+.spwButtonGridMain span { background: none ; }
+.spwButtonGridMain span input { color: #000 ; font-weight: bold ; font-size: 10px  }
+.spwButtonGrid { background: none ; color: #000 ; }
+.spwButtonGrid span { background: none ; }
+.spwButtonGrid span input { color: #000 ; font-weight: bold ; font-size: 10px  }
+
+.spwButtonGridMain-o { background-image:none ; color:#000 ; }
+.spwButtonGridMain-o span { background-image:none ; }
+.spwButtonGridMain-o span span { color:#000 ; }
+.spwButtonGridMain-o span input { color:#000 ; font-weight: bold ; font-size: 10px ; }
+.spwButtonGrid-o { background-image:none ; color:#000 ; }
+.spwButtonGrid-o span { background-image:none ; }
+.spwButtonGrid-o span span { color:#000 ; }
+.spwButtonGrid-o span input { color:#000 ; font-weight: bold ; font-size: 10px ; }*/
+
+
+
+#btNovaLinhaRow { padding-left: 2px ; }
+
+/* na ordem das linhas: amarelo, azul, azul, amarelo - azul over, amarelo over, amarelo over, azul over */
+/*.spwBotaoDefault { background: #FC0 ; border: 1px solid #F90 ; } 
+.spwBotao  { background: #69F ; border: 1px solid #06F ; } 
+.spwBotaoGrid { background: #69F ; border: 1px solid #06F ; } 
+.spwBotaoDefaultGrid { background: #FC0 ; border: 1px solid #F90 ; } 
+.spwButtonGridMain-o .spwBotaoGrid { background: #33CCFF ; border: 1px solid #09C ; } 
+.spwButtonGrid-o .spwBotaoDefaultGrid { background: #FD0 ; border: 1px solid #F90 ; } 
+.spwButtonMain-o .spwBotaoDefault { background: #FD0 ; border: 1px solid #F90 ; } 
+.spwButtonDefault-o .spwBotao { background: #33CCFF ; border: 1px solid #09C ; } */
+
+
+/* na ordem das linhas: azul, azul over, amarelo, amarelo over */
+/*.spwButtonDefault input { background: #69F ; border: 1px solid #06F ; }
+.spwButtonDefault-o input { background: #33CCFF ; border: 1px solid #09C ; } 
+.spwButtonMain input { background: #FC0 ; border: 1px solid #F90 ; }
+.spwButtonMain-o input { background: #FD0 ; border: 1px solid #F90 ; } */
+
+/* botoes cinzas - desabilitado */
+.spwBotaoDefaultGrid-d { background: #e0dfdf ; border: 1px solid #adadad ; color:#adadad ; } 
+.spwBotaoGrid-d{ background: #e0dfdf ; border: 1px solid #adadad ; color:#adadad ; font-size: 30px ; }
+
+/*
+.spwButtonGrid input { background: #69F ; border: 1px solid #06F ; }
+.spwButtonGrid-o input { background: #33CCFF ; border: 1px solid #09C ; }
+
+.spwButtonGridMain input { background: #FC0 ; border: 1px solid #F90 ; } 
+.spwButtonGridMain-o input { background: #FD0 ; border: 1px solid #F90 ; } 
+ */
+
+/*
+.spwTituloGrid .spwBotaoGrid { background-color: #fff ; background-image : url(imagens/close.png) ; background-position: center ; background-repeat: no-repeat ; }
+*/
+
+/* botao fechar da janela de consulta */    
+.spwBotaoFecharJanela, .spwBotaoFecharJanela:hover{
+color:#555 !important;
+display:block;
+width:16px;
+height:16px;
+line-height:16px;
+cursor:pointer;
+text-align:center;
+font-weight:bold;
+font-size:12px;
+font-family:Verdana, Geneva, sans-serif;
+}
+.spwBotaoFecharJanela:hover{
+color:#fff;
+}
+
+.subTitulo {
+font-size: 13px ; 
+color: #000 ;
+height: 15px ;
+padding-left: 0 ;
+}
+
+.fundoSuperior {
+font-size: 16px ;
+background-position: left ;
+}
+
+div.fundoSuperior h1 {
+	background-image: url(imagens/icoTitSuperior.png);
+}
+
+.spwBotaoProximo, .spwBotaoProximo-o,
+.spwBotaoUltimo, .spwBotaoUltimo-o,
+.spwBotaoAnterior, .spwBotaoAnterior-o,
+.spwBotaoPrimeiro, .spwBotaoPrimeiro-o {
+width: 27px ;
+height: 17px ;
+border: 0; 
+}
+
+.spwBotao,.spwBotao-d,.spwBotao-o,.spwBotaoDefault,.spwBotaoDefault-o,.spwBotaoDefault-d,.spwBtButtonDefault,.spwBotaoGrid,.spwBotaoDefaultGrid {
+      padding:0 5px !important;
+}
+
+.spwCabecalhoGrid { color: #000; }
+
+
+.spwBotaoProximo-d, .spwBotaoUltimo-d, .spwBotaoAnterior-d, .spwBotaoPrimeiro-d {
+width: 27px ;
+height: 17px ;
+border: 0; 
+}
+
+.spwRodapePaginacaoGridSearch {
+border: none ;
+background: #CCC ;	
+}
+
+/* Novas implementações */
+
+span.spwButtonMain { vertical-align: middle; }
+.spwButtonMain span { padding-left:0px; }
+span.spwButtonMain-o { vertical-align: middle; }
+.spwButtonMain-o span { padding-left:0px; }
+
+.spwHtmlBotaoProcurar {
+	background-image: url(imagens/base/botProcurar.gif); 
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 17px;
+}
+
+.spwHtmlBotaoProcurar-o {
+	background-image: url(imagens/base/botProcurar-o.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 17px;
+}
+
+.spwHtmlBotaoProcurar-d {
+	background-image: url(imagens/base/botProcurar-d.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 17px;
+}
+
+.spwHtmlBotaoLimpar {
+	background-image: url(imagens/base/botLimpar.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 17px;
+}
+
+.spwHtmlBotaoLimpar-o {
+	background-image: url(imagens/base/botLimpar-o.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 17px;
+}
+
+.spwHtmlBotaoLimpar-d {
+	background-image: url(imagens/base/botLimpar-d.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 17px;
+}
+
+.spwHtmlIcoHelp {
+	background-image: url(imagens/base/icoHelp.png);
+	background-repeat: no-repeat;
+}
+
+.spwHtmlToggleUp {
+	background-image: url(imagens/base/toggleUp.png);
+	background-repeat: no-repeat;
+	display: block;
+}
+
+.spwHtmlToggleDown {
+	background-image: url(imagens/base/toggleDown.png);
+	background-repeat: no-repeat;
+	display: block;
+}
+
+.spwHtmlToggleUp-o {
+	background-image: url(imagens/base/toggleUp-o.png);
+	background-repeat: no-repeat;
+	display: block;
+}
+
+.spwHtmlToggleDown-o {
+	background-image: url(imagens/base/toggleDown-o.png);
+	background-repeat: no-repeat;
+	display: block;
+}
+
+.spwHtmlSeparador {
+	background-image: url(imagens/base/separador.gif);
+	background-repeat: no-repeat;
+	height: 13px;
+	width: 17px;
+	display: block;
+}
+
+.spwHtmlIcoErro {
+	background-image: url(imagens/base/ico32_spwErro.png);
+	background-repeat: no-repeat;
+	display: block;
+	float: left;
+	height: 30px;
+	padding-left: 26px;
+}
+
+.spwHtmlIcoSucesso {
+	background-image: url(imagens/base/ico32_spwSucesso.png);
+	background-repeat: no-repeat;
+	display: block;
+	float: left;
+	height: 30px;
+	padding-left: 26px;
+}
+
+.spwHtmlIcoAlerta {
+	background-image: url(imagens/base/ico32_spwAlerta.png);
+	background-repeat: no-repeat;
+	display: block;
+	float: left;
+	height: 30px;
+	padding-left: 26px;
+}
+
+.spwHtmlIcoQuestion {
+	background-image: url(imagens/base/icoQuestion.gif); 
+	background-repeat: no-repeat;
+	display: block;
+	float: left;
+	height: 30px;
+	padding-left: 26px;
+}
+
+.spwHtmlCalendarIcon {
+	background-image: url(imagens/base/spwCalendarIcon.gif);
+	background-repeat: no-repeat;
+	display: block;
+	vertical-align: bottom;
+	width: 18px;
+	height: 16px;
+}
+
+.spwHtmlCalendarIcon-o {
+	background-image: url(imagens/base/spwCalendarIcon-o.gif);
+	background-repeat: no-repeat;
+	display: block;
+	vertical-align: bottom;
+	width: 18px;
+	height: 16px;
+}
+
+.spwHtmlCalendarIcon-d {
+	background-image: url(imagens/base/spwCalendarIcon-d.gif);
+	background-repeat: no-repeat;
+	display: block;
+	vertical-align: bottom;
+	width: 18px;
+	height: 16px;
+}
+
+.spwGridEstado {
+	background-image: url(imagens/base/estado.png);
+	background-repeat: no-repeat;
+	display: block;
+	width: 9px;
+	height: 9px;
+}
+
+.spwGridEstadoU {
+	background-image: url(imagens/base/estadoU.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 9px;
+	height: 9px;
+}
+
+.spwGridEstadoI {
+	background-image: url(imagens/base/estadoI.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 9px;
+	height: 9px;
+}
+
+.spwGridEstadoD {
+	background-image: url(imagens/base/estadoD.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 9px;
+	height: 9px;
+}
+
+.spwGridEstadoDI {
+	background-image: url(imagens/base/estadoDI.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 9px;
+	height: 9px;
+}
+
+.spwGridEstadoDU {
+	background-image: url(imagens/base/estadoDU.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 9px;
+	height: 9px;
+}
+
+.spwGridBotaoExcluirGrid {
+	background-image: url(imagens/base/botExcluirGrid.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+.spwGridBotaoEditarGrid {
+	background-image: url(imagens/base/botEditGrid.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+.spwGridBotaoExcluirGrid-o {
+	background-image: url(imagens/base/botExcluirGrid-o.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+.spwGridBotaoEditarGrid-o {
+	background-image: url(imagens/base/botEditGrid-o.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+.spwGridBotaoExcluirGrid-d {
+	background-image: url(imagens/base/botExcluirGrid-d.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+.spwGridBotaoEditarGrid-d {
+	background-image: url(imagens/base/botEditGrid-d.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+.spwGridBotaoExcluirGrid-d-o {
+	background-image: url(imagens/base/botExcluirGrid-d-o.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+.spwGridBotaoEditarGrid-d-o {
+	background-image: url(imagens/base/botEditGrid-d-o.gif);
+	background-repeat: no-repeat;
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+
+/* Alterações Derik 19/10/11 */
+/* #parametros input {
+	-moz-border-radius: 0px;
+	padding: 1px;
+	font-size: 10px;
+	padding-right: 7px;
+	box-sizing: content-box;
+} */
+
+.spwInputSelect input {
+	-moz-border-radius: 0px;
+	padding: 1px;
+	font-size: 10px;
+	padding-right: 7px;
+	box-sizing: border-box;
+}
+
+.spwCelulaGrid input {
+	-moz-border-radius: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+.spwConsultaSearch td.spwCabecalhoGrid {
+	padding-right: 4px !important;
+}
+
+.spwCelulaGrid > input, .spwCelulaGrid {
+     line-height: 18px;
+}
+
+.spwLinhaGridPar > input, .spwLinhaGridImpar > input {
+	line-height: 22px !important;
+}
+
+.tableGridSearch .spwConsultaSearch {
+	padding-right: 0;
+}
+
+td.spwCelulaGrid {
+	padding-left: 0 !important;
+}
+
+td.spwCabecalhoGrid {
+	padding-left: 1.35px !important;
+	padding-right: 0px !important;
+}
+
+td.spwCelulaGrid input.spwCampoTextoGrid {
+	text-indent: 3px;
+}
+
+td.spwCelulaGrid div { 
+	text-indent: 3px;
+}
+
+.spwLinhaGridImparDisabled {
+	background-color: #d4d4d4 !important;
+	cursor: default;
+}
+
+.spwLinhaGridParDisabled {
+	background-color: #d4d4d4 !important;
+	cursor: default;
+}
+
+#spwConsulta .spwTituloGrid td {
+	line-height:normal !important;
+}
+/* Fim das alterações */

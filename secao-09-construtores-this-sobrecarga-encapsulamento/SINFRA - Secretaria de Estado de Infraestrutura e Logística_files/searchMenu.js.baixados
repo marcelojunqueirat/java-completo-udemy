@@ -1,0 +1,366 @@
+var menuBusca = (function($) {
+
+	/**
+	 * Fun��o que monta o drop down list relacionado ao filtro de m�dulo
+	 * 
+	 */
+	var montaSelectModulo = function() {
+		// Monta o select do m�dulo com as informa��es passadas
+		jQuery("#lista label")
+				.each(
+						function() {
+							var item = "<option value=\""
+									+ jQuery(this).text()
+									+ "\" class=\"destaque\">"
+									+ jQuery(this).text() + "</option>";
+							jQuery("#selectModulo").append(item);
+						});
+
+		jQuery("div.rescampos").css('height', '');
+	};
+
+	/**
+	 * Adiciona um ouvidor no elemento passado como par�metro que limpa a busca
+	 * 
+	 * @param {string}
+	 *            idElemento Id do elemento no qual ser� adicionado um ouvidor
+	 * @param {cole��o
+	 *            jQuery} $listaItens Lista que ser� recarregada
+	 * 
+	 */
+	var trocarModuloBusca = function(realizaBusca) {
+
+		jQuery("#selectModulo").change(
+				function() {
+					var $lista = jQuery("ul#posts li");
+					var filtro = jQuery('#selectModulo').val();
+
+					$lista.removeAttr("status").removeClass('selected');
+
+					if (filtro !== "TODOS") {
+						$lista.filter("[modulo!=" + filtro + "]").attr(
+								"status", "ignorado");
+
+						jQuery("#posts label").each(function() {
+							var $this = jQuery(this);
+
+							if ($this.attr('modulo') !== jQuery.trim(filtro)) {
+								$this.hide();
+							} else {
+								$this.show();
+							}
+						});
+
+					} else {
+						jQuery("#posts label").show();
+					}
+					realizaBusca(jQuery('#buscar').val(), $lista);
+				});
+	};
+
+	var fechaTags = function(texto) {
+		var text = '</a>'
+		var minhaRegRep = new RegExp(text, 'gi');
+		return texto.replace(minhaRegRep, "</a></li>");
+	};
+
+	/**
+	 * Adiciona um ouvidor no elemento passado como par�metro que limpa a busca
+	 * 
+	 * @param {string}
+	 *            idElemento Id do elemento no qual ser� adicionado um ouvidor
+	 * @param {cole��o
+	 *            jQuery} $listaItens Lista que ser� recarregada
+	 * 
+	 */
+	var registrarEventoLimpar = function(idElemento, $listaItens, realizaBusca) {
+		// Bot�o da vassoura, que quando pressionado limpa o conte�do do campo
+		jQuery(idElemento).click(function() {
+			jQuery("#buscar").val('');
+			realizaBusca();
+		});
+	};
+
+	/**
+	 * Adiciona um ouvidor no elemento passado como par�metro que fecha a busca
+	 * 
+	 * @param {string}
+	 *            idElemento Id do elemento no qual ser� adicionado um ouvidor
+	 * @param {cole��o
+	 *            jQuery} $listaItens Lista com os itens da tela de busca
+	 * 
+	 */
+	var registrarEventoFechar = function(idElemento, $listaItens) {
+		jQuery(idElemento).click(function() {
+			jQuery('#q').val(jQuery("#buscar").val());
+			jQuery("#resultados").hide("fast");
+			$listaItens.removeClass('selected');
+		});
+	};
+
+	var nomeItemBusca = '';
+	var itensBuscaWork = jQuery('');
+
+	/**
+	 * Busca e retorna o nome do item concatenado com todos os subitens
+	 * relacionados
+	 * 
+	 * @param {elemento
+	 *            jQuery} $item Item que ser� gerado um nome item
+	 * @param {string}
+	 *            $listaItens Lista com os itens da tela de busca
+	 * 
+	 */
+	var recuperaItensAncestrais = function($item, nomeItem) {
+		var attrItem = $item.attr('itenspai');
+
+		if (attrItem !== undefined) {
+			nomeItem = attrItem + ' / ' + nomeItem;
+		}
+
+		if ($item.parents('ul').size() > 0) {
+			recuperaItensAncestrais($item.parents('ul'), nomeItem);
+		} else {
+			nomeItemBusca = nomeItem;
+		}
+
+		return nomeItemBusca;
+	};
+
+	var isScrolledIntoView = function(elem) {
+		var docViewTop = $('#lista').scrollTop();
+		var docViewBottom = docViewTop + $('#lista').height();
+
+		var elemTop = $(elem).offset().top - 50;
+		var elemBottom = elemTop + $(elem).height();
+
+		return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom)
+				&& (elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+	};
+
+	/**
+	 * Verifica e reposiciona o scroll, caso necess�rio
+	 * 
+	 * @param {elemento
+	 *            jquery} $proximoItem Elemnto que dever� estar vis�vel, e caso
+	 *            negativo, ser� utilizado com refer�ncia para reposicionaneto.
+	 * 
+	 */
+	var posicionaScroll = function($proximoItem) {
+
+		if (!Boolean(isScrolledIntoView($proximoItem[0]))) {
+			jQuery('#lista').scrollTo($proximoItem);
+		}
+
+	};
+
+	/**
+	 * Fun��o que � executada quando � utilizada as teclas para cima e baixo,
+	 * com o focus no input da busca
+	 * 
+	 * @param {integer}
+	 *            cdKey C�digo da tecla digitado
+	 * 
+	 */
+	var tratarSetasMenu = function(cdKey) {
+
+		var $itemAtualmenteSelecionado = jQuery("li[class=selected]");
+		var $listaItens = jQuery('#posts li');
+
+		// Caso n�o exista nenhuma op��o previamente selecionado, seleciona por
+		// default a primeira
+		if ($itemAtualmenteSelecionado.size() === 0) {
+			$listaItens.filter('visible:eq(0)').addClass("selected");
+			$itemAtualmenteSelecionado = jQuery("li[class=selected]");
+		}
+
+		var $proximoItem = null;
+
+		// Dependendo da tecla pressionada, recupera o elemento que deve ser
+		// selecionado
+		if (cdKey === 40) {
+			$proximoItem = jQuery("li[class=selected]").nextAll(
+					"li:visible:eq(0)");
+		} else {
+			$proximoItem = jQuery("li[class=selected]").prevAll(
+					"li:visible:eq(0)");
+		}
+
+		if ($proximoItem.size() === 0) {
+			return;
+		}
+		// Desmarca o elemento atualmente selecinado
+		$listaItens.removeClass('selected');
+		// Destaca o elemento que devar� ser atualmente selecionado
+		$proximoItem.addClass('selected');
+		// Reposiciona scroll se necess�rio
+		posicionaScroll($proximoItem);
+
+	};
+
+	/**
+	 * Recarrega o wrokflow
+	 * 
+	 * @param {$menuWorkflow}
+	 * @param {$listaItens}
+	 */
+	var processaWorkflow = function($menuWorkflow, $listaItens) {
+		var $listaFinal = $listaItens.find('#posts');
+		var $itensWorkflowOld = $listaFinal.find('[modulo=Workflow]');
+
+		if ($itensWorkflowOld.size() > 0) {
+			$itensWorkflowOld.remove();
+		} else {
+			$listaFinal
+					.find('div')
+					.before(
+							'<label id="moduloWork" modulo="Workflow">Workflow</label>');
+		}
+
+		var $posicaoAdicao = $listaFinal.find('#moduloWork');
+
+		$menuWorkflow
+				.find('a')
+				.each(
+						function() {
+							var $this = jQuery(this);
+							var nomeItemBusca = recuperaItensAncestrais($this,
+									$this.text());
+							$posicaoAdicao
+									.after('<li modulo="Workflow"><a target="page" href="'
+											+ $this.attr('href')
+											+ '" onclick="storeButtonClick(\'Portal\', \'Busca/'
+											+ nomeItemBusca
+											+ '\')">'
+											+ nomeItemBusca + '</a></li>');
+						});
+
+	};
+
+	var adicionarEventosBusca = function(realizaBusca, $listaItens) {
+
+		trocarModuloBusca(realizaBusca);
+		registrarEventoFechar('#btFechar', $listaItens);
+		registrarEventoLimpar('#idVassoura', $listaItens, realizaBusca);
+
+		// Quando um link dos resultados � clicado, a tela � fechada.
+		jQuery('#posts').click(function(e) {
+			var target = e.target, // e.target grabs the node that triggered
+			// the event.
+			$target = $(target); // wraps the node in a jQuery object
+			if (target.nodeName === 'A') {
+				jQuery('#resultados').hide();
+			}
+		});
+
+		jQuery('#q').keyup(function() {
+			var textoBusca = jQuery('#q').val();
+			jQuery('#buscar').val(textoBusca);
+			jQuery('#q').val('');
+		});
+
+		jQuery('#idFrameMural').keydown(function(e) {
+			if (e.keyCode == 27) {
+				jQuery('#resultados').fadeOut('fast');
+			}
+		});
+
+		// Tratamento para o keyup
+		jQuery('#buscar').bind('keyup', function(e) {
+
+			var cdKey = e.keyCode;
+
+			if (cdKey === 39 || cdKey === 37 || cdKey === 16) {
+				// Teclas que n�o necessitam repopular tela de resultados
+				return;
+
+			} else if (e.keyCode === 13) {
+				window.open(jQuery("[class=selected] a").attr("href"), "page");
+				jQuery("#resultados").fadeOut("fast");
+				jQuery('#q').val(jQuery("#buscar").val());
+
+			} else if (e.keyCode === 27) {
+				jQuery('#q').val(jQuery("#buscar").val());
+				jQuery("#resultados").fadeOut("fast");
+				jQuery("#posts li").removeClass('selected');
+
+			} else if (cdKey === 40 || cdKey === 38) {
+				tratarSetasMenu(cdKey);
+				return;
+			}
+
+			if (window.mytimeout) {
+				window.clearTimeout(window.mytimeout);
+			}
+
+			window.mytimeout = window.setTimeout(function() {
+				realizaBusca()
+			}, 200);
+
+			return true;
+		});
+	};
+
+	var construirMenu = function($workflowTab, realizaBusca) {
+
+		var documentIFrame = jQuery("#idFrameMenu").contents();
+		// Carrega na div conte�do os dados html do menu live search
+		var listaHtml = jQuery("#lista", documentIFrame);
+
+		if ($workflowTab.size() > 0) {
+			processaWorkflow($workflowTab, listaHtml);
+		}
+
+		if (jQuery.browser.msie) {
+			var textoHtml = listaHtml.html();
+			var corr = fechaTags(textoHtml);
+			var $lista = jQuery('<div class="resconteudot" id="lista"></div>');
+			$lista.append(corr);
+			jQuery("#conteudo").html($lista);
+		} else {
+			jQuery("#conteudo").wrapInner(listaHtml);
+			var listaPost = jQuery('#workflowTab', documentIFrame).find(
+					'#posts li');
+
+		}
+
+		// Lista com todos os itens
+		montaSelectModulo();
+
+	};
+
+	/**
+	 * Fun��o que monta e configura um componente de busca no menu
+	 * 
+	 * @param {funcaoBusca}
+	 *            Funcao que realiza a busca a partir de um termo
+	 */
+	var carregaComponenteBusca = function(realizaBusca) {
+
+		// Recupera os dados j� estruturados gerados pelo spjMenu
+		var documentIFrame = jQuery("#idFrameMenu").contents();
+		var $workflowTab = jQuery('#workflowTab', documentIFrame);
+		var $listaHtml = jQuery("#lista", documentIFrame);
+
+		// Caso a lista ainda n�o tenha sido carregada
+		if (jQuery("#lista").size() === 0) {
+			construirMenu($workflowTab);
+			adicionarEventosBusca(realizaBusca, $listaHtml);
+		} else {
+			if ($workflowTab.size() > 0) {
+				processaWorkflow($workflowTab, $listaHtml);
+			}
+		}
+
+		jQuery("#resultados").show();
+		jQuery('#posts li').removeClass('selected').filter(':first').addClass(
+				'selected');
+		jQuery('#buscar').focus();
+
+	};
+
+	return {
+		'carregaComponenteBusca' : carregaComponenteBusca
+	};
+
+})(jQuery);

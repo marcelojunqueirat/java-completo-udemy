@@ -1,0 +1,374 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="pt-BR">
+	<head>
+	<title>SINFRA - Secretaria de Estado de Infraestrutura e Logística</title>
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=8; IE=7" />
+	<link rel="stylesheet" type="text/css" href="/sider/css/ui/base.css" />
+	<link rel="stylesheet" type="text/css" href="/sider/css/ui/layout.css" />
+	<link rel="stylesheet" type="text/css" href="/sider/css/ui/base/ui.all.css" />
+	<link rel="stylesheet" type="text/css" href="/sider/css/ui/accordion.css" />
+	<link rel="stylesheet" type="text/css" href="/sider/css/index.css" />
+	<link rel="stylesheet" type="text/css"
+		href="/sider/skins/sinfra/sinfra_novo.css"
+		id="skin" />
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="/sider/css/fontawesome/css/all.css" rel="stylesheet">
+	
+	<script type="text/javascript" src="/sider/js/jQuery/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="/sider/js/jQuery/jquery-ui-1.7.2.js"></script>
+	<script type="text/javascript" src="/sider/js/jQuery/jquery.layout-1.3.rc5.js"></script>
+	<script type="text/javascript" src="/sider/js/jQuery/jquery.scrollTo-1.4.2-min.js"></script>
+    <script type="text/javascript" src="/sider/js/spw/widget/spwpreferencias.js"></script>
+    <script type="text/javascript" src="/sider/dwr/engine.js"></script>
+	<script type="text/javascript" src="/sider/dwr/util.js"></script>
+	<script type="text/javascript" src="/sider/js/spwDwr.js"></script>
+	<script type="text/javascript" src="/mural/dwr/interface/MuralAvisosAjax.js"></script>
+	<script type="text/javascript" src="/sider/js/spwTimerSupport.js"></script>
+	<script src="https://kit.fontawesome.com/2d10789291.js" crossorigin="anonymous"></script>
+
+    
+    <script type="text/javascript">var localeJS = "pt_BR";</script>
+<script type="text/javascript" src="js/spwResourceMsg.js"></script> 
+<script type="text/javascript" src="js/spwResourceMap_pt.js"></script>
+    
+    <!-- Módulo busca  -->
+	<script type="text/javascript" src="/sider/js/spw/search/buscaspw.js"></script>
+	<script type="text/javascript" src="/sider/js/spw/search/searchMenu.js"></script>
+	
+	<script type="text/javascript" src="/sider/js/spw/widget/widgets.js"></script>
+	<script type="text/javascript" src="/sider/js/spwConcatenado.js"></script>
+	<script type="text/javascript" src="/sider/js/spw/index.js"></script>
+	<script type="text/javascript" src="/sider/js/sider/siderSPW.js"></script>
+	<script type="text/javascript" src="/sider/js/analytics.js"></script>
+	 
+	
+
+
+
+
+
+
+
+	<script>
+		(function(i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function() {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+		
+		ga('create', 'UA-76409338-1', { 'userId': 'Administrador do Sistema' });
+
+		ga('set', 'dimension1', 'Administrador do Sistema');
+		ga('set', 'dimension2', '');
+		ga('set', 'dimension3', 'Portal');
+
+		ga('send', 'pageview');
+	</script>
+
+	<script type="text/javascript">
+		
+	    
+	    
+		
+		function carregarPaginaInicial() {
+			var $menuAcoes = jQuery('#menuacoes',top.document);
+			if($menuAcoes.is(':hidden') === false) {
+				if(jQuery.browser.msie){
+					$menuAcoes.stop(false,false).hide(0);
+				} else {
+					$menuAcoes.stop(false,false).fadeOut(0);
+				}
+			}
+			window.frames['page'].location = '/mural/getMenuMuralAvisos.do?spw=5';
+		}
+		function mostrarMuralAvisos() {
+			window.frames['page'].location = '/mural/getMenuMuralAvisos.do?spw=5';
+		}
+		
+		var resizeUiLayout = function(painel,nuPixels) {
+			myLayout.sizePane(painel, nuPixels);
+		}
+		
+		// Alterar a largura default do
+		// menu do SPW5 para a largura do SPW4.
+		jQuery(function(){
+	    	resizeUiLayout("west", 190);
+	    	
+		});
+
+
+		function loadSPEditor( docPK ) {
+			//alert('loadSPEditor '+ docPK);
+			var speditorPortal = document.getElementById('speditorPortal');
+			speditorPortal.src = '/ecm/abrirEditorBrOffice.do?docPK='+ docPK;
+		}
+	</script>
+
+	<!--[if lte IE 8]>
+		<link href="/sider/css/ui/ie.css" rel="stylesheet" type="text/css" />
+	<![endif]-->
+
+</head>
+
+<body>
+	
+		<form id="formInfMenu" method="post" action="/sider/">
+			<input type="text" id="urlAcessoSistema" value="" name="urlAcessoSistema"></input>
+			<input type="text" id="contextoIFramePrincipal" value="" name="contextoIFramePrincipal"></input>
+			<input type="text" id="moduloSelecionado" value="" name="moduloSelecionado"></input>
+			<input type="text" id="idItemMenuSelecionado" name="idItemMenuSelecionado" value=""></input>
+			<input type="text" id="comboUsuarioWf" name ="comboUsuarioWf" value=""></input>
+			<input type="text" id="hrefWf" name ="hrefWf" value=""></input>
+			<input type="text" id="idItemMenuWf" name ="idItemMenuWf" value=""></input>
+		</form>		
+	  <div id="ecmSPEditor" style="display: none;"><!--     -->
+	  		 
+	    	<iframe id="speditorPortal" name="speditorPortal" src="" scrolling="no" marginwidth="0"  border="0" frameborder="0"></iframe>	
+	  </div>
+	  
+	  
+	  
+	  <div id="header" class="ui-layout-north">
+	  		 
+	    	<iframe id="cabecalho" onload="iframe_loaded();" src="clientes/sinfra/spwTop.jsp?spw=5" scrolling="no" marginwidth="0" name="superior" border="0" frameborder="0" role="banner"></iframe>	
+	  </div>
+	 
+	  <div id="modalWidgets" style="display:none;">
+	  	  <div id="widgets" style="height:250px; *height: auto; overflow-y:auto;" >
+	      <!-- inicio do widget forum -->
+	      <div id="unidadeWidget" class="unidadeWidget" style="display:none">
+		        <input name="" type="checkbox" value="" />
+		        <img id="imagem" src="" width="32" height="32" alt=""/>
+		        <div id="descricao">
+				</div>
+	      </div>
+	      <div id="divisor"></div>
+	    </div>
+	    <div id="RodapeModal">
+	      <p><label class="label">Você pode adicionar e remover os widgets como preferir, organizando-os à sua vontade para otimizar seu trabalho.</label></p>
+	    </div>
+	    <div id="btsRodapeModal">
+	    	<span class="spwButtonDefault" onclick="onClickButtonSpan(event);" onmouseout="onMouseOutButtonSpan(event)" onmouseover="onMouseOverButtonSpan(event)"><span><input class="spwBotao" type="button" name="" value="Concluir" onmouseover="B_mOver(this);" onmouseout="B_mOut(this);" id="btConcluirWidget"></span></span>
+	    	<span class="spwButtonDefault" onclick="onClickButtonSpan(event);" onmouseout="onMouseOutButtonSpan(event)" onmouseover="onMouseOverButtonSpan(event)"><span><input class="spwBotao" type="button" name="" value="Cancelar" onmouseover="B_mOver(this);" onmouseout="B_mOut(this);" id="btCancelarWidget"></span></span>
+	    </div>
+	  </div>
+	  
+	  <div id="menuacoes" style="display:none;">
+	  	
+
+
+
+	
+	
+	
+	
+	
+	
+		
+ 
+
+
+
+
+
+
+
+
+
+	<script>
+		(function(i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function() {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+		
+		ga('create', 'UA-76409338-1', { 'userId': 'Administrador do Sistema' });
+
+		ga('set', 'dimension1', 'Administrador do Sistema');
+		ga('set', 'dimension2', '');
+		ga('set', 'dimension3', 'Portal');
+
+		ga('send', 'pageview');
+	</script>
+
+
+<ul>
+	<li><a class="menu-mural-avisos" onclick="mostrarMuralAvisos(); storeButtonClick('Portal', 'Menu Ações/Mural de Avisos');">Mural de Avisos</a></li>
+	<li><a class="menu-verificador-requisitos" href="/svr/abrirConsultaVerificacoes.do" target="page" onclick="storeButtonClick('Portal', 'Menu Ações/Verificador de Requisitos')">Verificador de Requisitos</a></li>
+	<li><a class="menu-versoes-sistemas" href="versoesSistemas.do" target="page" onclick="storeButtonClick('Portal', 'Menu Ações/Versões dos Sistemas')">Versões dos Sistemas</a></li>
+</ul>
+	
+
+	  	
+	  </div>
+	  
+	  <div id="configApp" style="display:none"> 
+			 <div id="container-1" style="border:0 !important; *height: 250px;">
+					<div class="mconfigColuna">
+						<span class="configTema"><label class="label">Tema</label></span>
+					    <div id="configSkin" class="unidadeWidget"> 
+						     <div style="width: 230px; height: 30px; line-height: 30px;margin-bottom: 15px;">
+						     	<label class="label">Tema ativo:</label>
+						     	<span id="idTemaAtivo" style="font-weight: bold; text-align: right; "></span>
+					   		 </div>
+					   		 <span style="display: block; font-size: 10px; color: #666;"><label class="label">Selecionar novo tema: </label></span>
+					   		 <a name="skin" title="BID" class="linkSelecTemaBID linkSelecActive"><label class="label">BID</label></a>
+					   		 <a name="skin" title="Softblue" class="linkSelecTemaBlue linkSelecActive"><label class="label">softblue</label></a> 
+					   		 <a name="skin" title="Lightgreen"class="linkSelecTemaGreen"><label class="label">lightgreen</label></a>
+					   		 <a name="skin" title="Classic" class="linkSelecTemaClassic"><label class="label">null</label></a>
+					   		 <a name="skin" title="Darkblue" class="linkSelecTemaDarkblue"><label class="label">darkblue</label></a>
+				   			 <a name="skin" title="Sienge" class="linkSelecTemaSienge"><label class="label">null</label></a>
+				   		</div>
+					</div>	
+			 	
+				 	<div class="mconfigColuna">
+				 	 	<span class="configTempo"><label class="label">Previsão do tempo</label></span>
+				 	 	<input type="hidden" id="skinPrevio" value="sinfra"/>
+				 	 	
+						<div id="configSkin" class="unidadeWidget"> 
+							<div style="width: 230px; height: 40px; line-height: 30px; margin-bottom: 15px;"><label class="label">Cidade</label>: <span id="cidadeCorrente" style="display: block; *display: ''; float: right; *float: ''; font-weight: bold; line-height: 120%; padding-top:9px; text-align: right;"></span></div>
+						
+							<span style="display: block; font-size: 10px; color: #666; margin-top: 20px;"><label class="label">Localidade</label>:</span>
+							
+							<select id="comboCidade" name="" style="width: 97%;">
+							<option value="0"><label class="label">Nenhuma cidade</label></option>
+							<option value="228">Florianópolis</option>
+							<option value="241">Rio de Janeiro</option>
+							<option value="244">São Paulo</option>
+							<option value="243">São Luís</option>
+							<option value="239">Recife</option>
+							<option value="242">Salvador</option>
+							<option value="227">Curitiba</option>
+							<option value="224">Brasília</option>
+							<option value="237">Porto Alegre</option>
+							</select>
+						</div>
+									 	 	
+				            <div id="btsRodapeModal">
+				            		<span class="spwButtonDefault" onclick="onClickButtonSpan(event);" onmouseout="onMouseOutButtonSpan(event)" onmouseover="onMouseOverButtonSpan(event)"><span><input class="spwBotao" type="button" name="" value="Concluir" onmouseover="B_mOver(this);" onmouseout="B_mOut(this);" id="btConcluir"></span></span>
+	    							<span class="spwButtonDefault" onclick="onClickButtonSpan(event);" onmouseout="onMouseOutButtonSpan(event)" onmouseover="onMouseOverButtonSpan(event)"><span><input class="spwBotao" type="button" name="" value="Cancelar" onmouseover="B_mOver(this);" onmouseout="B_mOut(this);" id="btCancelar"></span></span>
+						    </div>	
+					    </div>   
+			       </div>
+		     </div>
+	  </div>
+	  
+	  <div id="configIdiomas" style="display:none"> 
+			 <div id="container-1" style="border:0px !important; *height: 250px;">
+				Idioma 1
+		     </div>
+	  </div>
+	 
+	  <div id="side" class="ui-layout-west">
+	    <div id="menu" class="basic">
+	        <iframe name="menu" id="idFrameMenu" src="/sider/getMenuItens.do?spw=5" marginwidth="0"
+	        		marginheight="0" scrolling="no" frameborder="0" role="navigation">
+		    </iframe>
+	    </div>
+	    
+	    <div id="search">
+	        <div class="subsearch1">
+	            <div class="campobusca" role="search">
+	                <input name="buscar" type="text" id="q" accesskey="2" 
+	                		title="Digite um termo para localizar itens no menu">
+			   		 <a href="#"><img src="skins/sinfra/imagens/ico-lupa-black.png" />
+			   		 <img id="idCarregarInic" style="display:none;margin-right:62px;margin-top:-23px;" src="imagens/base/aguarde.gif" border="0">
+			   		 </a>
+	            </div>
+	        </div>
+	        <div class="subsearch2"></div>
+	    </div>
+	   <div id="spwModalSide"></div>
+	      
+	  </div>
+	  
+	  <div id="resultados" style="display:none">
+	    	
+	      <div class="restitulo"><h2><label class="label">Resultados da busca em todos os módulos</label>:</h2> 
+	      <a>
+	        <img id="btFechar" src="imagens/base/botFechar.png" border="0">
+	        <img id="aguarde" class="imgAguarde" src="imagens/base/aguarde.gif" border="0" style="display:none;bottom:220px;left:170px;position:absolute;z-index:1000;"/>
+	      </a>
+	      </div>
+	      <div id="conteudo" class="resconteudomain">
+	      </div>
+	        
+	      <div class="rescampos" style="height: 30px">
+	        	<div class="campobusca"><input name="buscar" type="text" id="buscar" title="Buscar no menu" onfocus="storeInputFocus('Portal', 'Buscar');">
+	            <a href="#">
+	            	<img id="idVassoura" src="imagens/base/ico-vassoura.png" border="0">
+	            </a>
+	            </div>
+	          	<div id="modulo" class="camposeleciona">
+	                <select id="selectModulo" name="" onchange="storeSelectOption('Portal', 'Busca/' + this.value);">
+	                	<option value="TODOS">--Todos--</option>
+	                </select>
+	            </div>
+	      </div>
+	  </div>
+	  
+	  <div id="container" class="ui-layout-center">
+	  	<div id="content" class="basic">  		
+	  		<img id="aguardeFrame" class="imgAguarde" src="imagens/liveSearch/aguarde.gif" border="0" style="position:absolute;top:50%;left:50%;margin-top:-30px;margin-left:-30px;z-index:10000;"/>
+	    	
+	    		
+	    		
+	    			<iframe name="page" onload="iframe_portlel_load();" id="idFrameMural" name="idFrameMural" src="/mural/getMenuMuralAvisos.do?spw=5"
+	    			marginwidth="0" marginheight="0" scrolling="auto" frameborder="0" role="main" allowfullscreen>
+	        		</iframe>
+	    		
+	    		
+	    		
+	    	
+	     </div>     
+	    <div id="footer" role="banner">
+	   			<div id="user">
+						<span>
+							Administrador do Sistema
+						</span>
+						
+						
+			    		
+						<span>
+							&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; Último acesso: 05/12/2022&nbsp;07:36 
+						</span>
+						
+							<span>	
+								&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; Login falho em:
+							    30/11/2022 09:39
+							</span>
+				    	
+					</div>
+		   <div id="spwModalFooter"></div>               	   
+	    </div>
+	  </div>  
+	  <input id="imagensSkin" value="skins/sinfra/imagens/" value="classic" type="hidden" />
+	</body>
+</html>

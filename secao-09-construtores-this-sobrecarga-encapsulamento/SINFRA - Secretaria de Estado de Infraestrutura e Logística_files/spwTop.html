@@ -1,0 +1,179 @@
+
+<!-- saved from url=(0014)about:internet -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>SINFRA - Secretaria de Estado de Infraestrutura e Logística - Topo</title>
+	
+	
+	<link rel="stylesheet" type="text/css" href="./sinfra_novo.css">
+	<link rel="stylesheet" type="text/css" href="./spwApplication.css">
+	<link rel="stylesheet" type="text/css" href="./spwHTML.css">
+	<link rel="stylesheet" type="text/css" href="./spwAvisoCritico.css">
+	<script type="text/javascript" src="./jquery-1.4.2.js.baixados"></script>
+	<script type="text/javascript" src="./jquery-ui-1.7.2.js.baixados"></script>
+	<script type="text/javascript" src="./spwTop.js.baixados"></script>
+	<style type="text/css">
+		* { margin: 0; padding: 0; }
+		img { border:none; }
+		.clear { clear:both; line-height:0; font-size:0; }
+		body { font: 11px Arial, sans-serif; }
+		#logo {
+			position: relative;
+			width: 205px;
+			height: 60px;
+			background-size: 100%;
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+		#logo a {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			cursor: pointer;
+		}
+		.tituloSistema { float:left; height:32px; margin:0; font-size:14px; font-weight:bold; line-height:32px; text-shadow:1px 1px 0 #565656; color:#fff; }
+		#sider-top { 
+			display:flex; 
+			justify-content: space-between;
+			align-items: center; 
+			height:100%;
+			padding: 20px;
+			background-color: #1b3281;
+			box-sizing: border-box;
+		}
+		#sider-menu-acoes { 
+			display:flex; 
+			position:relative; 
+			list-style: none;
+			z-index:2; 
+		}
+		#sider-menu-acoes li {
+			position: relative;
+			font-size: 14px;
+			font-weight: 500px;
+			color: #ffffff;
+		}
+
+		#sider-menu-acoes li + li {
+			margin-left: 30px;
+		}
+
+		#sider-menu-acoes li.sider-acoes-mural {
+			padding-left: 31px;
+		}
+
+		#sider-menu-acoes li.sider-acoes-mural:before {
+			content: '';
+			display: block;
+			position: absolute;
+			left: 0;
+			width: 26px;
+			height: 16px;
+			background-color: #ffffff;
+			-webkit-mask: url(../../imagens/home.svg) no-repeat center;
+			mask: url(../../imagens/home.svg) no-repeat center;
+		}
+
+		#sider-menu-acoes li.sider-acoes-help {
+			padding-left: 22px;
+		}
+
+		#sider-menu-acoes li.sider-acoes-help:before {
+			content: '';
+			display: block;
+			position: absolute;
+			left: 0;
+			width: 17px;
+			height: 17px;
+			background-color: #ffffff;
+			-webkit-mask: url(../../imagens/question-circle.svg) no-repeat center;
+			mask: url(../../imagens/question-circle.svg) no-repeat center;
+		}
+
+		#sider-menu-acoes li.sider-acoes-logout {
+			padding-left: 24px;
+		}
+
+		#sider-menu-acoes li.sider-acoes-logout:before {
+			content: '';
+			display: block;
+			position: absolute;
+			left: 0;
+			width: 19px;
+			height: 19px;
+			background-color: #ffffff;
+			-webkit-mask: url(../../imagens/sign-out-alt.svg) no-repeat center;
+			mask: url(../../imagens/sign-out-alt.svg) no-repeat center;
+		}
+
+		#sider-menu-acoes li a {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			cursor: pointer;
+		}
+		.btInicio,
+		.btAcoes,
+		.btSair { display:inline-block; margin:0 0 0 7px; padding:5px 0 0 25px; text-align:left; text-decoration:none; color:#565656 !important; }
+		
+		.btInicio { width:70px; height:21px; *width:95px; *height:27px; background: url(/sider/skins/sinfra/imagens/btInicio.png) no-repeat top left; }
+		.btAcoes { width:55px; height:21px; *width:80px; *height:27px; background: url(/sider/skins/sinfra/imagens/btAcoes.png) no-repeat top left; }
+		.btSair { width:30px; height:21px; *width:58px; *height:27px; background: url(/sider/skins/sinfra/imagens/bt-sair.png) no-repeat top left; }
+		.btCentralAjuda {
+			width:95px;
+			height:21px;
+			background: url(/sider/skins/sinfra/imagens/btCentralAjuda.png) no-repeat top left;
+			color:#000 !important;
+			display: inline-block;
+			margin: 0 0 0 0;
+			padding: 5px 0 0 25px;
+			text-align: left;
+		}
+
+		.btInicio:hover,
+		.btAcoes:hover,
+		.btSair:hover { background-position: 0px -30px; }
+		.btInicio:active,
+		.btAcoes:active,
+		.btSair:active { background-position: 0px -60px; }	
+	</style>
+	
+	<script type="text/javascript">
+		function logoff() {	
+			return confirm("Deseja realmente encerrar a sua sessão?");
+		}
+	</script>
+</head>
+
+<body marginwidth="0">
+	<div id="sider-top">
+		<div id="logo" style="background-image: url(&#39;/sider/skins/sinfra/imagens/logo-login.png&#39;);">
+			<a href="javascript:;" onclick="top.carregarPaginaInicial();" title="SINFRA - Secretaria de Estado de Infraestrutura e Logística">
+				
+			</a>
+			
+			
+		</div>
+		<ul id="sider-menu-acoes">
+			
+				<li class="sider-acoes-mural">
+					Mural de avisos
+					<a href="javascript:;" onclick="top.carregarPaginaInicial();"></a>
+				</li>
+				
+				<li class="sider-acoes-logout">
+					Sair
+					<a href="https://sinframt-des.ungp.softplan.com.br/sider/portal.logout" onclick="return logoff();" target="_top"></a>
+				</li>
+			
+			
+			
+			
+		</ul>
+	</div>
+
+
+</body></html>

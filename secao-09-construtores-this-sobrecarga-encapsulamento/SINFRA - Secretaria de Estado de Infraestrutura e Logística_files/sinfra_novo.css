@@ -1,0 +1,757 @@
+/** from derdf.css **/
+.falhaLogin {
+  background-color: #990000;
+}
+
+.ui-layout-pane {
+  border-color: #e0ecf8 !important;
+}
+
+#homeheader {
+  width: 100%;
+  height: 62px;
+  /* background: url(imagens/bg-widgets-header.png) repeat-x; */
+  margin-bottom: 10px;
+  color: #000 !important;
+  font-size: 11px;
+}
+
+#homeheader h3 {
+  color: #333;
+}
+
+#resultados {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #ffffff;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+#resultados #lista #posts label {
+  padding-bottom: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #004085 !important;
+}
+
+.resconteudot #posts li {
+  position: relative;
+  padding-left: 23px;
+  background-image: none !important;
+}
+
+.resconteudot #posts li:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 15px;
+  width: 20px;
+  background-color: #4a4a4a;
+  -webkit-mask: url(imagens/folder.svg) no-repeat center;
+  mask: url(imagens/folder.svg) no-repeat center;
+  transform: translateY(-50%);
+}
+
+#resultados #lista #posts li a {
+  font-size: 12px;
+  font-weight: 500;
+  color: #4a4a4a !important;
+}
+
+#resultados #lista #posts li+li {
+  margin-top: 4px;
+}
+
+#resultados #selectModulo {
+  padding: 5px 0;
+  border: solid 1px #ced4da;
+  font-size: 12px;
+  font-weight: 400;
+  color: #6c757d;
+}
+
+#resultados .rescampos {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  bottom: auto;
+  left: auto;
+  width: auto;
+  margin: 10px 25px;
+}
+
+#resultados .rescampos .campobusca {
+  position: relative;
+  height: auto;
+}
+
+#resultados .rescampos .campobusca input {
+  width: 100%;
+  margin: 0;
+  padding: 5px 25px 5px 5px;
+  border: solid 1px #ced4da;
+  font-size: 13px;
+  font-weight: 400;
+  color: #4a4a4a;
+}
+
+#resultados .rescampos .campobusca a {
+  display: flex;
+  position: absolute;
+  right: 0;
+  width: 27px;
+  height: 27px;
+}
+
+#resultados .rescampos .campobusca a:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 15px;
+  height: 15px;
+  background-color: #4a4a4a;
+  -webkit-mask: url(imagens/search.svg) no-repeat center;
+  mask: url(imagens/search.svg) no-repeat center;
+  transform: translateY(-50%);
+}
+
+#resultados .rescampos .campobusca a img {
+  display: none;
+}
+
+.restitulo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 !important;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #004085;
+}
+
+.restitulo h2 {
+  font-size: 12px;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.restitulo a {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff;
+  -webkit-mask: url(imagens/times.svg) no-repeat center;
+  mask: url(imagens/times.svg) no-repeat center;
+}
+
+.restitulo #btFechar {
+  opacity: 0;
+}
+
+.resconteudomain {
+  background-image: url(imagens/resultados-white.png);
+}
+
+.resconteudot {
+  color: #373737;
+}
+
+#bodyheader {
+  background-color: #aeb0b2;
+  font: 11px Arial, sans-serif;
+}
+
+/* #search .subsearch1 {
+	background-image: url(imagens/bgsearch.png);
+}
+#search .subsearch2 {
+	background-image: url(imagens/bgsearch.png);	
+} */
+
+#footer {
+  background: #ddd url(imagens/bg-footer.jpg);
+  color: #fff;
+}
+
+.wrapperGridHeader {
+  background: url(imagens/gridheader.png) top left no-repeat;
+}
+
+.spwTabelaGrid {
+  background: url(imagens/gridheader-r.png) top right no-repeat;
+}
+
+.spwCabecalhoGridHover {
+  background-image: url(imagens/cabecalhoGridHover.png);
+  background-repeat: repeat-x;
+}
+
+.spwCabecalhoGridLeftRoundHover {
+  background: url(imagens/cabecalhoGridHover-round.png) top left no-repeat;
+}
+
+.spwCabecalhoGridLeftRoundClick {
+  background: url(imagens/cabecalhoGridClick-round.png) top left no-repeat;
+}
+
+.spwCabecalhoGridOrder {}
+
+.spwCabecalhoGridClick {
+  background-image: url(imagens/cabecalhoGridClick.png);
+  background-repeat: repeat-x;
+}
+
+td.spwCabecalhoAsc {
+  background: url(imagens/gridorder_asc.gif) no-repeat center 2px;
+}
+
+td.spwCabecalhoDesc {
+  background: url(imagens/gridorder_desc.gif) no-repeat center 2px;
+}
+
+#spwModalFooter,
+#spwModalContent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9000;
+  background-color: #f5f5f5;
+  display: none;
+}
+
+.spwModalDefault {
+  background-color: #f5f5f5;
+  display: none;
+}
+
+div.subTitulo {
+  background-image: url("imagens/subTitulo.jpg");
+  color: #000 !important;
+}
+
+div.subTitulo span {
+  background-image: url("imagens/subTitulo.jpg");
+}
+
+/********************************************************/
+/* TEMA.CSS */
+/* toda esta parte são declarações existentes no TEMA.CSS aqui sobrescritas para facilitar temporariamente a mudança de skins no protótipo. deve ser organizado posteriormente! */
+#bodyheader h2 {
+  color: #fff !important;
+}
+
+a.bt-acoes {
+  background-image: url("imagens/bt-acoes.png") !important;
+  color: #000 !important;
+}
+
+a.bt-sair {
+  background-image: url("imagens/bt-sair.png") !important;
+  color: #000 !important;
+}
+
+.resconteudot label {
+  color: #000 !important;
+  border-bottom: 1px solid #dbdbdb !important;
+}
+
+.resconteudot ul li {
+  background-image: url("imagens/busca-arrow-bullet.gif") !important;
+}
+
+.resconteudot ul li.selected {
+  background-color: #e2e2e2 !important;
+}
+
+.resconteudot ul li a {
+  color: #373737 !important;
+}
+
+#footer #user {
+  background-image: url("imagens/ico-user.png") !important;
+}
+
+/** botão main **/
+.spwButtonMain {
+  background-image: url("imagens/spwButtonMain-r.png") !important;
+  color: #333 !important;
+}
+
+.spwButtonMain span {
+  background-image: url("imagens/spwButtonMain.png") !important;
+}
+
+.spwButtonMain span span {
+  color: #333 !important;
+}
+
+.spwButtonMain span input {
+  color: #333 !important;
+}
+
+/** botão main OVER **/
+.spwButtonMain-o {
+  background-image: url("imagens/spwButtonMain-r.png") !important;
+  color: #333 !important;
+}
+
+.spwButtonMain-o span {
+  background-image: url("imagens/spwButtonMain.png") !important;
+}
+
+.spwButtonMain-o span span {
+  color: #333 !important;
+}
+
+.spwButtonMain-o span input {
+  color: #333 !important;
+}
+
+/** botão padrão para rodapé das grids **/
+.spwButtonGridMain {
+  background-image: url("imagens/spwButtonGridMain-r.png") !important;
+  color: #333 !important;
+}
+
+.spwButtonGridMain span {
+  background-image: url("imagens/spwButtonGridMain.png") !important;
+}
+
+.spwButtonGridMain span span {
+  color: #333 !important;
+}
+
+.spwButtonGridMain span input {
+  color: #333 !important;
+}
+
+.spwButtonGridMain #btNovaLinhaRow {
+  background: url(../../imagens/base/botAdicionar.png) no-repeat;
+  /*!!!!!!!!!*/
+}
+
+/** botao padrao para rodape das grids MODO OVER **/
+.spwButtonGridMain-o {
+  background-image: url("imagens/spwButtonGridMain-r.png") !important;
+  color: #333 !important;
+}
+
+.spwButtonGridMain-o span {
+  background-image: url("imagens/spwButtonGridMain.png") !important;
+}
+
+.spwButtonGridMain-o span span {
+  color: #333 !important;
+}
+
+.spwButtonGridMain-o span input {
+  color: #333 !important;
+}
+
+.spwButtonGridMain-o #btNovaLinhaRow {
+  background: url(../../imagens/base/botAdicionar.png) no-repeat;
+}
+
+.spwBotaoPrimeiro {
+  background-image: url("imagens/primeiro.png") !important;
+}
+
+.spwBotaoProximo {
+  background-image: url("imagens/proximo.png") !important;
+}
+
+.spwBotaoUltimo {
+  background-image: url("imagens/ultimo.png") !important;
+}
+
+.spwBotaoAnterior {
+  background-image: url("imagens/retroceder.png") !important;
+}
+
+.spwBotaoPrimeiro-o {
+  background-image: url("imagens/primeiro-o.png") !important;
+}
+
+.spwBotaoProximo-o {
+  background-image: url("imagens/proximo-o.png") !important;
+}
+
+.spwBotaoUltimo-o {
+  background-image: url("imagens/ultimo-o.png") !important;
+}
+
+.spwBotaoAnterior-o {
+  background-image: url("imagens/retroceder-o.png") !important;
+}
+
+.spwBotaoAnterior-d {
+  background-image: url("imagens/retroceder-d.png") !important;
+}
+
+.spwBotaoProximo-d {
+  background-image: url("imagens/proximo-d.png") !important;
+}
+
+.spwBotaoPrimeiro-d {
+  background-image: url("imagens/primeiro-d.png") !important;
+}
+
+.spwBotaoUltimo-d {
+  background-image: url("imagens/ultimo-d.png") !important;
+}
+
+#divSide,
+#divSide .sidebox,
+#divSide #itensDoMenu {
+  background: #f2f2f2 !important;
+}
+
+#divSide #accordion1 {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#divSide .sidebox {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: auto !important;
+  overflow: hidden !important;
+}
+
+#divSide .sidebox #itensDoMenu {
+  flex: 1;
+  overflow: auto;
+}
+
+#divSide .sidebox+a.tab {
+  margin-top: auto;
+  border-top: solid 1px #a4a4a4;
+}
+
+#divSide .combomodulos {
+  background: none !important;
+}
+
+#divSide .combomodulos label {
+  display: none;
+}
+
+.basic a.tab,
+.basic a.tab:hover {
+  position: relative;
+  padding: 15px 20px;
+  border-bottom: solid 1px #a4a4a4;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a4a4a;
+}
+
+.basic a.tab:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  width: 15px;
+  height: 15px;
+  background-color: #4a4a4a;
+  -webkit-mask: url(imagens/chevron-down.svg) no-repeat center;
+  mask: url(imagens/chevron-down.svg) no-repeat center;
+  transform: translateY(-50%);
+}
+
+.basic a.tab-active:after {
+  -webkit-mask: url(imagens/chevron-up.svg) no-repeat center;
+  mask: url(imagens/chevron-up.svg) no-repeat center;
+}
+
+#divSide .menutabbuttons {
+  margin-right: 50px;
+  background: url("imagens/newConfigMenu.png") no-repeat right !important;
+}
+
+#divSide a:first-child .menutabbuttons {
+  margin-right: 50px;
+  background: unset !important;
+}
+
+#comboModulo {
+  position: relative;
+  padding: 8px 0;
+  font-size: 13px !important;
+  font-weight: 400;
+  border: solid 1px #ced4da;
+  border-radius: 4px;
+  color: #6c757d;
+}
+
+.ui-widget-header {
+  background: url("imagens/bg-widgets-top.png") repeat-x scroll center top #ffffff;
+  color: #222222;
+  font-weight: bold;
+  padding: 15px 10px 15px 11px;
+  border: none !important;
+}
+
+.ui-widget-content {
+  background: url("imagens/bg-widgets-bottom.png") repeat-x scroll center bottom #fff !important;
+  color: #222222;
+}
+
+.ui-widget-content label {
+  font-weight: bold;
+}
+
+/********************************************************/
+
+.wrapperGridHeader {
+  background: url(imagens/gridheader.png) top left no-repeat;
+}
+
+.spwCabecalhoGrid {
+  color: #305c8a !important;
+}
+
+.spwCabecalhoGridHover {
+  background-image: url(imagens/cabecalhoGridHover.png);
+  background-repeat: repeat-x;
+}
+
+.spwCabecalhoGridLeftRoundHover {
+  background: url(imagens/cabecalhoGridHover-round.png) top left no-repeat;
+}
+
+.spwCabecalhoGridLeftRoundClick {
+  background: url(imagens/cabecalhoGridClick-round.png) top left no-repeat;
+}
+
+.spwCabecalhoGridOrder {}
+
+.spwCabecalhoGridClick {
+  background-image: url(imagens/cabecalhoGridClick.png);
+  background-repeat: repeat-x;
+}
+
+td.spwCabecalhoAsc {
+  background: url(imagens/gridorder_asc.gif) no-repeat center 2px;
+}
+
+td.spwCabecalhoDesc {
+  background: url(imagens/gridorder_desc.gif) no-repeat center 2px;
+}
+
+.tableGridSearch .spwRodapeGrid {
+  background-image: url(imagens/bgGridSearchBR.png) !important;
+  background-position: bottom right !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.spwRodapeGrid {
+  background: url(imagens/bgRodapeGrid.png) bottom right no-repeat;
+  border: none;
+  font-size: 10px;
+  height: 22px;
+}
+
+/*Layout para as searchs. Ha uma parte sendo setada via javaScript*/
+.tableGridSearch {
+  background-image: url(imagens/bgGridSearchBL.png) !important;
+  background-position: bottom left !important;
+  background-repeat: no-repeat;
+}
+
+.spwTituloGrid {
+  color: #305c8a !important;
+}
+
+.bgPortlet {
+  background: none;
+}
+
+div.arvoremenu li {
+  position: relative;
+  margin: 15px 0 0 0;
+  padding-left: 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4a4a4a;
+}
+
+div.arvoremenu li a {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4a4a4a !important;
+  overflow-wrap: break-word;
+}
+
+div.arvoremenu li.nivel {
+  position: relative;
+  margin: 0;
+  padding-left: 20px;
+}
+
+div.arvoremenu ul>ul {
+  margin-left: 15px !important;
+}
+
+div.arvoremenu ul+ul {
+  margin-top: 15px;
+}
+
+div.arvoremenu ul ul {
+  margin: 15px 0 0 0;
+}
+
+div.arvoremenu li {}
+
+div.arvoremenu li:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  background-color: #4a4a4a;
+  -webkit-mask: url(imagens/external-link-alt.svg) no-repeat center;
+  mask: url(imagens/external-link-alt.svg) no-repeat center;
+  transform: translateY(-50%);
+}
+
+div.arvoremenu li.nivel:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 13px;
+  height: 13px;
+  background-color: #4a4a4a;
+  -webkit-mask: url(imagens/plus-square.svg) no-repeat center;
+  mask: url(imagens/plus-square.svg) no-repeat center;
+  transform: translateY(-50%);
+}
+
+div.arvoremenu li.nivel.aberto {
+  color: #2361a1;
+  overflow-wrap: break-word;
+}
+
+div.arvoremenu li.nivel.aberto:before {
+  -webkit-mask: url(imagens/minus-square.svg) no-repeat center;
+  mask: url(imagens/minus-square.svg) no-repeat center;
+  background-color: #2361a1;
+}
+
+.icoTitSuperior {
+  background: url(imagens/icoTitSuperior.png) no-repeat center;
+}
+
+/* Menu Ações */
+#menuacoes ul li a.menu-portal-externo {
+  background: url(imagens/menuacoes-icons.png) no-repeat;
+  background-position: -2px 0px;
+}
+
+#menuacoes ul li a.menu-portal-externo:hover {
+  background-position: -2px -30px;
+}
+
+#menuacoes ul li a.menu-glossario {
+  background: url(imagens/menuacoes-icons.png) no-repeat;
+  background-position: -2px -60px;
+}
+
+#menuacoes ul li a.menu-glossario:hover {
+  background-position: -2px -90px;
+}
+
+#menuacoes ul li a.menu-ajuda {
+  background: url(imagens/menuacoes-icons.png) no-repeat;
+  background-position: -2px -240px;
+}
+
+#menuacoes ul li a.menu-ajuda:hover {
+  background-position: -2px -270px;
+}
+
+#menuacoes ul li a.menu-manual-pdf {
+  background: url(imagens/menuacoes-icons.png) no-repeat;
+  background-position: -2px -300px;
+}
+
+#menuacoes ul li a.menu-manual-pdf:hover {
+  background-position: -2px -330px;
+}
+
+#menuacoes ul li a.menu-mural-avisos {
+  background: url(imagens/menuacoes-icons.png) no-repeat;
+  background-position: -2px -120px;
+}
+
+#menuacoes ul li a.menu-mural-avisos:hover {
+  background-position: -2px -150px;
+}
+
+#menuacoes ul li a.menu-verificador-requisitos {
+  background: url(imagens/menuacoes-icons.png) no-repeat;
+  background-position: -2px -360px;
+}
+
+#menuacoes ul li a.menu-verificador-requisitos:hover {
+  background-position: -2px -390px;
+}
+
+#menuacoes ul li a.menu-versoes-sistemas {
+  background: url(imagens/menuacoes-icons.png) no-repeat;
+  background-position: -2px -420px;
+}
+
+#menuacoes ul li a.menu-versoes-sistemas:hover {
+  background-position: -2px -450px;
+}
+
+/* Tema */
+#footer {
+  color: #ffffff;
+  background: #1b3281;
+}
+
+#footer #user {
+  background-image: none !important;
+}
+
+.ui-layout-pane {
+  border-color: #9e9e9e !important;
+}
+
+.bgPortlet {
+  background-color: #f2f2f2 !important;
+}
+
+#corpoWidgets {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#corpoWidgets #footer {
+  display: none !important;
+}
+
+.ui-widget-content {
+  border: 1px solid #d0d0d0;
+}
+
+#configMeuMenu {
+  opacity: 0 !important;
+}

@@ -1,0 +1,789 @@
+//#################################################################################################
+//## PARA CAMPOR COM HORA
+//#################################################################################################
+function formataHora(campo) {
+	valor = campo.value;
+	if( valor != '' && valor.length < 5 ){
+		try{
+			valor = valor.replace(':','');
+			hora = new Number(valor);
+		}catch(e){
+			campo.value = '';
+			alert('Hora inválida. Informe uma hora entre 00:00 e 23:59');
+			campo.focus();
+			return;
+		}
+		if( valor.length == 1 ){
+			valor = '0' + valor + ':' + '00';
+		} else if( valor.length == 2 ){
+			hora = new Number(valor);
+			if( hora > 59 ){
+				if( (new Number(valor.substring(1))) > 5 ){
+					valor = '0' + valor.substring(0,1) + ':' + '0' + valor.substring(1);
+				} else {
+					valor = '0' + valor.substring(0,1) + ':' + valor.substring(1) + '0';
+				}
+			} else if( hora < 24 ){
+				valor = valor + ':00';
+			} else if( hora > 23 ){
+				valor = '00:' + valor;
+			}
+		} else if( valor.length == 3 ){
+			if( (new Number(valor.substring(0,2))) > 23 ){
+				if( (new Number(valor.substring(1,2))) > 5 ){
+					campo.value = '';
+					alert('Hora inválida. Informe uma hora entre 00:00 e 23:59');
+					campo.focus();
+					return;
+				} else {
+					valor = '0' + valor.substring(0,1) + ':' + valor.substring(1);
+				}
+			} else {
+				if( (new Number(valor.substring(2))) > 5 ){
+					valor = valor.substring(0,2) + ':' + '0' + valor.substring(2);
+				} else {
+					valor = valor.substring(0,2) + ':' + valor.substring(2) + '0';
+				}
+			}
+		}
+	} else if( valor.length == 5 ){
+		valor = valor.replace(':','');
+		if( ((new Number(valor.substring(0,2))) > 23) || ((new Number(valor.substring(2))) > 59) ){
+			campo.value = '';
+			alert('Hora inválida. Informe uma hora entre 00:00 e 23:59');
+			campo.focus();
+			return;
+		}
+		valor = valor.substring(0,2) + ':' + valor.substring(2);
+	}
+	campo.value = valor;
+}
+
+//#################################################################################################
+//Funcção Utilizada para formatar o ano utilizada no onblur
+//#################################################################################################
+function formataAno( campoAno ){ 
+	if( campoAno.value != ''){ 
+		if( campoAno.value.length < 4 ) { 
+			if( campoAno.value.length < 3 ) { 
+				if( campoAno.value.length == 2 ) { 
+					if( campoAno.value < 50 ){ 
+						campoAno.value = '20' + campoAno.value; 
+					} else { 
+						campoAno.value = '19' + campoAno.value; 
+					} 
+				} else { 
+					campoAno.value = '200' + campoAno.value; 
+				} 
+			} else { 
+				alert('Ano inválido'); 
+				campoAno.select(); 
+				campoAno.focus(); 
+			} 
+		} else { 
+			if( campoAno.value < 1900 || campoAno.value > 2100 ){ 
+				alert('Preencha o campo com um ano entre 1900 e 2100'); 
+				campoAno.value = ''; 
+				campoAno.focus(); 
+			} 
+		} 
+	} 
+}
+
+/**
+ * O elemento Pai deve possuir um ID e seu 1º filho deve ser o spjhtml:label
+ */
+function removeObrigatorioRotulo(idElementoPai){
+   var $label = jQuery("#"+idElementoPai+" :first-child");
+   var novoTexto = $label.html().replace('*','');
+   $label.html(novoTexto);
+   return $label; 
+}
+
+/**
+ * O elemento Pai deve possuir um ID e seu 1º filho deve ser o spjhtml:label
+ */
+function adicionaObrigatorioRotulo(idElementoPai){
+	var $label = removeObrigatorioRotulo(idElementoPai);
+	$label.html($label.html()+"*");
+}
+
+
+function openpopupClosing(name)
+{
+   var w = screen.width * .80; // ~75% da resolucao
+   var h = screen.height * .70; // ~75% da resolucao
+   var lado = (screen.width - w) / 2;
+   var topo = (screen.height - h) / 2;
+
+   var features = 'width='+w+',height='+h+',top='+topo+',left='+lado +',toolbar=no,menubar=no';
+   features += ',status=no,scrollbars=yes,resizable=yes,target=rotas_mapa,directories=no';  
+
+   var pop = window.open(name,"janelaMapa", features);
+   if( pop.focus )
+   {
+       pop.focus();
+   }
+
+   return pop;
+}
+
+//#################################################################################################
+//## VERIFICA SE UM PERÍODO É VÁLIDO (DATA INICIAL MENOR QUE A DATA FINAL)
+//##		     
+//## <spjhtml:date styleId="dtInicialCadastro" 
+//##	onblur="verificaPeriodo('dtInicialCadastro', 'dtFinalCadastro');"/>
+//## <spjhtml:date styleId="dtFinalCadastro" 
+//##	onblur="verificaPeriodo('dtInicialCadastro', 'dtFinalCadastro');"/>
+//## 
+//#################################################################################################
+function verificaPeriodo(dtInicio, dtFim) {
+	var dtInicialInput = document.getElementById(dtInicio);
+	var dtFinalInput = document.getElementById(dtFim);		
+	if(dtInicialInput != null && dtFinalInput != null) {
+		var dtInicialValue = dtInicialInput.value;
+		var dtFinalValue = dtFinalInput.value;
+		if(dtInicialValue != '' && dtFinalValue != '') {
+			var dtInicial = new Date(dtInicialValue.substring(6,10), dtInicialValue.substring(3,5), dtInicialValue.substring(0,2));
+			dtInicial.setMonth(dtInicial.getMonth() - 1);						
+			var dtFinal = new Date(dtFinalValue.substring(6,10), dtFinalValue.substring(3,5), dtFinalValue.substring(0,2));
+			dtFinal.setMonth(dtFinal.getMonth() - 1);								
+			if(dtInicial > dtFinal) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}	
+	return true;
+}
+
+function verificaAnoDaData(idData) {
+	var objData = _gel(idData);
+	var dtAtual = new Date();
+	var anoAtual = new Number(dtAtual.getYear());
+	var nuAno = new Number(objData.value.substring(6,10));
+	
+	if(nuAno < anoAtual) {
+		var rotulo = objData.getAttribute('rotulo');
+		alert('O ano da ' + rotulo + ' não pode ser menor que o ano atual.');
+		limpaCampo(objData);
+		objData.focus();
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function validaPeriodo(dtIni, dtFim) {
+	if (!verificaPeriodo(dtIni, dtFim)) {
+		var ctrlIni = _gel(dtIni);
+		var ctrlFim = _gel(dtFim);
+        var rotuloIni = ctrlIni.getAttribute('rotulo');        
+        var rotuloFim = ctrlFim.getAttribute('rotulo');
+		alert('A ' + rotuloFim + ' deve ser posterior a ' + rotuloIni + '.');
+		limpaCampo(ctrlFim);
+		ctrlFim.focus();
+		return false;
+	}	
+	return true;
+}
+
+function substituirPontoPorBarraPonto(nome) {
+	var nomes = nome.split('.');
+	
+	var id = "";
+    for (var i=0; i < nomes.length; i++) {
+    	if (i > 0) {
+    		id += "\\.";
+    	}
+    	id += nomes[i];
+    }
+    return id;
+}
+
+function configuraObrigatorio(campos, tpObrigatorio) {
+	jQuery(campos).each(function() {
+		var $campoObrigatorio = jQuery("#" + substituirPontoPorBarraPonto(this));
+		if(tpObrigatorio){
+			$campoObrigatorio.attr("obrigatorio", "true");
+			$campoObrigatorio.addClass("obrigatorio");		
+		}else{
+			$campoObrigatorio.removeAttr("obrigatorio");
+			$campoObrigatorio.removeClass("obrigatorio");		
+		}
+		
+	});	
+}
+
+function days_between(date1, date2) {
+    // The number of milliseconds in one day
+    var ONE_DAY = 1000 * 60 * 60 * 24;
+
+    // Convert both dates to milliseconds
+    var date1_ms = date1.getTime();
+    var date2_ms = date2.getTime();
+
+    // Calculate the difference in milliseconds
+    var difference_ms = Math.abs(date1_ms - date2_ms);
+    
+    // Convert back to days and return
+    return Math.round(difference_ms/ONE_DAY);
+}
+
+//#################################################################################################
+//## UTILITÁRIOS
+//#################################################################################################
+function limparDadosTabela(obj) {
+		
+	var valorBotao = obj.value;
+		
+	var tabela = jQuery(obj).parents("table").eq(0);
+		
+	var texts = tabela.find("input[type=text]");
+	//Percorre todos os 'text' e limpa o atributo 'value' e 'oldvalue' 
+	for(i = 0, j = texts.length; i < j; i++){
+		//Limpa o valor do campo
+		texts[i].value = "";
+		//Limpa o atributo 'oldValue' se existir
+		if (texts[i].getAttribute("oldValue") != "undefined"){
+			texts[i].setAttribute("oldValue", null);
+		}
+	}
+	
+	tabela.find("textarea").val("");
+	tabela.find("input[type=radio]").removeAttr('checked');
+	tabela.find("input[type=checkbox]").removeAttr('checked');
+	tabela.find("select").val("");
+	
+	obj.value = valorBotao;
+}
+
+function limpaCampo(campo) {
+	campo.value = "";
+}
+
+function limpaCampos(ids) {
+	for (var i = 0; i < ids.length; i++) {
+		limpaCampo(_gel(ids[i]));
+	}
+}
+
+function desabilitaCampos(ids) {
+	for (var i = 0; i < ids.length; i++) {
+		disable(_gel(ids[i]));
+	}
+}
+
+function habilitaCampos(ids) {
+	for (var i = 0; i < ids.length; i++) {
+		enable(_gel(ids[i]));
+	}
+}
+
+function desabilitaInputSelects(ids) {
+	for (var i = 0; i < ids.length; i++) {
+		desabilitaInputSelectById(ids[i], document);
+	}	
+}
+
+function habilitaInputSelects(ids) {
+	for (var i = 0; i < ids.length; i++) {
+		habilitaInputSelectById(ids[i], document);
+	}
+}
+
+function _gel(id) {
+	return document.getElementById(id);
+}
+
+function _gvl(id) {
+    return _gel(id) != null? _gel(id).value : null;
+}
+
+//#################################################################################################
+//##  Returna true se a 'str' é null ou vazia
+//#################################################################################################
+function _isNullOrBlank(str) {
+    return str == null || str == '';
+}
+
+function _isNotNullOrBlank(str) {
+	return !_isNullOrBlank(str);
+}
+
+function F_OpenWindow(url) {
+	window.open(url);
+}
+
+//#################################################################################################
+//## RETORNA UM OBJETO DO TIPO DATE
+//#################################################################################################
+function retornaObjetoDate(dataString) {
+	var data = new Date(dataString.substring(6,10), dataString.substring(3,5), dataString.substring(0,2));
+	return data;
+}
+
+//#################################################################################################
+//## Função que deve ser chamada no onLoad do BODY e no onKeyUp do INPUT para fazer o 
+//## somatório de uma coluna da grid. A função percorre os registros da grid, e atualiza o total do campo.
+//#################################################################################################
+function someColuna(doc, grid, campo, formatado) {
+  if (formatado == null) {
+      formatado = true;   
+  }
+
+  var totalGeral = getTotalGeral(doc, grid, campo, formatado);
+  
+  idTotal = doc.getElementById(nmGrid + "_" + campo + "_SUM");
+  idTotal.align = "right";
+  if (formatado) {
+      idTotal.childNodes[0].nodeValue = FormataValor2(verificaCasasDecimais(trunca_valor(totalGeral)));
+  } else {
+      idTotal.childNodes[0].nodeValue = totalGeral;
+  }
+}
+
+function getTotalGeral(doc, grid, campo, formatado) {
+  nmGrid = grid.substring(0,1).toUpperCase() + grid.substring(1);
+  nuLinha = getNuLinhas(doc, nmGrid);
+  totalGeral = 0;
+  i = 0;
+  for (i=0; i < nuLinha; i++) {
+	  var status = doc.getElementById(getColumnIdIndexed(nmGrid, 'status', i)).value;
+	  if (status.indexOf("D") == -1) {
+		  nomeCampo = grid + "[" + i + "]." + campo + "_" + i;
+		  valorCampo = doc.getElementById(nomeCampo).value;
+		  if (valorCampo == "") {
+			  valorCampo = "0";
+		  }
+		  if (formatado) {
+			  totalGeral = totalGeral + parseFloat(retiraMascaraValor(valorCampo));
+		  } else {
+			  totalGeral = totalGeral + parseInt(valorCampo);
+		  }
+	  }
+  }
+  return totalGeral;
+}
+
+//#################################################################################################
+//## Funcao auxilia o somatório de valores da grid
+//## - Formata um valor com duas casas decimais
+//#################################################################################################	 
+function FormataValor2(campo) {
+	vr = campo + "";
+	vr = vr.replace( "/", "" );
+	vr = vr.replace( "/", "" );
+	vr = vr.replace( ",", "" );
+	vr = vr.replace( ".", "" );
+	vr = vr.replace( ".", "" );
+	vr = vr.replace( ".", "" );
+	vr = vr.replace( ".", "" );
+	tam = vr.length;
+
+  if (tam == 2)
+    return vr.substr( 0, tam - 1 ) + ',' + vr.substr( tam - 1, tam ) ;
+	 	else if ( (tam > 2) && (tam <= 5) )
+	 		return vr.substr( 0, tam - 2 ) + ',' + vr.substr( tam - 2, tam ) ; 
+	 	else if ( (tam >= 6) && (tam <= 8) )
+	 		return vr.substr( 0, tam - 5 ) + '.' + vr.substr( tam - 5, 3 ) + ',' + vr.substr( tam - 2, tam ) ;
+	 	else if ( (tam >= 9) && (tam <= 11) )
+	 		return vr.substr( 0, tam - 8 ) + '.' + vr.substr( tam - 8, 3 ) + '.' + vr.substr( tam - 5, 3 ) + ',' + vr.substr( tam - 2, tam ) ; 
+	 	else if ( (tam >= 12) && (tam <= 14) )
+	 		return vr.substr( 0, tam - 11 ) + '.' + vr.substr( tam - 11, 3 ) + '.' + vr.substr( tam - 8, 3 ) + '.' + vr.substr( tam - 5, 3 ) + ',' + vr.substr( tam - 2, tam ) ;
+	 	else if ( (tam >= 15) && (tam <= 17) )
+	 		return vr.substr( 0, tam - 14 ) + '.' + vr.substr( tam - 14, 3 ) + '.' + vr.substr( tam - 11, 3 ) + '.' + vr.substr( tam - 8, 3 ) + '.' + vr.substr( tam - 5, 3 ) + ',' + vr.substr( tam - 2, tam ) ;
+	 	else
+	 		return vr;
+}
+
+//#################################################################################################
+//## Funcao auxilia o somatório de valores da grid
+//## Retira a máscara de um valor
+//#################################################################################################	
+function retiraMascaraValor(valor){
+	while (valor.indexOf(".") != -1)
+		if (valor.indexOf(".") == 0)
+			valor = valor.substr(1);
+		else
+		  valor = valor.substring(0, valor.indexOf(".")) + 
+		  			valor.substring(valor.indexOf(".") + 1);
+	valor = valor.replace(',','.');
+	return valor;
+}
+
+function verificaCasasDecimais(valor, casas) {
+	casas = typeof casas == "undefined" ? 2 : casas;
+	if (valor == ""){
+		var zeros = "";
+		for (var i = 0; i < casas; i++) {
+			zeros += "0";
+		}
+		return "0." + zeros;
+	}
+	valor = valor + "";
+	var aValor = valor.split(".");
+	var tamanho = aValor.length;
+	var parteInteira = aValor[0];
+	var parteFracionaria = aValor[1];
+
+	if (tamanho == 2) {
+		while (parteFracionaria.length < casas) {
+			parteFracionaria += "0";
+		}
+		valor = parteInteira + "." + parteFracionaria;
+	} else if (tamanho < 2) {
+		var zeros = "";
+		for (var i = 0; i < casas; i++) {
+			zeros += "0";
+		}
+		valor = valor + "." + zeros;
+	}   
+	return valor;  
+}
+
+//#################################################################################################
+//## Funcao auxilia o somatório de valores da grid
+//## Trunca um valor
+//#################################################################################################	 
+function trunca_valor(valor) {
+	calculo = Math.round(valor*100);
+	calculo = calculo /100;
+	return calculo;
+}
+
+//#################################################################################################
+//##  Scripts DWR -> A especificar...
+//#################################################################################################
+var _nu_dwr_call_active = 0;
+var _li_dwr_wait_func = new Array();
+
+/** Invocar antes de executar uma chamada DWR. */    
+function _dwr_call()
+{
+  _nu_dwr_call_active++;
+}
+  
+/** Invocar depois de retornar de uma chamada DWR. */    
+function _dwr_return()
+{
+  _nu_dwr_call_active--;
+  _drw_run_wait_func();
+}
+
+/** Espera ate todos as chamadas DWR retornarem e então invoca a funcao 'func'. */
+function _dwr_wait(func)
+{
+  _li_dwr_wait_func.push(func);
+  _drw_run_wait_func();
+}
+  
+function _drw_run_wait_func()
+{
+  // Verifica se todos os retornos chegaram
+  if ( _nu_dwr_call_active <= 0 )
+  {   
+      // Copia do array de funcoes...
+      var funcs = _li_dwr_wait_func;
+      
+      // Limpa o array
+      _li_dwr_wait_func = new Array();
+      
+      for(var i =0; i < funcs.length; i++)
+      {
+          // Chama as funcoes pendentes
+          funcs[i].call(this);
+      }
+  }
+}
+
+function aoMenosUmCheckedNaGrid(idGrid, fieldName) {
+	var gridHandler = new GridHandler(idGrid);
+	var size = gridHandler.size();	
+	for (var i = size - 1; i >= 0; --i) {
+		if (gridHandler.getRowField(i, fieldName).checked) {
+			return true;
+		}	
+	}
+	return false;
+}
+
+function exibeProcessando() {
+	jQuery("#loadProcessando").show();	
+}
+
+function ocultaProcessando() {
+	jQuery("#loadProcessando").hide();	
+}
+
+function GF_getIndiceLinhaInserida(idGrid) {
+	var linha;
+	if (GF_isModoEdicao(idGrid)) {
+		var form = document.getElementById(idGrid + "Form");
+		linha = form.getAttribute("edit");
+	} else {
+		var rowCount = getNuLinhas(document, idGrid);
+		linha = rowCount - 1;
+	}
+	return linha;
+}
+
+function desabilitaCadastroAET() {
+	if (!isStatusInsercaoAet() && !isSituacaoAetEditavel()) {
+		desabilitaTela();
+	}
+}
+
+function desabilitaTela(){
+	var solicitacaoForm = document.forms[0];
+	FF_desabilitaForm(solicitacaoForm);
+	FF_desabilitaBotoes(solicitacaoForm);
+	Form_habilitaBotoesClassSempreHabilitado(solicitacaoForm);
+	FF_desabilitaInputSelects();
+	FF_desabilitaCalendarios();
+}
+
+function FF_desabilitaCalendarios(){
+	jQuery('img[src*="spwCalendarIcon.gif"]').attr('onclick','');
+}
+
+
+//Função percorre toda a página em busca dos input-selects, depois desabilita todos eles.
+function FF_desabilitaInputSelects(){
+	var inputSelects = jQuery('input[input-select]');
+	jQuery.each(inputSelects, function(index, value){
+		var nomeInputSelect = jQuery(value).attr('input-select');
+		desabilitaInputSelectById(nomeInputSelect);
+	});
+}
+
+function Form_habilitaBotoesClassSempreHabilitado(objForm){
+	var length = objForm.length;
+	for (var i = 0; i < length; i++) {
+		var obj = objForm[i];
+		Botao_habilitaBotoesClassSempreHabilitado(obj);
+	}
+}
+
+function Botao_habilitaBotoesClassSempreHabilitado(obj){
+	var objType = obj.type;
+	var objClassName = obj.className;
+	if (obj.nodeName == "INPUT" && (objType == "button" || objType=="submit")) {
+		if(jQuery(obj).hasClass('sempreHabilitado')){
+			jQuery(obj).removeAttr("disabled");
+			var oldClassName = jQuery(obj).attr("oldclassname");
+			if(oldClassName != null){
+				jQuery(obj).removeClass();
+				jQuery(obj).addClass(oldClassName);
+			}
+			
+		}
+	} 
+}
+
+function isStatusInsercaoAet() {
+	return "I" == jQuery('#entity\\.status').val();
+}
+
+function isSituacaoAetEditavel() {
+	var flEditarSituacao = jQuery('#entity\\.flEditarSituacao').val();
+	return "S" == flEditarSituacao;
+}
+
+function isValorMaximoPermitido(vlMaximoId, vlDimensaoId) {
+	var vlMaximoStr = jQuery("#" + vlMaximoId).val();
+	
+	if (_isNullOrBlank(vlMaximoStr)) {
+		return true;
+	}
+	
+	var vlMaximo = parseStrToFloat(vlMaximoStr);
+	
+	var vlDimensaoStr = jQuery("#" + vlDimensaoId).val();
+	var vlDimensao = parseStrToFloat(vlDimensaoStr);
+	
+	if (vlMaximo >= 0 && vlDimensao > vlMaximo) {
+		return false;
+	}
+	
+	return true;
+}
+
+function submetePara(action) {
+	var form = document.forms[0];
+	form.action = action;
+	form.submit();	
+}
+
+function getTipoPessoa(nuDocumento) {
+	
+	if (nuDocumento == "")
+		return "";
+	
+	if (CCNPJ_isCNPJValido(nuDocumento))
+		return "J";
+	
+	if (CCPF_isCPFValido(nuDocumento))
+		return "F";
+	
+	return "";
+}
+
+function formateCpfCnpjSemValida(cpfcnpj) {
+	if(cpfcnpj == null) return '';
+
+	if ( cpfcnpj != null && cpfcnpj != '' && eliminaCaracteresCPFCNPJ(cpfcnpj).length == 11 ) {
+		cpfcnpj = eliminaCaracteresCPFCNPJ(cpfcnpj);
+		cpfcnpj = cpfcnpj.substring( 0, 3 ) + "." + cpfcnpj.substring( 3 );
+		cpfcnpj = cpfcnpj.substring( 0, 7 ) + "." + cpfcnpj.substring( 7 );
+		cpfcnpj = cpfcnpj.substring( 0, 11 ) + "-" + cpfcnpj.substring( 11 );
+		//validaCPFCNPJ(true, cpfcnpj);
+	} else if ( cpfcnpj != '' && cpfcnpj != null && eliminaCaracteresCPFCNPJ(cpfcnpj).length == 14) {
+		cpfcnpj = eliminaCaracteresCPFCNPJ(cpfcnpj); 
+		p1 = cpfcnpj.substring(0,3);
+		p2 = cpfcnpj.substring(3,6);
+		p3 = cpfcnpj.substring(6,8);
+		p4 = cpfcnpj.substring(8,12);
+		p5 = cpfcnpj.substring(12, cpfcnpj.length);
+		cpfcnpj = p1+"."+p2+"."+p3+"/"+p4+"-"+p5;
+		//validaCPFCNPJ(false, cpfcnpj);
+	} else {
+		if (cpfcnpj != null && cpfcnpj != '') alert("CPF ou CNPJ inválido.");
+		cpfcnpj = "";
+	}
+	return cpfcnpj;
+}
+
+function formateCpfCnpj(objeto) {
+	if(objeto == null) return '';
+
+	var cpfcnpj = objeto;
+	var valor = cpfcnpj.value;
+	if ( cpfcnpj != null && valor != '' && eliminaCaracteresCPFCNPJ(valor).length == 11 ) {
+		valor = eliminaCaracteresCPFCNPJ(valor);
+		valor = valor.substring( 0, 3 ) + "." + valor.substring( 3 );
+		valor = valor.substring( 0, 7 ) + "." + valor.substring( 7 );
+		valor = valor.substring( 0, 11 ) + "-" + valor.substring( 11 );
+		cpfcnpj.value = valor;
+		validaCPFCNPJ(true, cpfcnpj);
+	} else if ( valor != '' && valor != null && eliminaCaracteresCPFCNPJ(valor).length == 14) {
+		valor = eliminaCaracteresCPFCNPJ(valor); 
+		p1 = valor.substring(0,2);
+		p2 = valor.substring(2,5);
+		p3 = valor.substring(5,8);
+		p4 = valor.substring(8,12);
+		p5 = valor.substring(12, valor.length);
+		cpfcnpj.value = p1+"."+p2+"."+p3+"/"+p4+"-"+p5;
+		validaCPFCNPJ(false, cpfcnpj);
+	} else {
+		if (cpfcnpj != null && valor != '') alert("CPF ou CNPJ inválido.");
+		cpfcnpj.value = "";
+	}
+}
+
+function validaCPFCNPJ(opcao, campo) {
+	var nuIdent = campo.value.toString();
+	var retorno = false;
+	if ( nuIdent != null && nuIdent != '' ) {
+		retorno = true;
+		if (nuIdent.length>0 && opcao && !(validaCPF(campo.value.toString())) ) {
+			alert('CPF inválido.');
+			campo.value = '';
+			campo.focus();
+			retorno = false;
+		} else if (nuIdent.length>0 && !(opcao) && !(validaCNPJ(campo.value.toString())) )     {
+			alert('CNPJ inválido.');
+			campo.value = '';
+			campo.focus();
+			retorno = false;
+		}
+	}  
+	return retorno;
+}
+
+function validaCPF(cpf) {
+	if ( cpf != null && cpf != '' ) {
+		cpf = eliminaCaracteresCPFCNPJ(cpf);
+		rcpf1 = cpf.substr(0,9);
+		rcpf2 = cpf.substr(9,2);
+		d1 = 0;
+		for (i=0;i<9;i++) d1 += rcpf1.charAt(i)*(10-i);
+		d1 = 11 - (d1 % 11);
+		if (d1>9) d1 = 0;
+		if (rcpf2.toString().charAt(0) != d1.toString().charAt(0)) return false;
+		d1 *= 2;
+		for (i=0;i<9;i++) d1 += rcpf1.charAt(i)*(11-i);
+		d1 = 11 - (d1 % 11);
+		if (d1>9) d1 = 0;
+		if (rcpf2.toString().charAt(1) != d1.toString().charAt(0)) return false;
+		return true;
+	}
+
+	return false;
+} 
+
+function validaCNPJ(strCNPJ) {
+	strCNPJ = eliminaCaracteresCPFCNPJ(strCNPJ);
+	if (strCNPJ == "")
+		return false;
+	var strDV = strCNPJ.substr(12, 2),
+	intSoma, intDigito = 0, strControle = "",
+	strMultiplicador = "543298765432";
+	strCNPJ = strCNPJ.substr(0, 12);
+	for(var j = 1; j <= 2; j++) {
+		intSoma = 0;
+		for(var i = 0; i <= 11; i++)
+			intSoma += (parseInt(strCNPJ.substr(i, 1), 10) * parseInt(strMultiplicador.substr(i, 1), 10));
+		if (j == 2) intSoma += (2 * intDigito);
+		intDigito = (intSoma * 10) % 11;
+		if (intDigito == 10) intDigito = 0;
+		strControle += intDigito.toString();
+		strMultiplicador = "654329876543";
+	}
+	return (strControle == strDV);
+}
+
+function eliminaCaracteresCPFCNPJ(nuIdent) {
+	var nuIdentLimpo = nuIdent.replace(/\/|\.|,|-/g,"");
+	return nuIdentLimpo;
+}
+
+function isTipoTransporteCegonheiro(prmTipoTranspCegonheiro, cdTipoTransporte){
+	var codigos = prmTipoTranspCegonheiro.split(",");
+	
+	for( var i = 0; i < codigos.length; i++ ){
+		if ( codigos[i]==cdTipoTransporte ) {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+function formataValueAno( valueAno ){
+	if( valueAno < 4 ) {
+		if( valueAno < 3 ) { 
+			if( valueAno == 2 ) {
+				if( valueAno < 50 ){ 
+					valueAno = '20' + valueAno; 
+				} else { 
+					valueAno = '19' + valueAno; 
+				} 
+			} else { 
+				valueAno = '200' + valueAno; 
+			} 
+		} else {
+			alert('Ano inválido');
+			throw "";
+		} 
+	} else {
+		if( valueAno < 1900 || valueAno > 2100 ){ 
+			alert('Preencha o campo com um ano entre 1900 e 2100'); 
+			throw "";
+		} 
+	}
+	
+	return valueAno;
+}
+

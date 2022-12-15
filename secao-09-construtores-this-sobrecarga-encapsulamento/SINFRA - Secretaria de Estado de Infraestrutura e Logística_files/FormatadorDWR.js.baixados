@@ -1,0 +1,77 @@
+
+// Provide a default path to dwr.engine
+if (dwr == null) var dwr = {};
+if (dwr.engine == null) dwr.engine = {};
+if (DWREngine == null) var DWREngine = dwr.engine;
+
+if (FormatadorDWR == null) var FormatadorDWR = {};
+FormatadorDWR._path = '/aet/dwr';
+FormatadorDWR.getCdOrgao = function(p0, p1, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getCdOrgao', p0, p1, callback);
+}
+FormatadorDWR.getCdProntuario = function(p0, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getCdProntuario', p0, callback);
+}
+FormatadorDWR.getNuApenso = function(p0, p1, p2, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getNuApenso', p0, p1, p2, callback);
+}
+FormatadorDWR.getDV = function(p0, p1, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getDV', p0, p1, callback);
+}
+FormatadorDWR.getDV9 = function(p0, p1, p2, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getDV9', p0, p1, p2, callback);
+}
+FormatadorDWR.getCNJ2 = function(p0, p1, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getCNJ2', p0, p1, callback);
+}
+FormatadorDWR.getCNJ = function(p0, p1, p2, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getCNJ', p0, p1, p2, callback);
+}
+FormatadorDWR.getPSBC = function(p0, p1, p2, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getPSBC', p0, p1, p2, callback);
+}
+FormatadorDWR.getProcesso7 = function(p0, p1, p2, p3, p4, p5, p6, p7, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getProcesso7', p0, p1, p2, p3, p4, p5, p6, p7, callback);
+}
+FormatadorDWR.getProcesso1 = function(p0, p1, p2, p3, p4, p5, p6, p7, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getProcesso1', p0, p1, p2, p3, p4, p5, p6, p7, callback);
+}
+FormatadorDWR.getProcesso2 = function(p0, p1, p2, p3, p4, p5, p6, p7, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getProcesso2', p0, p1, p2, p3, p4, p5, p6, p7, callback);
+}
+FormatadorDWR.getProcesso3 = function(p0, p1, p2, p3, p4, p5, p6, p7, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getProcesso3', p0, p1, p2, p3, p4, p5, p6, p7, callback);
+}
+FormatadorDWR.getProcesso4 = function(p0, p1, p2, p3, p4, p5, p6, p7, p8, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getProcesso4', p0, p1, p2, p3, p4, p5, p6, p7, p8, callback);
+}
+FormatadorDWR.getProcesso5 = function(p0, p1, p2, p3, p4, p5, p6, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getProcesso5', p0, p1, p2, p3, p4, p5, p6, callback);
+}
+FormatadorDWR.getProcesso6 = function(p0, p1, p2, p3, p4, p5, p6, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getProcesso6', p0, p1, p2, p3, p4, p5, p6, callback);
+}
+FormatadorDWR.getProcesso8 = function(p0, p1, p2, p3, p4, p5, p6, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getProcesso8', p0, p1, p2, p3, p4, p5, p6, callback);
+}
+FormatadorDWR.getProcesso9 = function(p0, p1, p2, p3, p4, p5, p6, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getProcesso9', p0, p1, p2, p3, p4, p5, p6, callback);
+}
+FormatadorDWR.getProcesso10 = function(p0, p1, p2, p3, p4, p5, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getProcesso10', p0, p1, p2, p3, p4, p5, callback);
+}
+FormatadorDWR.getSgOrgao = function(p0, p1, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getSgOrgao', p0, p1, callback);
+}
+FormatadorDWR.getCorrespondencia = function(p0, p1, p2, p3, p4, p5, p6, p7, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getCorrespondencia', p0, p1, p2, p3, p4, p5, p6, p7, callback);
+}
+FormatadorDWR.getSgSetorabertura = function(p0, p1, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getSgSetorabertura', p0, p1, callback);
+}
+FormatadorDWR.getRegistroByPK = function(p0, p1, p2, p3, p4, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getRegistroByPK', p0, p1, p2, p3, p4, callback);
+}
+FormatadorDWR.getNuProcessoExternoCPA = function(p0, callback) {
+  dwr.engine._execute(FormatadorDWR._path, 'FormatadorDWR', 'getNuProcessoExternoCPA', p0, callback);
+}

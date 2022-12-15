@@ -1,0 +1,45 @@
+function ResourceMsg(map){
+	this.resourceMap = map;
+} 	 
+
+ResourceMsg.prototype.getResource = function (key) {
+	var localesArray = localeJS.split('_');
+	var resourceValue = "";
+	var locale = localeJS;
+	
+	resourceValue = this.resourceMap[key+"_"+locale];		
+	if(resourceValue != "" && resourceValue != "undefined" && resourceValue != undefined){
+		return resourceValue;
+	}	
+	
+	for(var i = (localesArray.length - 1); i >= 0; i--){				
+		if(i == 0){
+			locale = locale.substring(0,locale.indexOf(localesArray[i]));
+		}else{
+			locale = locale.substring(0,locale.indexOf("_"+localesArray[i]));	
+		}
+		
+		if(locale != ""){		
+			resourceValue = this.resourceMap[key+"_"+locale];
+		}else{
+			resourceValue = this.resourceMap[key];
+		}
+		
+		if(resourceValue != "" && resourceValue != "undefined" && resourceValue != undefined){
+			return resourceValue;
+		}
+	}
+	
+	locale = localeJS;
+	resourceValue = this.resourceMap[key+locale.substring(locale.lastIndexOf('_'))];		
+	if(resourceValue != "" && resourceValue != "undefined" && resourceValue != undefined){
+		return resourceValue;
+	}else{
+		return "";
+	}
+			
+}
+
+ResourceMsg.prototype.putResource = function(key, locale, value){
+	this.resourceMap[key+"_"+locale] = value;	
+}	

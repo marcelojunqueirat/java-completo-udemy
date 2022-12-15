@@ -1,0 +1,5330 @@
+
+/* 
+ * Versão: 5.5.3-0
+ * 
+ */
+
+/**
+ * Construtor da classe
+ *
+ * @requires Array
+ * @constructor
+ */
+function Util () {
+}
+
+/**
+ * @type Integer
+ */
+Util.TYPE_NULL = 0;
+
+/**
+ * @type Integer
+ */
+Util.TYPE_UNDEFINED = 1;
+
+/**
+ * @type Integer
+ */
+Util.TYPE_BOOLEAN = 2;
+
+/**
+ * @type Integer
+ */
+Util.TYPE_NUMBER = 3;
+
+/**
+ * @type Integer
+ */
+Util.TYPE_STRING = 4;
+
+/**
+ * @type Integer
+ */
+Util.TYPE_ARRAY = 5;
+
+/**
+ * @type Integer
+ */
+Util.TYPE_OBJECT = 6;
+
+/**
+ * @type Integer
+ */
+Util.TYPE_NODE = 7;
+
+/**
+ * @type Integer
+ */
+Util.TYPE_ELEMENT = 8;
+
+/**
+ * Verifica se a variavel é um valor vazio ou seja, retorna true para os seguintes valores:
+ * "", "0", [] (array vazio), NaN (not a number), 0 (número zero), null, false, undefined
+ *
+ * @param {mixed} value
+ * @type Boolean
+ */
+Util.isEmpty = function (value) {
+	switch(true) {
+		case typeof value == "undefined" 													:
+		case value === 0																	:
+		case value === "" 																	:
+		case value === "0" 																	:
+		case typeof value == "number" && isNaN(value) 										:
+		case value === null																	:
+		case value === false																:
+		case (typeof value == "object" && value.constructor == Array && value.length == 0) 	: return true;
+		default 																			: return false;
+	}
+}
+
+/**
+ * Verifica se o objeto é um objeto tipo Date
+ * 
+ * @param {mixed} value
+ * @type Boolean
+ */
+Util.isDate = function(value) {
+	return value instanceof Date;
+}
+/**
+ * Retorna o primeiro parâmetro encontrado não nulo
+ *
+ * @param {mixed[]} arguments
+ */
+Util.coalesce = function() {
+	return arguments.selectFirst(function(element) { return element !== null; });
+}
+
+
+/**
+ * Retorna um clone de um objeto
+ *
+ * @param {Object} object
+ * @type Object
+ */
+Util.clone = function (object) {
+	if (object == null || !Util.isObject(object)) {
+		return object;
+	}
+	
+	var stack = arguments[1] || [];
+	var clones = arguments[2] || [];
+
+	stack.push(object);
+	clones.push(returnObject);
+	if (Util.isArray(object)) {
+		var returnObject = [];
+		object.each(
+			function(element, index) {
+				var stackIndex = stack.indexOf(object[index]);
+				returnObject[index] = stackIndex != -1 ? clones[stackIndex] : Util.clone(object[index], stack, clones);
+			}
+		);
+	} else {
+        if (Util.isFunction(object.clone) && [object, object.constructor.prototype].any(function (/*Object*/ object) { return object.hasOwnProperty("clone"); })) {
+            return object.clone();
+        }
+        
+		var returnObject = new object.constructor();
+		Util.getMethods(object).each(function(element) { returnObject[element] = object[element]; });
+
+		var attributes = Util.getAttributes(object);
+		attributes.each(
+			function(element) {
+				var attribute = object[element];
+				var stackIndex = stack.indexOf(attribute);
+				returnObject[element] = stackIndex != -1 ? clones[stackIndex] : Util.clone(attribute, stack, clones);
+			}
+		);
+	}
+
+	return returnObject;
+}
+
+/**
+ * Retorna os nomes dos métodos de um objeto
+ *
+ * @param {Object} object
+ * @type String[]
+ */
+Util.getMethods = function(object) {
+	if (!Util.isObject(object)) {
+		return null;
+	}
+
+	var methods = [];
+	try {
+		for (var attribute in object) {
+			if (Util.isFunction(object[attribute])) {
+				methods.push(attribute);
+			}
+		}
+	} catch (e) {}
+
+	return methods;
+}
+
+/**
+ * Retorna os nomes dos atributos de um objeto
+ *
+ * @param {Object} object
+ * @type String[]
+ */
+Util.getAttributes = function(object) {
+	if (!Util.isObject(object)) {
+		return null;
+	}
+
+	var attributes = [];
+	for (var attribute in object) {
+		if (!Util.isFunction(object[attribute])) {
+			attributes.push(attribute);
+		}
+	}
+
+	return attributes;
+}
+
+/**
+ * Retorna os nomes dos atributos intrínsecos de um objeto
+ *
+ * @param {Object} object
+ * @type String[]
+ */
+Util.getOwnAttributes = function(object) {
+    if (!Util.isObject(object)) {
+        return null;
+    }
+
+    var attributes = [];
+    for (var attribute in object) {
+        if (!Util.isFunction(object[attribute]) && object.hasOwnProperty(attribute)) {
+            attributes.push(attribute);
+        }
+    }
+
+    return attributes;
+}
+
+/**
+ * Retorna a variavel passada como parâmetro
+ * Útil para receber valores impressos pelo servidor (JSP), e prevenir possiveis falhas. 
+ * Ex.: var varJS = Util.valueOf( ${MinhaVarDoRequestQueNaoFoiInicializada} );
+ *
+ * @param {mixed} value
+ * @type mixed
+ */
+Util.valueOf = function(value) {
+	return value;
+}
+
+/**
+ * Verifica se uma variável é um array
+ * 
+ * @param {mixed} obj
+ * @type Boolean
+ */
+Util.isArray = function(obj) {
+	return (
+		(!Util.isUndefined(obj) && obj.constructor && obj.constructor.toString().indexOf('Array') > -1)
+		? true
+		: Util.isObject(obj) && obj.constructor == Array
+	);
+}
+
+/**
+ * Verifica se uma variável é um boolean (YUI)
+ * 
+ * @param {mixed} obj
+ * @type Boolean
+ */
+Util.isBoolean = function(obj) {
+    return typeof obj == 'boolean';
+}
+    
+/**
+ * Verifica se uma variável é uma função (YUI)
+ * 
+ * @param {mixed} obj
+ * @type Boolean
+ */
+Util.isFunction = function(obj) {
+    return typeof obj == 'function';
+}
+        
+/**
+ * Verifica se uma variável é igual a null (YUI)
+ * 
+ * @param {mixed} obj
+ * @type Boolean
+ */
+Util.isNull =  function(obj) {
+    return obj === null;
+}
+    
+/**
+ * Verifica se a variável é um número
+ * 
+ * @param {mixed} obj
+ * @type Boolean
+ */
+Util.isNumber = function(obj) {
+    return typeof obj == 'number';
+}
+  
+/**
+ * Verifica se uma variável é um objeto (YUI)
+ * 
+ * @param {mixed} obj
+ * @type Boolean
+ */  
+Util.isObject = function(obj) {
+    return typeof obj == 'object' || Util.isFunction(obj);
+}
+
+/**
+ * Verifica se uma variável é uma String (YUI)
+ * 
+ * @param {mixed} obj
+ * @type Boolean
+ */
+Util.isString = function(obj) {
+    return typeof obj == 'string';
+}
+    
+/**
+ * Verifica se uma variável é "undefined" (YUI)
+ * 
+ * @param {mixed} obj
+ * @type Boolean
+ */
+Util.isUndefined = function(obj) {
+    return (typeof obj === 'undefined');
+}
+
+/**
+ * Verifica a equalidade entre dois objetos quaisquer
+ *
+ * @param {mixed} object1
+ * @param {mixed} object2
+ * @type Boolean
+ */
+Util.equals = function(object1, object2) {
+	if (typeof object1 != typeof object2) {
+		return false;
+	}
+
+	if (object1 == object2) {
+		return true;
+	}
+
+	if (![object1, object2].every(Util.isObject)) {
+		return false;
+	}
+    
+    if ([object1, object2].every( function (/*Object*/ obj) { return obj.constructor.prototype.hasOwnProperty("equals"); })) {
+        return (object1.equals(object2) && object2.equals(object1));
+    }
+	
+	var omit1 = arguments[2] || [];
+	var omit2 = arguments[3] || [];
+
+	omit1.push(object1);
+	omit2.push(object2);
+    
+	var anyFunction = function(element) {
+		var attrib1 = object1[element];
+		var attrib2 = object2[element];
+		var omt1 = omit1.indexOf(attrib1);
+		var omt2 = omit2.indexOf(attrib2);
+		if (omt1 == -1) {
+			if (!Util.equals(attrib1, attrib2, omit1, omit2)) {
+				return true;
+			}
+		} else if (omt1 != omt2) {
+			return true;
+		}
+		return false;
+	}
+	
+	return !(Util.getAttributes(object1).any(anyFunction) || Util.getAttributes(object2).any(anyFunction));
+}
+
+/**
+ * Quase um clone do "namespace" do YUI
+ * 
+ * @param {String} namespace
+ * @type Object
+ */
+Util.namespace = function(namespace) {
+	var parts = namespace.split(".");
+	var length = parts.length;
+	var obj = window;
+	for (var i = 0; i < length; i++) {
+		var partName = parts[i];
+        obj[partName] = obj[partName] || {};
+        obj = obj[partName];
+	}
+	
+	return obj;
+}
+
+/**
+ * Seta o prototype da subclasse corretamente (YUI)
+ * 
+ * @param {Function} subClass
+ * @param {Function} superClass
+ * @type undefined
+ */
+Util.extend = function(subClass, superClass) {
+    var F = function() {};
+    F.prototype = superClass.prototype;
+    subClass.prototype = new F();
+    subClass.prototype.constructor = subClass;
+    subClass.superClass = superClass.prototype;
+    if (subClass.prototype.constructor == Object.prototype.constructor) {
+        subClass.prototype.constructor = superClass;
+    }
+}
+
+/**
+ * Adiciona os métodos de uma classe a outra
+ * 
+ * @param {Function} targetClass
+ * @param {Function} originClass
+ * @param {String|String[]} methodList [string[]]
+ */
+Util.augment = function(targetClass, originClass, methodList) {
+	(
+		Util.isString(methodList) 
+		? [methodList]
+		: methodList || Util.getMethods(orignClass.prototype)
+	).each(function(methodName) { targetClass.prototype[methodName] = originClass.prototype[methodName] });
+}
+
+/**
+ * Interpreta um caminho de diretório
+ *
+ * @param {String} path
+ * @type String
+ */
+Util.parsePath = function(path) {
+	[/\\\\/g, /\/\.\//g, /\\/g].each(function(regExp) { path = path.replace(regExp, "/"); });
+
+    var chunks = path.split("/");
+    var returnPath = [];
+    chunks.each(
+    	function(chunk) {
+    		if (chunk == '..' && returnPath.length > 0) {
+    			void(returnPath.pop());
+    		} else {
+    			returnPath.push(chunk);
+    		}
+    	}
+	);
+
+    return returnPath.join("/");	
+}
+
+/**
+ * Integração com o Firebug
+ * 
+ * @param {mixed...} arguments
+ * @type undefined
+ */
+Util.debug = function() {
+	Util.console("debug", arguments);
+}
+
+/**
+ * Integração com o Firebug
+ * 
+ * @param {mixed...} arguments
+ * @type undefined
+ */
+Util.error = function() {
+	Util.console("error", arguments);
+}
+
+/**
+ * Integração com o Firebug
+ * 
+ * @param {String} funcName
+ * @param {mixed[]} args
+ * @type undefined
+ */
+Util.console = function(funcName, args) {
+    try {
+        console[funcName].apply(console, args);
+    } catch (e) {
+    	var msg = "";
+    	jQuery.makeArray(args).each(function(arg) { msg += (arg + " "); });
+    	alert(msg.trim());
+    }
+}
+
+
+/**
+ * Verifica se um valor é uma infinidade
+ * 
+ * @param {mixed} value
+ * @type Boolean
+ */
+Util.isInfinity = function(value) {
+	return jQuery.inArray(value,[Infinity, -Infinity]);
+}
+
+/**
+ * Retorna uma representação identada dos argumentos passados
+ * 
+ * @param {mixed...} arguments
+ * @type String
+ */
+Util.inspect = function() {
+	var stack = [];
+	var inspects = [];
+	Array.toArray(arguments).each( function(item) {inspects.push(Util.inspectVar(item, stack)); });
+	return (inspects.join ("\n"));
+}
+
+/**
+ * Retorna a representação identada de uma variavel
+ * 
+ * @param {mixed} thing
+ * @type String
+ */
+Util.inspectVar = function(thing) {
+	var stack = arguments[1] || [];
+	var ident = (arguments[2] || "") + "    ";
+	var index = stack.length;
+
+	var stackIndex = stack.indexOf(thing);
+	if (stackIndex != -1 && [Util.isObject, Util.isFunction].any(function(func) { return func(thing); })) {
+		return ("[#" + stackIndex + ":recursion]");
+	}
+
+	stack.push(thing);
+	
+	if (Util.isBoolean(thing)) {
+		return ("[#" + index + ":Boolean: " + (thing ? "true" : "false") + "]");
+	} else if (Util.isDate(thing)) {
+		return ("[#" + index + ":Date: " + thing.toLocaleString() + " (" + thing.getTime() + ")]");
+	} else if (Util.isFunction(thing)) {
+		return ("[#" + index + ":Function: function() {...}]");
+	} else if (Util.isInfinity(thing)) {
+		return ("[#" + index + ":Number: " (thing === -Infinity ? "Negative" : "Positive") + " infinity]");
+	} else if (Util.isNull(thing)) {
+		return ("[#" + index + ":Object: null]");
+	} else if (Util.isNumber(thing)) {
+		return ("[#" + index + ":Number: " + thing + "]");
+	} else if (Util.isString(thing)) {
+		return ("[#" + index + ":String (" + thing.length + "): \"" +thing.replace(/\\/g, '\\\\').replace(/\n/g, "\\n").replace(/\"/g,'\\"').replace(/\r/g, "\\r").replace(/\t/g, "\\t") + "\"]");
+	} else if (Util.isUndefined(thing)) {
+		return ("[#" + index + ":undefined]");
+	} else if (Util.isArray(thing)) {
+		var length = thing.length;
+		var str = "[#" + index + ":Array (" + length + "):\n";
+		
+		for (var i = 0; i < length; i++) {
+			str += (ident + "(" + i + ") => " + Util.inspectVar(thing[i], stack, ident));
+			str += str.charAt(str.length - 1) == "\n" ? "" : "\n";
+		}
+		
+		return str;
+	} else if (Util.isObject(thing)) {
+		var str = "[#" + index + ":Object:\n";
+		var attributes = Util.getAttributes(thing);
+		var attributesLength = attributes.length;
+		var methods = Util.getMethods(thing);
+		var methodsLength = methods.length;
+		
+		for (var i = 0 ; i < attributesLength; i++) {
+			var attributeName = attributes[i];
+			str += (ident + "(" + attributeName + ") => " + Util.inspectVar(thing[attributeName], stack, ident));
+			str += str.charAt(str.length - 1) == "\n" ? "" : "\n";
+		}
+		
+		for (var i = 0; i < methodsLength; i++) {
+			var methodName = methods[i];
+			str += (ident + "(" + methodName + ") => " + Util.inspectVar(thing[methodName], stack, ident));
+			str += str.charAt(str.length - 1) == "\n" ? "" : "\n";
+		}
+		
+		return str;
+	}
+	
+	return "";
+}
+
+/**
+ * Indica se um determinado objeto é um elemento HTML
+ * 
+ * @param {mixed} thing
+ * @return {Boolean}
+ */
+Util.isElement = function(thing) {
+    return (Util.isObject(thing) && thing.nodeType === 1);
+}
+
+/**
+ * Indica se um determinado objeto é um nodo
+ * 
+ * @param {mixed} thing
+ * @return {Boolean}
+ */
+Util.isNode = function(thing) {
+    return (Util.isObject(thing) && !Util.isUndefined(thing.nodeType)); 
+}
+
+/**
+ * Retorna a constante representando o tipo da variável
+ * 
+ * @param {mixed} thing
+ * @return {Integer}
+ */
+Util.getType = function(thing) {
+    switch (true) {
+        case Util.isNull(thing)         : return Util.TYPE_NULL; 
+        case Util.isUndefined(thing)    : return Util.TYPE_UNDEFINED;
+        case Util.isBoolean(thing)      : return Util.TYPE_BOOLEAN;
+        case Util.isNumber(thing)       : return Util.TYPE_NUMBER;
+        case Util.isString(thing)       : return Util.TYPE_STRING;
+        case Util.isArray(thing)        : return Util.TYPE_ARRAY;
+        case Util.isElement(thing)      : return Util.TYPE_ELEMENT;
+        case Util.isNode(thing)         : return Util.TYPE_NODE;
+        case Util.isObject(thing)       : return Util.TYPE_OBJECT;
+        default                         : return null;
+    }
+}
+
+/**
+ * Executa uma função em um escopo definido retornando o retorno da função de escopo
+ * 
+ * @param {Function} scopeFunction
+ * @param {mixed} thisObject [window]
+ * @param {mixed...} arguments [undefined]
+ * @return {mixed}
+ * @throws {TypeError}
+ */
+Util.scope = function(scopeFunction, thisObject) {
+    thisObject = thisObject || window;
+    
+    if (Util.isString(scopeFunction)) {
+        scopeFunction = new Function(scopeFunction);
+    }
+
+    if (!Util.isFunction(scopeFunction)) {
+        throw new TypeError("Util#scope: scopeFunction isn't a function");
+    }
+    
+    return (
+        arguments.length > 2
+        ? scopeFunction.apply(thisObject, Array.prototype.slice.call(arguments, 2))
+        : scopeFunction.call(thisObject)
+    );
+}
+
+/**
+ * Trava argumentos adicionais em uma determinada função para execução posterior
+ * @see http://www.dustindiaz.com/javascript-curry
+ * 
+ * @param {Function} curryFunction
+ * @param {Object} thisObject [window]
+ * @param {mixed...} arguments [undefined]
+ * @return {Function}
+ */
+Util.curry = function(curryFunction, thisObject) {
+    thisObject = thisObject || window;
+    var args = (arguments.length > 2 ? Array.prototype.slice.call(arguments, 2) : []);
+    return function() { curryFunction.apply(thisObject, args); };    
+    
+};
+
+/**
+ * Agenda a execução de uma função para quando o DOM estiver pronto para utilização
+ * @bugfix: Algumas versões do billy-IE6 não tratavam bem usando a solução "<script defer />"
+ *
+ * @param {Function} readyFunction
+ * @param {mixed} thisObject
+ * @param {mixed...} arguments
+ * @return {undefined}
+ * @throws {TypeError}
+ */
+Util.ready = function(readyFunction, thisObject) {
+    var ready = false,
+        readyList = [],
+        readyBound = false,
+        safariTimer = null,
+        handlerFunction;
+   
+    handlerFunction = function() {
+        if (!ready) {
+            ready = true;
+            readyList && readyList.forEach(function(hash) { hash.get("function").apply(hash.get("this"), hash.get("arguments")); });
+            readyList = null;
+            if ([Enviroment.AGENT_FIREFOX,
+				Enviroment.AGENT_OPERA].contains(Enviroment.getAgent())) {
+                document.removeEventListener("DOMContentLoaded",
+				readyFunction, false);
+            }
+        }
+    }
+
+    Util.ready = function(readyFunction, thisObject) {
+        var rdyFnc = Util.isString(readyFunction) ? 
+					 Function(readyFunction) : readyFunction,
+           			 args = arguments.length > 2 ? 
+					 Array.prototype.slice.call(arguments, 2) : [];
+       
+        if (!Util.isFunction(rdyFnc)) {
+            throw new TypeError("Util#ready: readyFunction isn't a function.");
+        }
+
+        thisObject = thisObject || window;
+       
+        if (ready) {
+            return void rdyFnc.apply(thisObject, args);
+        }
+       
+        readyList.push(
+            new Hash().
+                set("function", rdyFnc).
+                set("this", thisObject).
+                set("arguments", args)
+        );
+       
+        if (readyBound) {
+            return;
+        }
+       
+        readyBound = true;
+       
+        var agent = Enviroment.getAgent();
+        if ([Enviroment.AGENT_FIREFOX,
+			Enviroment.AGENT_OPERA].contains(agent)) {
+            document.addEventListener("DOMContentLoaded",
+					 handlerFunction, false);
+        } else if (agent == Enviroment.AGENT_IE) {
+            var node = document.createElement("document:ready");
+            Util.scope(
+                /*undefined*/ function() {
+                    var ex;
+                    try {
+                        if (document.readyState != "complete") {
+                            return setTimeout(arguments.callee, 100);
+                        }
+                       
+                        node.doScroll("left");
+                        try {
+                            handlerFunction();
+                        } catch (e) {
+                           ex = e;
+                           throw e;
+                        }
+                        node = null;
+                    } catch (e) {
+                        if (ex) {
+                            throw ex;
+                        } else {
+                            setTimeout(arguments.callee, 100);
+                        }
+                    }
+                }
+            );
+        } else if (agent == Enviroment.AGENT_SAFARI) {
+            safariTimer = setInterval(function() { ["loaded",
+			"complete"].contains(document.readyState) && clearInterval(safariTimer), 
+			handlerFunction(); }, 10);            
+        } else {
+            window.onload = handlerFunction;
+        }
+    };
+   
+    Util.ready.apply(this, Array.prototype.slice.call(arguments));
+};
+
+
+/**
+ * Cria uma função polimórfica segundo o número de parâmetros indicados
+ * utilizando a última função como padrão para todos os casos excluídos
+ * 
+ * @return {Function}
+ * @throws {TypeError}
+ */
+Util.overload = function() {
+    var length = arguments.length;
+    if (!length) {
+        throw new TypeError("Util#overload: no arguments");
+    }
+    
+    var funcs = [], 
+        arities = [],
+        func, i, funcLength;
+
+    for (i = 0; i < length; ++i) {
+        func = arguments[i];
+        Util.isString(func) && (func = new Function(func));
+        if (Util.isFunction(func)) {
+            funcLength = func.length;
+            if (arities.contains(funcLength)) {
+                throw new TypeError("Util#overload: cannot repeat arguments length");
+            }
+            
+            arities.push(funcLength);
+            funcs.push(func);
+        } else {
+            throw new TypeError("Util#overload: invalid argument");
+        }
+    }
+    
+    return (function() {
+        var index = arities.indexOf(arguments.length);
+        return ((index === -1 ? funcs.last() : funcs[index]).apply(this, arguments)); 
+    });
+};
+/**
+ * Includes para o "code-completion"
+ * 
+ * @include "lang/Util.js"
+ * @include "grid/GridHandler.hs"
+ * @include "dom/DOM.js"
+ */
+
+/**
+ * Construtor da classe DOM
+ * 
+ * @constructor
+ */
+function DOM() {
+}
+
+/**
+ * @type String
+ */
+DOM.EVENT_CLICK = "click";
+
+/**
+ * @type String
+ */
+DOM.EVENT_MOUSE_DOWN = "mousedown";
+
+/**
+ * @type String
+ */
+DOM.EVENT_MOUSE_UP = "mouseup";
+
+/**
+ * @type String
+ */
+DOM.EVENT_DBL_CLICK = "dblclick";
+
+/**
+ * @type String
+ */
+DOM.EVENT_MOUSE_OVER = "mouseover";
+
+/**
+ * @type String
+ */
+DOM.EVENT_MOUSE_MOVE = "mousemove";
+
+/**
+ * @type String
+ */
+DOM.EVENT_MOUSE_OUT = "mouseout";
+
+/**
+ * @type String
+ */
+DOM.EVENT_KEY_PRESS = "keypress";
+
+/**
+ * @type String
+ */
+DOM.EVENT_KEY_UP = "keyup";
+
+/**
+ * @type String
+ */
+DOM.EVENT_KEY_DOWN = "keydown";
+
+/**
+ * @type String
+ */
+DOM.EVENT_LOAD = "load";
+
+/**
+ * @type String
+ */
+DOM.EVENT_UNLOAD = "unload";
+
+/**
+ * @type String
+ */
+DOM.EVENT_ABORT = "abort";
+
+/**
+ * @type String
+ */
+DOM.EVENT_ERROR = "error";
+
+/**
+ * @type String
+ */
+DOM.EVENT_RESIZE = "resize";
+
+/**
+ * @type String
+ */
+DOM.EVENT_SCROLL = "scroll";
+
+/**
+ * @type String
+ */
+DOM.EVENT_SELECT = "select";
+
+/**
+ * @type String
+ */
+DOM.EVENT_CHANGE = "change";
+
+/**
+ * @type String
+ */
+DOM.EVENT_SUBMIT = "submit";
+
+/**
+ * @type String
+ */
+DOM.EVENT_RESET = "reset";
+
+/**
+ * @type String
+ */
+DOM.EVENT_FOCUS = "focus";
+
+/**
+ * @type String
+ */
+DOM.EVENT_BLUR = "blur";
+
+/**
+ * Adiciona uma classe para um elemento
+ * 
+ * @param {HTMLElement} element
+ * @param {String} className
+ * @type undefined
+ *
+ * @DEPRECATED utilizar addClass do jQuery.
+ */
+DOM.addClassName = function(element, className) {
+	if (DOM.hasClassName(element, className)) {
+		return;
+	}
+
+	element.className += (" " + className.trim());
+};
+
+/**
+ * Remove uma classe de um elemento
+ * 
+ * @param {HTMLElement} element
+ * @param {String} className
+ * @type undefined
+ *
+ * @DEPRECATED utilizar removeClass do jQuery.
+ */
+DOM.removeClassName = function(element, className) {
+	if (!DOM.hasClassName(element, className)) {
+		return;
+	}
+	
+	classNames = DOM.getClassNames(element);
+	classNames.removeElement(className);
+	DOM.setClassName(element, classNames.join(" "));
+};
+
+/**
+ * Retorna todos os elementos segundo o className
+ * 
+ * @param {HTMLElement} element
+ * @param {String|String[]} className
+ * @type HTMLElement[]
+ *
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.getElementsByClassName = function(element, className) {
+	/* Argumento escondido (uso interno) */ 
+	var elements = arguments[2] || []; 
+	
+	if (Util.isArray(className)) {
+		className.each(function(name) { DOM.getElementsByClassName(element, name, elements); });
+	} else {
+		if (DOM.hasClassName(element, className)) {
+			elements.push(element);
+		}
+		
+		jQuery.makeArray(element.childNodes).each(
+			function(element) {
+				DOM.getElementsByClassName(element, className, elements);
+			}
+		);
+	}
+	
+	return elements;
+};
+
+/**
+ * Seta o nome da classe de um elemento
+ * 
+ * @param {HTMLElement} element
+ * @param {String} className
+ * @type undefined
+ *
+ * @DEPRECATED utilizar função addClass() do jquery
+ */
+DOM.setClassName = function(element, className) {
+	if (typeof element.className != "undefined") {
+		element.className = className;
+	}
+};
+
+/**
+ * Verifica se um element possui uma classe
+ * 
+ * @param {HTMLElement} element
+ * @param {String} className
+ * @type Boolean
+ *
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.hasClassName = function(element, className) {
+	return (element.className && jQuery.inArray(className,DOM.getClassNames(element)));
+};
+
+/**
+ * Retorna os elementos segundo o nome da tag
+ * 
+ * @param {HTMLElement} element
+ * @param {String|String[]} tagName
+ * @type HTMLElement[]
+ *
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.getElementsByTagName = function(element, tagName) {
+	/* Argumento escondido (uso interno) */
+	var elements = arguments[2] || [];
+	
+	if (Util.isArray(tagName)) {
+		tagName.each(
+			function(tag) {
+				DOM.getElementsByTagName(element, tag, elements);
+			}
+		);
+	} else {
+		jQuery.makeArray(element.getElementsByTagName(tagName)).each(function(element) { elements.push(element); });
+	}
+	
+	return elements;
+};
+
+/**
+ * Retorna um array contendo todos os nomes das classes de um elemento
+ * 
+ * @param {HTMLElement} element
+ * @type String[]
+ *
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.getClassNames = function(element) {
+    return (
+        element.className
+        ? element.className.split(/\s+/)
+        : []
+    );
+};
+
+/**
+ * Cria e adiciona um elemento a um nodo
+ *
+ * @param {HTMLElement|String} parentElement
+ * @param {String} elementName
+ * @type {HTMLElement}
+ *
+ * @DEPRECATED utilizar função html() do jQuery.
+ */
+DOM.addElement = function(parentElement, elementName) {
+	parentElement = DOM.getElement(parentElement);
+    var newElement = document.createElement(elementName.toUpperCase());
+    parentElement.appendChild(newElement);
+    return newElement;	
+};
+
+/**
+ * Cria um elemento segundo o tipo passado
+ * 
+ * @param {String} elementName
+ * @return {HTMLElement}
+ */
+DOM.createElement = function(elementName) {
+    return document.createElement(elementName.toUpperCase());
+};
+
+/**
+ * Adiciona um tratador de evento a um elemento ou uma lista de elementos.
+ *
+ * @param {String|HTMLElement|String[]|HTMLElement[]} element
+ * @param {String|String[]} eventType
+ * @param {Function|Function[]} handler
+ * @return {undefined}
+ * @throws {TypeError}
+ *
+ * @DEPRECATED utilizar bind jQuery
+ */
+DOM.addEvent = function(element, eventType, handler) {
+   
+    var handlers = new Hash();
+    handlers.getHandler = function(/*String*/ eventType) {
+        if (!this.exists(eventType)) {
+            this.put(
+                eventType,
+                function(/*Event*/ event) {
+                    event = new DOM.Event(event);
+                    var target = event.getTarget();
+                    target['DOM.Register'].getEventList(eventType).
+                        forEach(
+                            function(/*Function*/ handler) {
+                                if (!event.isStopped()) {
+                                    handler.call(this, event);
+                                }
+                            },
+                            target
+                        );
+                }
+            );
+        }
+
+        return this.get(eventType);
+    };
+
+    var assignEventHandler = (
+        document.addEventListener
+        ? function(/*Element*/ element, /*String*/ eventType) { 
+			element.addEventListener(eventType, handlers.getHandler(eventType), false); }
+        : function(/*Element*/ element, /*String*/ eventType) { 
+			element.attachEvent("on" + eventType, handlers.getHandler(eventType)); }
+    );
+   
+    var removeEventHandler = (
+        document.removeEventListener
+        ? function(/*Element*/ element, /*String*/ eventType) { 
+			element.removeEventListener(eventType, handlers.getHandler(eventType), false); }
+        : function(/*Element*/ element, /*String*/ eventType) { 
+			element.detachEvent(eventType, handlers.getHandler(eventType)); }
+    );
+   
+    DOM.addEvent = function(element, eventType, handler) {
+        DOM.getElements(element).
+            forEach(
+                function(/*Element*/ element) {
+                    if (!Util.isElement(element)) {
+                        throw new TypeError("DOM#addEvent: invalid element");
+                    }
+                   
+                    if (!element["DOM.Register"]) {
+                        element["DOM.Register"] = new DOM.Register();
+                    }
+                    var register = element["DOM.Register"];
+                   
+                    (Util.isArray(eventType) ? eventType : [eventType]).
+                        forEach(
+                            function(/*String*/ eventType) { 
+								!register.hasEvent(eventType) && assignEventHandler(element, eventType); }
+                        );
+
+                    register.addEvent(eventType, handler);
+                }
+            );       
+        };
+   
+    DOM.removeEvent = function(element, eventType, handler) {
+        DOM.getElements(element).forEach(
+            function(/*Element*/ element) {
+                if (!Util.isObject(element)) {
+                    throw new TypeError("DOM#removeEvent: element isn't an Object");
+                }
+               
+                var register = element['DOM.Register'];
+                if (!register) {
+                    return;
+                }
+               
+                eventType = eventType || register.getEventTypes();
+                register.removeEvent(eventType, handler);
+                (Util.isArray(eventType) ? eventType : [eventType]).
+                    forEach(function(/*String*/ eventType) { 
+						!register.hasEvent(eventType) && removeEventHandler(element, eventType); });
+            }
+        );
+    }
+   
+    return DOM.addEvent(element, eventType, handler);
+};
+
+/**
+ * Remove um tratador de evento de um elemento ou uma lista de elementos.
+ * Se for passado um tipo de evento mas sem um tratador, então remove todos os tratadores daquele evento
+ * Se for passado um tratador, mas não um tipo de evento, então remove este tratador de todos os tipos de eventos
+ * Se não for passado nem o tratador e nem o tipo de evento, então remove todos os tratadores de eventos do elemento
+ * 
+ * @param {String|HTMLElement|String[]|HTMLElement[]} element
+ * @param {String|String[]} eventType [undefined]
+ * @param {Function|Function[]} handler [undefined]
+ * @return  undefined
+ *
+ * @DEPRECATED utilizar suporte eventos jQuery
+ */
+DOM.removeEvent = function(element, eventType, handler) {
+};
+
+/**
+ * Registra um elemento
+ * 
+ * @param {HTMLElement} element
+ * @type Integer
+ */
+DOM.registerElement = function(element) {
+	var id = DOM.elements.indexOf(element);
+	if (Util.isNull(id)) {
+		var id = DOM.elements.add(element);
+		var reg = new DOM.Register();
+		DOM.events.set(id, reg);
+	}
+	
+	return id;
+};
+
+/**
+ * Retorna uma lista contendo os elementos segundo o argumento passado
+ * 
+ * @param {mixed} element
+ * @type Element[]
+ *
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.getElements = function(element) {
+	var elements = [];
+	if (Util.isArray(element)) {
+		element.forEach(function(element) { elements = elements.concat(DOM.getElements(element)); });
+	} else {
+		elements.push(DOM.getElement(element));
+	}
+
+	return elements;
+};
+
+/**
+ * Retorna a referência para um elemento segundo o argumento passado
+ * 
+ * @param {String|Element} element
+ * @param {Document} rootDocument [document]
+ * @type Element
+ *
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.getElement = function(element, rootDocument) {
+    DOM.getElement = ( 
+        jQuery.browser.msie
+        ? function (element, rootDocument) {
+            if (Util.isString(element)) {
+	            rootDocument = rootDocument || document;
+                var id = element;
+                element = rootDocument.getElementById(id);
+                element = (
+                    (!(element && element.id === id))
+                    ? (
+                        function(/*Element*/ element) {
+                            if (element && element.id === id) {
+                                return element;
+                            }
+                            
+                            element = element.firstChild;
+                            var selection;
+                            while (element) {
+                                selection = arguments.callee(element);
+                                if (selection) {
+                                    return selection;
+                                }
+                                
+                                element = element.nextSibling;
+                            }
+                            
+                            return null;
+                        }
+                    )(rootDocument)
+                    : element
+                );
+            }
+            return element;        
+        }
+        : function (element, rootDocument) {
+            if (Util.isString(element)) {
+	            rootDocument = rootDocument || document;
+                return rootDocument.getElementById(element);
+            }
+            
+            return element;        
+        }
+    );
+    
+    return DOM.getElement(element);
+};
+
+/**
+ *
+ * Retorna a lista de elementos segundo a função de filtragem
+ *   
+ * @param {Element|String|Element[]|String[]} element
+ * @param {Function} filterFunction (function(element) {...})
+ * @DEPRECATED utilizar função grep jQuery.
+ */
+DOM.filterElements = function(element, filterFunction) {
+    var filtered = [];
+    DOM.traverse(
+        element,
+        function (/*Element*/ element) {
+            if (filterFunction(element)) {
+                filtered.push(element);
+            }
+        }
+    );
+    
+    return filtered;
+};
+
+/**
+ * Retorna a lista de elementos que possuem um determinado nome
+ * 
+ * @param {HTMLElement|String} element
+ * @param {String|String[]} name
+ * @type HTMLElement[]
+ *
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.getElementsByName = function(element, name) {
+	name = Util.isArray(name) ? name : [name];
+	return DOM.filterElements(DOM.getElement(element), function(element) { return (element.name && name.contains(element.name)); });
+};
+
+/**
+ * Atravessa toda uma sub-árvore, aplicando uma determinada função sobre cada elemento
+ * 
+ * @param {String|Element|String[]|Element[]} element
+ * @param {Function} traverseFunction
+ * @return {undefined}
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.traverse = function(element, traverseFunction) {
+    DOM.getElements(element).each(
+        function (/*Element*/ element) {
+            traverseFunction(element);
+            element = element.firstChild;
+            while (element) {
+	            DOM.traverse(element, traverseFunction);
+                element = element.nextSibling;
+            }
+        }
+    );
+};
+
+/**
+ * Seleciona a primeira ocorrencia na sub-arvore segundo a função de seleção
+ * 
+ * @param {Element|Element[]|String|String[]} element
+ * @param {Function|String} selectFunction
+ * @return {Element}
+ * @throws {TypeError}
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.selectFirst = function(element, selectFunction) {
+    var selFunction = Util.isString(selectFunction) ? Function(selectFunction) : selectFunction,
+        selection = null;
+        
+    if (!Util.isFunction(selFunction)) {
+        throw new TypeError("DOM#selectFirst: selectFunction isn't a function");
+    }
+    
+    DOM.getElements(element)
+        .selectFirst(
+            function(/*Element*/ element) {
+                if (selectFunction(element)) {
+                    selection = element;
+                    return true;
+                }
+                
+                element = element.firstChild;
+                while (element) {
+                    selection = DOM.selectFirst(element, selectFunction);
+                    if (selection) {
+                        return true;
+                    }
+                    element = element.nextSibling;
+                }
+                
+                return false;
+            }
+        );
+    
+    return selection;
+};
+
+/**
+ * Retorna o proximo elemento "irmão"
+ * 
+ * @param {Element} element
+ * @return {Element}
+ * @throws {TypeError}
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.getNextElementSibling = function(element) {
+    if (!Util.isElement(element)) {
+        throw new TypeError("DOM#getNextElementSibling: element isn't an Element node");
+    }
+    
+    element = element.nextSibling;
+    while (element && !Util.isElement(element)) {
+        element = element.nextSibling;
+    }
+    return element;
+};
+
+/**
+ * Retorna o elemento "irmão" anterior
+ * 
+ * @param {Element} element
+ * @return {Element}
+ * @throws {TypeError}
+ * @DEPRECATED utilizar selectores jQuery.
+ */
+DOM.getPreviousElementSibling = function(element) {
+    if (!Util.isElement(element)) {
+        throw new TypeError("DOM#getPreviousElementSibling: element isn't an Element node");
+    }
+    
+    element = element.previousSibling;
+    while (element && !Util.isElement(element)) {
+        element = element.previousSibling;
+    }
+    return element;
+};
+Util.namespace("DOM");
+
+/**
+ * Construtor da classe event
+ * 
+ * @requires Enviroment
+ * @requires Util
+ * @constructor
+ * @param {Event} event
+ * @return {DOM.Event}
+ */
+DOM.Event = function(event) {
+	
+	/**
+	 * @private, @type Event
+	 */
+	this._event = event || window.event;
+
+	/**
+	 * @private, @type Boolean
+	 */	
+	this._stop = false;
+
+	/**
+	 * Usualmente o botão esquerdo do mouse
+	 * 
+	 * @private, @type Boolean
+	 */	
+	this._primaryButton = null;
+
+	/**
+	 * Usualmente o botão direito do mouse
+	 * 
+	 * @private, @type Boolean
+	 */	
+	this._secondaryButton = null;
+
+	/**
+	 * Usualmente o botão do meio do mouse
+	 * 
+	 * @private, @type Boolean
+	 */	
+	this._tertiaryButton = null;
+}
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_BACKSPACE = 8;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_TAB = 9;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_RETURN = 13;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_ESC = 27;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_LEFT = 37;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_UP = 38;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_RIGHT = 39;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_DOWN = 40;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_DELETE = 46;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_HOME = 36;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_END = 35;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_PAGEUP = 33;
+
+/**
+ * @type Integer
+ */
+DOM.Event.KEY_PAGEDOWN = 34;
+
+/**
+ * Retorna o evento disparado pelo navegador
+ * 
+ * @return {Event}
+ */
+DOM.Event.prototype.getLegacyEvent = function() {
+	return this._event;
+}
+
+/**
+ * Indica se um evento está parado
+ * 
+ * @return {Boolean}
+ */
+DOM.Event.prototype.isStopped = function() {
+	return this._stop;
+}
+
+/**
+ * Previne o evento de realizar a sua ação padrão
+ * 
+ * @return {undefined}
+ */
+DOM.Event.prototype.preventDefault = function() {
+	var event = this._event;
+	if (event.preventDefault) {
+	    event.preventDefault();
+	} else {
+	    event.returnValue = false;
+	}
+}
+
+/**
+ * {@link #preventDefault} + {@link #stopPropagation}
+ * 
+ * @return {undefined}
+ */
+DOM.Event.prototype.stopEvent = function() {
+	this._stop = true;
+	this.preventDefault();
+	this.stopPropagation();
+}
+
+/**
+ * Indica se o botão primário (usualmente o esquerdo) do mouse foi acionado
+ * 
+ * @return {Boolean}
+ */
+DOM.Event.prototype.isPrimaryButton = function() {
+	if (this._primaryButton === null) {
+		this._primaryButton = (
+			jQuery.browser.msie 
+			? [1,3,5,7].contains(this._event.button)
+			: this._event.button === 0
+		);
+	}
+	
+	return this._primaryButton;
+}
+
+/**
+ * Indica se o botão terciário (usualmente o do meio) do mouse foi acionado
+ * 
+ * @return {Boolean}
+ */
+DOM.Event.prototype.isTertiaryButton = function() {
+	if (this._tertiaryButton === null) {
+		this._tertiaryButton = (
+			jQuery.browser.msie
+			? [4,5,6,7].contains(this._event.button)
+			: this._event.button === 1
+		);
+	}
+	
+	return this._tertiaryButton;
+}
+
+/**
+ * Indica se o botão secundário (usualmente o direito) do mouse foi acionado
+ * 
+ * @return {Boolean}
+ */
+DOM.Event.prototype.isSecondaryButton = function() {
+	if (this._secondaryButton === null) {
+		this._secondaryButton = (
+			jQuery.browser.msie
+			? [2,3,6,7].contains(this._event.button)
+			: this._event.button === 2
+		);
+	}
+	
+	return this._secondaryButton;
+}
+
+/**
+ * Para a proagação do evento (event bubble)
+ * 
+ * @return {undefined}
+ */
+DOM.Event.prototype.stopPropagation = function() {
+	var event = this._event;
+	if (event.stopPropagation) {
+	    event.stopPropagation();
+	} else {
+	    event.cancelBubble = true;
+	}
+}
+
+/**
+ * Retorna o elemento alvo do evento
+ * 
+ * @return {Element}
+ */
+DOM.Event.prototype.getTarget = function() {
+	var event = this._event;
+    return event.target || event.srcElement;
+}
+
+/**
+ * Retorna o "charCode" de um evento
+ * 
+ * @return {String}
+ */
+DOM.Event.prototype.getCharCode = function() {
+	var event = this._event;
+    return event.charCode || event.keyCode || null;
+}
+
+/**
+ * Retorna a posição do evento na tela em relação ao eixo "X"
+ * 
+ * @return {Integer}
+ */
+DOM.Event.prototype.getPageX = function() {
+	var event = this._event;
+    var x = event.pageX;
+    if (!x && 0 !== x) {
+        x = event.clientX || 0;
+        
+        if (jQuery.browser.msie) {
+        	var dd = document.documentElement, db = document.body;
+        	
+	        x += 
+	        	(dd && dd.scrollLeft)
+	        	? dd.scrollLeft
+	        	: db
+	        	? db.scrollLeft
+	        	: 0;
+        }
+    }
+
+    return x;
+}
+
+/**
+ * Retorna a posição do evento na tela em relação ao eixo "Y"
+ * 
+ * @return {Integer}
+ */
+DOM.Event.prototype.getPageY = function() {
+	var event = this._event;
+    var y = event.pageY;
+    if (!y && 0 !== y) {
+        y = event.clientY || 0;
+        
+        if (jQuery.browser.msie) {
+        	var dd = document.documentElement, db = document.body;
+        	
+	        y += 
+	        	(dd && dd.scrollTop)
+	        	? dd.scrollTop
+	        	: db
+	        	? db.scrollTop
+	        	: 0;
+        }
+    }
+
+    return y;
+}
+
+/**
+ * Retorna o timestamp do instante em que o evento ocorreu
+ * 
+ * @return {Integer}
+ */
+DOM.Event.prototype.getTime = function() {
+	var event = this._event;
+	if (!event.time) {
+	    var t = new Date().getTime();
+	    try {
+	        event.time = t;
+	    } catch(e) { 
+	        return t;
+	    }
+	}
+	
+	return event.time;
+}
+/**
+ * Construtor da classe DOM.Register
+ * 
+ * @constructor
+ * @return {DOM.Register}
+ */
+
+DOM.Register = function() {
+	
+	/**
+	 * @private, @type Hash
+	 */
+	this.events = new Hash();
+};
+
+/**
+ * Adiciona um tratador de evento (ou uma lista de tratadores) a lista de tratadores de um evento (ou as listas de tratadores de eventos)
+ * 
+ * @param {String|String[]} event
+ * @param {Function|Function[]} handler
+ * @return {DOM.Register}
+ *
+ * @DEPRECATED utilizar bind() do jQuery.
+ */
+DOM.Register.prototype.addEvent = function(event, handler) {
+	if (Util.isArray(event)) {
+		var register = this;
+		event.forEach(function(event) { register.addEvent(event, handler); });
+	} else if (Util.isArray(handler)) {
+		var register = this;
+		handler.forEach(function(handler) { register.addEvent(event, handler); });
+	} else {
+		this.getEventList(event).push(handler);
+	}
+
+	return this;
+};
+
+/**
+ * Retorna a lista de eventos
+ * 
+ * @param {String} event
+ * @return {Function[]}
+ */
+DOM.Register.prototype.getEventList = function(event) {
+	if (!this.hasEvent(event)) {
+		var list = [];
+		this.events.set(event, list);
+		return list;
+	}
+	
+	return this.events.get(event);
+};
+
+/**
+ * Remove da lista de evento (ou das listas de eventos) um tratador de evento (ou uma lista de tratadores de eventos) do registro
+ * Caso for omitido o tratador de evento, então remove todos os tratadores da lista de evento (ou das listas de eventos)
+ * 
+ * @param {String|String[]} event
+ * @param {Function|Function[]} handler [undefined]
+ * @return {Function|Function[]}
+ *
+ * @DEPRECATED utilizar unbind do jQuery.
+ */
+DOM.Register.prototype.removeEvent = function(event, handler) {
+	if (Util.isArray(event)) {
+		event.forEach(function(/*String*/ event) { this.removeEvent(event, handler); }, this);
+	} else if (Util.isArray(handler)) {
+		handler.forEach(function(/*Function*/ handler) { this.removeEvent(event, handler); }, this);
+	} else {
+		if (Util.isUndefined(handler)) {
+			this.events.remove(event);
+			return null;
+		}
+
+		if (!this.events.exists(event)) {
+			return null;
+		}
+		
+		var list = this.getEventList(event);
+		list.removeElement(handler);
+		if (jQuery.isEmpty(list)) {
+			this.events.remove(event);
+		}
+	
+	}
+
+	return handler;		
+};
+
+/**
+ * Verifica se todos os eventos estão vazios
+ * 
+ * @return {Boolean}
+ */
+DOM.Register.prototype.isEmpty = function() {
+	return this.events.isEmpty() || this.events.toArray().every(function(/*Hash*/ item) { return item.isEmpty(); });
+};
+
+/**
+ * Retorna a lista de tipos de eventos registrados
+ * 
+ * @type String[]
+ */
+DOM.Register.prototype.getEventTypes = function() {
+	return this.events.indexes();
+};
+
+/**
+ * Verifica se um determinado evento está registrado
+ * 
+ * @param {String} event
+ * @return {Boolean}
+ */
+DOM.Register.prototype.hasEvent = function(event) {
+    return this.events.exists(event);
+}
+/**
+ * Classe estática com vários recursos de ambiente
+ * 
+ * @requires Util
+ * @requires String
+ * @requires Array
+ * @constructor
+ * 
+ * @Deprecated
+ * Utilizar funções utilitárias do jQuery.
+ */
+function Enviroment() {
+    return null
+}
+
+/**
+ * @type Integer
+ */
+Enviroment.AGENT_UNKNOWN = 0;
+
+/**
+ * @type Integer
+ */
+Enviroment.AGENT_WEBKIT = 1;
+
+/**
+ * @type Integer
+ */
+Enviroment.AGENT_IE = 2;
+
+/**
+ * @type Integer
+ */
+Enviroment.AGENT_OPERA = 3;
+
+/**
+ * @type Integer
+ */
+Enviroment.AGENT_FIREFOX = 4;
+
+/**
+ * @type Integer
+ */
+Enviroment.AGENT_SAFARI = 5;
+
+/**
+ * Retorna a constante identificando o navegador do cliente
+ * 
+ * @type Integer
+ *
+ * @DEPRECATED utilizar funções utilitárias jQuery.browser
+ */
+
+Enviroment.getAgent = function() {
+    var agent = Enviroment.AGENT_UNKNOWN,
+        userAgent = navigator.userAgent;
+        
+    if ((/KHTML/gi).test(userAgent)) {
+        agent = Enviroment.AGENT_SAFARI;
+    } else {
+        v = userAgent.match(/AppleWebKit\/([^ ]*)/);
+        if (v&&v[1]) {
+            agent = Enviroment.AGENT_WEBKIT;
+        } else if (/opera/gi.test(userAgent)) {
+            agent = Enviroment.AGENT_OPERA;                
+        } else if (/firefox/gi.test(userAgent)) {
+            agent = Enviroment.AGENT_FIREFOX;
+        } else if (/msie/gi.test(userAgent)) {
+            agent = Enviroment.AGENT_IE;
+        }
+    }
+    
+    Enviroment.getAgent = function() {
+        return agent;        
+    };
+    
+    return Enviroment.getAgent();
+}
+
+/**
+ * Retorna a largura interna da janela
+ * 
+ * @type Integer
+ *
+ * @DEPRECATED utilizar boxModel do jQuery
+ */
+Enviroment.windowWidth = function() {
+    if (!Util.isUndefined(window.innerWidth)) {
+        return window.innerWidth;
+    }
+    if (!Util.isUndefined(document.body.clientWidth)) {
+        return document.body.clientWidth;
+    }
+
+    return null;
+}
+
+/**
+ * Retorna a altura interna da janela
+ * 
+ * @type Integer
+ *
+ * @DEPRECATED utilizar boxModel do jQuery.
+ */
+Enviroment.windowHeight = function() {
+    if (!Util.isUndefined(window.innerHeight)) {
+        return window.innerHeight;
+    }
+    if (!Util.isUndefined(document.body.clientHeight)) {
+        return document.body.clientHeight;
+    }
+
+    return null;
+}
+
+/**
+ * @type String
+ */
+Enviroment.context = null;
+
+/**
+ * @type String
+ */
+Enviroment.location = null;
+
+/**
+ * @type Integer
+ */
+Enviroment.port = null;
+
+/**
+ * @type String
+ */
+Enviroment.protocol = null;
+
+/**
+ * @type String
+ */
+Enviroment.host = null;
+
+/**
+ * Retorna o identificador do host
+ * 
+ * @type String
+ */
+Enviroment.getHost = function() {
+	if (this.host === null) {
+		this.host = this.getLocation().split("://", 2)[1].split("/" ,2)[0];
+		
+		if (jQuery.string().inString(":")) {
+			this.host = this.host.split(":")[0];
+		}
+	}
+	
+	return this.host;
+}
+
+/**
+ * Retorna o endereço da janela
+ * 
+ * @type String
+ */
+Enviroment.getLocation = function() {
+	if (this.location === null) {
+		this.location = "" + window.location;
+	}
+	
+	return this.location;
+}
+
+/**
+ * Retorna a porta utilizada
+ * 
+ * @type Integer
+ */
+Enviroment.getPort = function() {
+	if (this.port === null) {
+		this.port = 80;
+		var part = this.getLocation().split("://", 2).pop();
+		if (jQuery.string().inString(":")) {
+			this.port = +part.split(":")[0];
+		}
+	}
+	
+	return this.port;
+}
+
+/**
+ * Retorna o protocolo utilizado
+ * 
+ * @type String
+ */
+Enviroment.getProtocol = function() {
+	if (this.prototol === null) {
+		this.protocol = this.getLocation().split("://")[0];
+	}
+	
+	return this.protocol;
+}
+
+/**
+ * Retorna o contexto da página
+ * 
+ * @type String
+ */
+Enviroment.getContext = function() {
+	if (this.context === null) {
+		var parts = this.getLocation().split("://", 2)[1];
+		parts = jQuery.string().inString("?") ? parts = parts.split("?", 2)[0] : parts;
+		parts = parts.split("/");
+		parts.shift();
+		parts.pop();
+		this.context = Util.parsePath("/" + parts.join("/") + "/");
+	}
+	
+	return this.context;
+}
+/**
+ * Construtor do GridHandler
+ *
+ * @constructor
+ * @param {String} id
+ * @param {HTMLElement} doc [document]
+ * @type GridHandler
+ */
+function GridHandler(id, doc) {
+
+	/**
+	 * @private, @type String
+	 */
+	this.id = null;
+	
+	/**
+	 * @private, @type String
+	 */
+	this._tableId = null;
+	
+	/**
+	 * @private, @type String
+	 */
+	this._rowIdPrefix = null;
+	
+	/**
+	 * @private, @type String[]
+	 */
+	this._indexes = null;	
+	
+	/**
+	 * @private, @type Document
+	 */
+	this.doc = doc || document;
+	
+    /**
+     * @private, @type Boolean
+     */
+    this.postAllRows = null;
+
+    this.setId(id);
+    
+}
+
+/**
+ * @type String
+ */
+GridHandler.TABLE_ID_PREFIX = "tabela";
+
+/**
+ * @type String
+ */
+GridHandler.ROW_ID_PREFIX = "linha";
+
+/**
+ * @type Integer
+ */
+GridHandler.BASEROW_ID_INDEX = -1;
+
+/**
+ * @type String
+ */
+GridHandler.SIZE_ID_PREFIX = "textQtLinhas";
+
+/**
+ * @type String
+ */
+GridHandler.SUM_SUFIX = "SUM";
+
+/**
+ * @type String
+ */
+GridHandler.STATUS_ID = "status";
+
+/**
+ * @type String
+ */
+GridHandler.IMG_STATUS_ID_PREFIX = "estado";
+
+/**
+ * @type String
+ */
+GridHandler.SPW_STATUS_INSERT = "I";
+
+/**
+ * @type String
+ */
+GridHandler.SPW_STATUS_UPDATE = "U";
+
+/**
+ * @type String
+ */
+GridHandler.SPW_STATUS_DELETE = "D";
+
+/**
+ * @type String
+ */
+GridHandler.SPW_STATUS_DELETE_INSERT = "DI";
+
+/**
+ * @type String
+ */
+GridHandler.SPW_STATUS_DELETE_UPDATE = "DU";
+
+/**
+ * @type String
+ */
+GridHandler.SPW_EVENT_NEW = "new";
+
+/**
+ * @type String
+ */
+GridHandler.SPW_EVENT_FOCUS = "focus";
+
+/**
+ * @type String
+ */
+GridHandler.SPW_EVENT_DELETE = "del";
+
+/**
+ * @type Integer
+ */
+GridHandler.STATUS_INSERT = 0;
+
+/**
+ * @type Integer
+ */
+GridHandler.STATUS_UPDATE = 1;
+
+/**
+ * @type Integer
+ */
+GridHandler.STATUS_DELETE = 2;
+
+/**
+ * @type String
+ */
+GridHandler.SPW_COLOR_DELETE = corExcluir;
+
+/**
+ * @type String
+ */
+GridHandler.SPW_COLOR_SELECTED = corSelecionada;
+
+/**
+ * @type String
+ */
+GridHandler.SPW_COLOR_OLD = corAntiga;
+
+/**
+ * @type String
+ */
+GridHandler.SPW_COLOR_DISABLED = corDesabilitada;
+
+/**
+ * @param {HTMLElement} doc
+ * @return {undefined}
+ */
+GridHandler.prototype.setDocument = function (doc) {
+	this.doc = doc;
+}
+
+/**
+ * @return {HTMLElement}
+ */
+GridHandler.prototype.getDocument = function () {
+	return this.doc;
+}
+
+/**
+ * @param {String} id
+ * @return {undefined}
+ */
+GridHandler.prototype.setId = function (id) {
+	this.id = id;
+	this._tableId = null;
+	this._rowIdPrefix = null;
+	this._indexes = null;
+}
+
+/**
+ * @return {String}
+ */
+GridHandler.prototype.getId = function () {
+	return this.id;
+}
+
+/**
+ * Retorna uma lista de índices das colunas disponiveis
+ *
+ * @return {String[]}
+ */
+GridHandler.prototype.getIndexes = function () {
+	//Util.isEmpty(
+	if (jQuery.isEmpty(this._indexes)) {
+		var indexes = [];
+		var baseRow = this._getBaseRow();
+		var id = this.getId();
+		var baseRowFieldPrefix = id + "[" + GridHandler.BASEROW_ID_INDEX + "].";
+
+		var eachFunction = function (/*HTMLElement*/ element) {
+			var elementId = "" + this.id;
+			
+			if (jQuery.string().inString(elementId + '', id + '')) {
+				var index = (elementId.replace(baseRowFieldPrefix, "")).split("_");
+				index.pop();
+				indexes.push(index.join("_"));
+			}
+		};
+		
+		//Recuperando o id do elemento base
+		var tagBase = this._getRowIdPrefix() + "_" + GridHandler.BASEROW_ID_INDEX;
+		
+		var sel = ('#' + tagBase + ' > td >');
+		
+        var inputs = jQuery(sel + 'input',this.doc);
+        var imgs = jQuery(sel + 'img',this.doc);
+        var selects = jQuery(sel + 'select',this.doc);
+        var textArea = jQuery(sel + 'textarea',this.doc);
+        
+        var resultado = inputs.add(imgs).add(selects).add(textArea);
+        
+        resultado.each(eachFunction);
+	    this._indexes = indexes;
+	}
+
+	return jQuery.makeArray(this._indexes);
+}
+
+/**
+ * Seta o valor do "postAllRows"
+ * 
+ * @param {Boolean} value
+ * @return {undefined}
+ */
+GridHandler.prototype.setPostAllRows = function(value) {
+    if (value) {
+        this.postAllRows = true;
+        jQuery('#' + this.getId()).attr("postAllRows", "true");
+    } else {
+        this.postAllRows = false;
+        jQuery('#' + this.getId()).removeAttr("postAllRows");
+    }
+}
+
+/**
+ * Retorna o valor do "postAllRows"
+ * 
+ * @return {Boolean}
+ */
+GridHandler.prototype.isPostAllRows = function() {
+
+    if (this.postAllRows === null) {
+        var postAllRows = jQuery('#' + this.getId()).attr("postAllRows");
+        this.postAllRows = typeof postAllRows !== 'undefined' && postAllRows && !jQuery.string().empty(postAllRows);
+    }
+    return this.postAllRows;
+}
+
+/**
+ * Retorna uma lista de índices das colunas que são somadas
+ * 
+ * @return {String[]}
+ */
+GridHandler.prototype.getSumIndexes = function () {
+	if (typeof this._sumIndexes !== 'UNDEFINED' ||this._sumIndexes === null) {
+		var handler = this;
+		this._sumIndexes = this.getIndexes().filter(function(/*String*/ item) {return !jQuery.isEmpty(document.getElementById(handler._getSumIndexId(item))); });
+	}
+	
+	return jQuery.makeArray(this._sumIndexes);
+}
+
+/**
+ * Retorna o id da celula de somatório para uma determinada coluna
+ * 
+ * @param  {String} index
+ * @return {String}
+ */
+GridHandler.prototype._getSumIndexId = function (index) {
+	return (jQuery.upperFirstLetter( (jQuery.string(this.getId())).str ) + "_" + index + "_" + GridHandler.SUM_SUFIX);
+}
+
+/**
+ * Alias para o {@link GridHandler#getIndexes}
+ * 
+ * @return {String[]}
+ */
+GridHandler.prototype.indexes = GridHandler.prototype.getIndexes;
+
+/**
+ * Retorna o prefixo de linha para a grid
+ *
+ * @private
+ * @return {String}
+ */
+GridHandler.prototype._getRowIdPrefix = function () {
+	if (jQuery.isEmpty(this._rowIdPrefix)) {
+		this._rowIdPrefix = GridHandler.ROW_ID_PREFIX + jQuery.upperFirstLetter(jQuery.string(this.getId()).str);		
+	}
+	
+	return this._rowIdPrefix;
+}
+
+/**
+ * Retorna a linha de modelo da grid
+ *
+ * @private
+ * @return {HTMLElement}
+ */
+GridHandler.prototype._getBaseRow = function () {
+	return jQuery('#' + this._getRowIdPrefix() + "_" + GridHandler.BASEROW_ID_INDEX)[0];
+}
+
+/**
+ * Retorna o id da tabela interna das linhas
+ *
+ * @private
+ * @return {String}
+ */
+GridHandler.prototype._getTableId = function () {
+
+	if (jQuery.isEmpty(this._tableId)) {
+		this._tableId = GridHandler.TABLE_ID_PREFIX + jQuery.upperFirstLetter(jQuery.string(this.getId()).str);
+	}
+
+	return this._tableId;
+}
+
+/**
+ * Retorna o numero de linhas atuais da grid
+ *
+ * @return {Integer}
+ */
+GridHandler.prototype.size = function () {
+
+	return this.getRowsTable().rows.length - 2;
+}
+
+/**
+ * Alias para o {@link GridHandler#size}
+ * 
+ * @return {Integer}
+ */
+GridHandler.prototype.length = GridHandler.prototype.size;
+
+/**
+ * Retorna um array contendo as linhas
+ *
+ * @return {HTMLElement[]}
+ */
+GridHandler.prototype.getRows = function () {
+	var rows = jQuery.makeArray(this.getRowsTable().rows);
+
+	/* retira a linha de modelo */	
+	rows.shift();
+	
+	/* retira a linha de rodapé */
+	rows.pop(); 
+	
+	return rows;
+}
+
+/**
+ * Retorna a tabela interna das linhas
+ *
+ * @return {HTMLElement>}
+ */
+GridHandler.prototype.getRowsTable = function () {
+	
+	var elementoJQuery = this.doc.getElementById(this._getTableId());
+	
+	return elementoJQuery;
+}
+
+/**
+ * Retorna a tabela da grid
+ * 
+ * @return {HTMLElement}
+ */
+GridHandler.prototype.getGridTable = function () {
+	var idGrid = jQuery.upperFirstLetter(jQuery.string(this.getId()).str);
+	return jQuery('#' + idGrid)[0];
+}
+
+/**
+ * Retorna um hash com os valores dos campos de uma linha
+ *
+ * @param {Integer} index
+ * @aram {mixed} fields [undefined]
+ * @return {Hash}
+ */
+GridHandler.prototype.getRowData = function (index, fields) {
+	var handler = this;
+	if (index >= 0 || index <= this.size()) {
+		var row = new Hash();
+		var rowFields = this.getRowFields(index, fields);
+		rowFields.indexes().each(function(/*String*/ key) { row.set(key, rowFields.get(key).value); });
+		return row;
+	}
+}
+
+/**
+ * Retorna um hash contendo os campos de uma linha
+ *
+ * @param {Integer} index
+ * @param {mixed} fields [undefined]
+ * @return {Hash}
+ */
+GridHandler.prototype.getRowFields = function (index, fields) {
+
+	if (index >= 0 && index <= this.size()) {
+		var handler = this;
+		var row = new Hash();
+
+		var indexes = this.indexes();
+		
+		fields =
+			[Util.isString, Util.isArray].any(function (/*Function*/ func) { return func(fields); })
+			? Util.isString(fields) ? [fields] : fields
+			: indexes;
+
+		fields =
+			fields === indexes
+			? indexes
+			: fields.filter(function (/*String*/ key) { return jQuery.inArray(key,indexes); });
+
+		fields =
+			jQuery.isEmpty(fields)
+			? indexes
+			: fields;
+
+		fields.each(function (/*String*/ key) { row.set(key, handler.getRowField(index, key)); });
+		handler = null;
+		return row;
+	}
+}
+
+/**
+ * Retorna uma coleção de hashs contendo os campos de cada linha
+ *
+ * @param {mixed} fields [undefined]
+ * @return {Hash[]}
+ */
+GridHandler.prototype.getRowsFields = function (fields) {
+	var length = this.size();
+	if (length > 0) {
+		var rowFields = [];
+		for (var i = 0; i < length; i++) {
+			rowFields.push(this.getRowFields(i, fields));
+		}
+		return rowFields;
+	}
+	return [];
+}
+
+/**
+ * Retorna uma coleção de hashs contendo os valores dos campos de cada linha
+ *
+ * @param {mixed} [undefined]
+ * @return {Hash[]}
+ */
+GridHandler.prototype.getRowsData = function (fields) {
+	var length = this.size();
+	if (length > 0) {
+		var rowData = [];
+		for (var i = 0; i < length; i++) {
+			rowData.push(this.getRowData(i, fields));
+		}
+		return rowData;
+	}
+	return [];
+}
+
+/**
+ * Retorna um campo de uma linha
+ *
+ * @param {Integer} index
+ * @param {String} fieldName
+ * @return {HTMlElement}
+ */
+GridHandler.prototype.getRowField = function (index, fieldName) {
+	
+	if (jQuery.inArray(fieldName,this.getIndexes()) >= 0 && index >= 0 || index <= this.lastIndex()) {
+		
+		return this.getDocument().getElementById(this.getId() + "[" + index + "]." + fieldName + "_" + index);
+	}
+}
+
+/**
+ * Retorna o valor de um campo de uma linha
+ *
+ * @param {Integer} index
+ * @param {String} fieldName
+ * @return {String}
+ */
+GridHandler.prototype.getFieldData = function (index, fieldName) {
+	if (jQuery.inArray(fieldName,this.getIndexes()) && index >= 0 || index <= this.lastIndex()) {
+		return this.getRowField(index, fieldName).value;
+	}
+}
+
+/**
+ * Retorna uma determinada linha identificada pelo seu índice
+ *
+ * @param {Integer} index
+ * @return {HTMLElement}
+ */
+GridHandler.prototype.getRow = function (index) {
+	return jQuery('#' + this._getRowIdPrefix() + "_" + index)[0];
+}
+
+/**
+ * Zera a grid
+ *
+ * @return {undefined}
+ */
+GridHandler.prototype.clear = function () {
+	var rowsTable = this.getRowsTable();
+	var length = this.length()
+	for (var i = length-1; i >= 0; --i) {
+		var row = this.getRow(i);
+		jQuery.makeArray(this.getRowFields(i)).each(function (/*Element*/ field) { DOM.removeEvent(field); });
+		row.parentNode.removeChild(row);
+	}
+
+	this._flush();
+}
+
+/**
+ * Retorna o último índice da grid
+ *
+ * @return {Integer}
+ */
+GridHandler.prototype.lastIndex = function () {
+	var size = this.size();
+	if (size > 0) {
+		return (size - 1);
+	}
+}
+
+/**
+ * Cria uma linha e retorna o elemento
+ *
+ * @param {Hash} rowData [undefined]
+ * @param {Boolean} canFocus [false];
+ * @return {HTMLElement}
+ * @throws {Error}
+ */
+GridHandler.prototype.createRow = function (rowData, canFocus) {
+
+	if (jQuery.inArray(typeof rowData,['object', 'undefined']) == -1) {
+		throw new Error("Invalid row data");
+	}
+	
+	var row = criarLinha(this.getRowsTable(), typeof canFocus != "undefined" ? canFocus : false);
+	
+	var lastIndex = this.lastIndex();
+	if (jQuery.isEmpty(rowData)) {
+		return row;
+	}
+
+	var id = this.getId();
+	
+	/* SPW fix: Atualiza os id's das imagens tipo "editar" que vierem com "-1" no índice */ 
+	DOM.getElementsByTagName(row, "IMG") 
+		.filter(function (/*HTMLElement<IMG>*/ element) { return (element.id && element.id == (id + "[-1].editar_-1")); })
+		.each(function (/*HTMLElement<IMG>*/ element) { element.id = (element.id.substr(0, (element.id.length - 2)).replace(id + "[-1]", id + "[" + lastIndex + "]") + lastIndex); });
+
+	if (!Util.isUndefined(rowData)) {
+		var values = {};
+		var map = {};
+		var indexes = this.getIndexes();
+
+        var getValue = 
+            rowData.constructor == Hash 
+            ? function (/*String*/ key) { return rowData.get(key); } 
+            : function (/*String*/ key) { return rowData[key]; };
+            
+		var addKey = function (/*String*/ key) {
+			if (jQuery.inArray(key,indexes)) {
+				values[key] = getValue(key);
+				map[key] = id + "[?]." + key;
+			}
+		};
+		(rowData.constructor == Hash ? rowData.keys() : Util.getAttributes(rowData)).each(addKey);
+	
+		/* SPWUtil, ativar!!! */
+		SPWUtil.setValuesRow(values, map, lastIndex);
+	}
+	this._flush();
+
+    return row;
+}
+
+/**
+ * Cria várias linhas
+ *
+ * @param {Hash[]} rowData
+ * @param {Boolean} canFocus [false];
+ * @return {undefined}
+ * @throws {Error}
+ */
+GridHandler.prototype.createRows = function (rowData, canFocus) {
+	var handler = this;
+	jQuery.makeArray(rowData).each(function (/*Object|Hash*/ row) { handler.createRow(row, canFocus); });
+}
+
+/**
+ * Retorna o id do campo do tamanho da grid
+ *
+ * @private
+ * @return {String}
+ */
+GridHandler.prototype._getSizeFieldId = function () {
+	if (jQuery.isEmpty(this._sizeFieldId)) {
+		this._sizeFieldId = GridHandler.SIZE_ID_PREFIX +  jQuery.upperFirstLetter(jQuery.string(this.getId()).str);
+	}
+
+	return this._sizeFieldId;
+}
+
+/**
+ * Atualiza o valor do numero de linhas da grid
+ *
+ * @private
+ * @return {undefined}
+ */
+GridHandler.prototype._updateSize = function () {
+	jQuery('#'+this._getSizeFieldId())[0].childNodes[0].nodeValue = this.getRowsTable().rows.length - 2;
+}
+
+/**
+ * Verifica se a grid está vazia
+ *
+ * @return {Boolean}
+ */
+GridHandler.prototype.isEmpty = function () {
+	return this.size() == 0;
+}
+
+/**
+ * Retorna o status da linha
+ *
+ * @param {Integer} index
+ * @return {Integer}
+ */
+GridHandler.prototype.getRowStatus = function (index) {
+	if (index >= 0 || index <= this.lastIndex()) {
+	
+		var value = this.getDocument().getElementById(this.getId() + "[" + index + "]." + GridHandler.STATUS_ID + "_" + index).value;
+		//var value = jQuery('#' + this.getId() + "[" + index + "]." + GridHandler.STATUS_ID + "_" + index)[0].val();
+
+		if (value.length == 0) {
+			return;
+		}
+
+		switch (value.charAt(0)) {
+			case (GridHandler.SPW_STATUS_INSERT) 	: return GridHandler.STATUS_INSERT;
+			case (GridHandler.SPW_STATUS_UPDATE) 	: return GridHandler.STATUS_UPDATE;
+			case (GridHandler.SPW_STATUS_DELETE) 	: return GridHandler.STATUS_DELETE;
+			default 								: return null;
+		}
+	}
+}
+
+/**
+ * Seta o status de uma linha
+ * 
+ * @param {Integer} index
+ * @param {Integer} status
+ * @return {undefined}
+ */
+GridHandler.prototype.setRowStatus = function (index, status) {
+	var statusSpw = "";
+	var nmEventoSpw = "";
+	if (status === GridHandler.STATUS_INSERT) {
+		statusSpw = GridHandler.SPW_STATUS_INSERT;
+		nmEventoSpw = GridHandler.SPW_EVENT_NEW;
+	} else if (status === GridHandler.STATUS_UPDATE) {
+		statusSpw = GridHandler.SPW_STATUS_UPDATE;
+		nmEventoSpw = GridHandler.SPW_STATUS_INSERT;
+	} else if (status === GridHandler.STATUS_DELETE) {
+		statusSpw = GridHandler.SPW_STATUS_DELETE;
+		nmEventoSpw = GridHandler.SPW_EVENT_DELETE;
+	}
+    
+    var statusField = this.getRowField(index, GridHandler.STATUS_ID);
+    var estadoSpwImg = this.getRowField(index, this._getEstadoSpwImgName());
+    var currentSpwStatus = statusField.value;
+    var hintEstadoSpw = "";
+    var colorSpw = GridHandler.SPW_COLOR_OLD;
+    
+    var imgPathParts = estadoSpwImg.src.split("/");
+    imgPathParts.pop();
+    var imgPath = imgPathParts.join("/");
+    
+    switch (true) {
+        case [GridHandler.SPW_STATUS_DELETE, GridHandler.SPW_STATUS_UPDATE].contains(statusSpw) && 
+            currentSpwStatus === GridHandler.SPW_STATUS_DELETE_INSERT :
+        case statusSpw === GridHandler.SPW_STATUS_INSERT && currentSpwStatus === GridHandler.SPW_STATUS_INSERT :
+            statusSpw = GridHandler.SPW_STATUS_INSERT;
+            hintEstadoSpw = "Novo";
+            colorSpw = GridHandler.SPW_COLOR_OLD;
+            break;
+
+        case statusSpw === GridHandler.SPW_STATUS_DELETE && currentSpwStatus === GridHandler.SPW_STATUS_UPDATE :
+        case statusSpw === GridHandler.SPW_STATUS_UPDATE && 
+            [GridHandler.SPW_STATUS_DELETE, GridHandler.SPW_STATUS_DELETE_UPDATE].
+                any(function(/*String*/ status) { return status === currentSpwStatus; }) :
+            statusSpw = GridHandler.SPW_STATUS_DELETE_UPDATE;
+            hintEstadoSpw = "Excluído";
+            colorSpw = GridHandler.SPW_COLOR_DELETE;
+            break;
+        
+        case [statusSpw, currentSpwStatus].every (function(/*String*/ status) { return status === GridHandler.SPW_STATUS_DELETE; }) :
+            statusSpw = GridHandler.SPW_STATUS_DELETE;
+            hintEstadoSpw = "Excluído";
+            colorSpw = GridHandler.SPW_COLOR_DELETE;
+            break;
+
+        case statusSpw === GridHandler.SPW_STATUS_DELETE && currentSpwStatus === GridHandler.SPW_STATUS_DELETE_UPDATE :
+            statusSpw = GridHandler.SPW_STATUS_UPDATE;
+            hintEstadoSpw = "Alterado";
+            colorSpw = GridHandler.SPW_COLOR_OLD;
+            break;
+        
+        case statusSpw === GridHandler.SPW_STATUS_DELETE && currentSpwStatus === GridHandler.SPW_STATUS_INSERT :
+	        statusSpw = GridHandler.SPW_STATUS_DELETE_INSERT;
+            hintEstadoSpw = "Excluído";
+            colorSpw = GridHandler.SPW_COLOR_DELETE;
+            break;
+    }
+    
+    estadoSpwImg.src = imgPath + "/estado" + statusSpw + ".gif";
+    estadoSpwImg.title = hintEstadoSpw;
+    statusField.value = statusSpw;
+    
+    DOM.filterElements(
+        this.getRow(index),
+        function (/*HTMLElement*/ element) {
+            return ["INPUT", "SELECT", "TEXTAREA", "TD"].contains(element.nodeName);
+        }
+    ).each( function (/*HTMLElement*/ element) { element.style.backgroundColor = colorSpw; });
+}
+
+/**
+ * Retorna o nome da imagem de estado da linha
+ * 
+ * @return {String}
+ */
+GridHandler.prototype._getEstadoSpwImgName = function() {
+    return GridHandler.IMG_STATUS_ID_PREFIX;
+}
+
+/**
+ * Atualiza os dados derivados da grid
+ * 
+ * @private
+ * @return {undefined}
+ */
+GridHandler.prototype._flush = function () {
+	this._updateSize();
+	this._updateSum();
+}
+
+/**
+ * Remove uma linha da grid
+ * 
+ * @param {Integer} index
+ * @return {undefined}
+ */
+GridHandler.prototype.removeRow = function (index) {
+	index = (+index);
+	var row = this.getRow(index);
+	var gridSize = this.size();
+
+	var indexes = this.getIndexes();
+	var gridId = this.getId();
+    
+    jQuery.makeArray(this.getRowFields(index)).each(function (/*Element*/ field) { DOM.removeEvent(field); });
+	row.parentNode.removeChild(row);
+	
+	for (var nextIndex = (index + 1); nextIndex < gridSize; ++nextIndex) {
+		var lastI = (nextIndex - 1);
+		var row = this.getRow(nextIndex);
+		row.id = (this._getRowIdPrefix() + "_" + lastI);
+		indexes.each(
+            function (/*String*/ key) {
+                var campo = (
+	                this.doc.getElementById(gridId + "[" + nextIndex + "]." + key + "_" + nextIndex) ||
+                    //jQuery('#' + gridId + "\\[" + nextIndex + "\\]\\." + key + "_" + nextIndex)[0]  ||
+                    
+                    /**
+                     * @SPWFix 
+                     * Pega os campos da linha que ficaram com índice "-1"
+                     */
+                     
+	                DOM.filterElements(
+                        row, 
+                        function(/*Element*/ element) { return element.id && element.id === (gridId + "[-1]." + key + "_-1"); }
+                    )[0]
+                );
+                if(campo) {
+                	campo.id = (gridId + "[" + lastI + "]." + key + "_" + lastI);
+                } else {
+                	throw "Campo " + gridId + "[" + nextIndex + "]." + key + "_" + nextIndex + " não encontrado.";
+                }
+            },
+            this
+        );
+	}
+	
+	this._flush();
+} 
+
+/**
+ * Atualiza as colunas de somatória 
+ * 
+ * @private
+ * @return {undefined}
+ */
+GridHandler.prototype._updateSum = function () {
+	//TODO: Implementar a soma de colunas
+}
+/**
+ * @include "../Manhattan.js"
+ */
+
+/**
+ * Seleciona um item do array segundo o critério indicado pela função
+ *
+ * @addon
+ * @param {Function} selectFunction (function(element, index, array, selected))
+ * @param {Object} thisObject [undefined]
+ * @return {mixed}
+ */
+Array.prototype.select = function(selectFunction, thisObject) {
+	var length = this.length;
+	var selected;
+    thisObject = thisObject || this;
+	for (var i = 0; i < length; i++) {
+		selected = selectFunction.call(thisObject, this[i], i, this, selected);
+	}
+
+	return selected;
+}
+
+/**
+ * Retorna os elementos filtrados segundo o critério indicado pela função
+ *
+ * @addon
+ * @param {Function} filterFunction (function(element, index, array, filtered))
+ * @param {Object} thisObject [undefined]
+ * @return {mixed[]}
+ *
+ * @DEPRECATED utilizar grep do jQuery.
+ */
+Array.prototype.filter = function(filterFunction, thisObject) {
+	var length = this.length;
+	var filtered = [];
+    thisObject = thisObject || this;
+
+	for (var i = 0; i < length; i++) {
+		var element = this[i];
+		if (filterFunction.call(thisObject, element, i, this, filtered)) {
+			filtered.push(element);
+		}
+	}
+
+	return filtered;
+}
+
+if (!Array.prototype.forEach) {
+	/**
+	 * Executa uma função para cada elemento do array
+	 * 
+	 * @see http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:forEach
+	 * @addon
+	 * @param {Function} eachFunction (function(element, index, array));
+	 * @param {Object} thisObject [undefined]
+	 * @return {mixed}
+	 */
+	Array.prototype.forEach = function(eachFunction, thisObject) {
+		var length = this.length;
+		var eachReturn;
+	    thisObject = thisObject || this;
+	
+	    for (var i = 0; i < length; i++) {
+			eachReturn = eachFunction.call(thisObject, this[i], i, this);
+		}
+	
+	    return eachReturn;
+	}
+}
+
+/**
+ * Alias para o {@link Array#forEach}
+ * 
+ * @deprecated Usar o {@link Array#forEach}
+ * @param {Function} eachFunction (function(element, index, array));
+ * @param {Object} thisObject [undefined]
+ * @return {mixed}
+ *
+ * @DEPRECATED utilizar each do jQuery.
+ */
+Array.prototype.each = Array.prototype.forEach;
+
+/**
+ * Seleciona a primeira ocorrência que satisfaça a função de critério
+ *
+ * @addon
+ * @param {Function} selectFunction (function(element, index, array))
+ * @param {Object} thisObject [undefined]
+ * @return {mixed}
+ *
+ * @DEPRECATED utilizar selectores do jQuery.
+ */
+Array.prototype.selectFirst = function(selectFunction, thisObject) {
+	var length = this.length;
+    thisObject = thisObject || this;
+	for (var i = 0; i < length; i++) {
+		var element = this[i];
+		if (selectFunction.call(thisObject, element, i, this)) {
+			return element;
+		}
+	}
+}
+
+/**
+ * Seleciona a última ocorrência que satisfaça a função de critério
+ *
+ * @addon
+ * @param {Function} selectFunction (function(element, index, array))
+ * @param {Object} thisObject [undefined]
+ * @return {mixed}
+ */
+Array.prototype.selectLast = function(selectFunction, thisObject) {
+	var length = this.length;
+    thisObject = thisObject || this;
+	for (var i = (length - 1); i >= 0; i--) {
+		var element = this[i];
+        if (selectFunction.call(thisObject, element, i, this)) {
+			return element;
+		}
+	}
+}
+
+/**
+ * Retorna o último elemento do array
+ *
+ * @addon
+ * @return {mixed}
+ */
+Array.prototype.last = function() {
+	if (!this.isEmpty()) {
+		return this[this.lastIndex()];
+	}
+}
+
+/**
+ * Retorna o último índice do array
+ *
+ * @addon
+ * @return {Integer}
+ */
+Array.prototype.lastIndex = function() {
+	if (!this.isEmpty()) {
+		return (this.length - 1);
+	}
+}
+
+/**
+ * Indica se o array está vazio
+ *
+ * @addon
+ * @return {Boolean}
+ */
+Array.prototype.isEmpty = function() {
+	return (this.length == 0);
+}
+
+/**
+ * Retorna o primeira elemento do array
+ *
+ * @addon
+ * @return {mixed}
+ */
+Array.prototype.first = function() {
+	if (!this.isEmpty()) {
+		return this[0];
+	}
+}
+
+if (!Array.prototype.some) {
+	/**
+	 * Indica se algum elemento do array satisfaz a função condicional
+     * 
+	 * @see http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:some
+	 * @addon
+	 * @param {Function} anyFunction (function(element, index, array))
+	 * @param {Object} thisObject [undefined]
+	 * @return {Boolean}
+	 */
+	Array.prototype.some = function(anyFunction, thisObject) {
+	    var length = this.length;
+	    thisObject = thisObject || this;
+	    for (var i = 0; i < length; i++) {
+	        if (anyFunction.call(thisObject, this[i], i, this)) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+}
+
+/**
+ * Alias para o {@link Array#some}
+ * 
+ * @param {Function} anyFunction (function(element, index, array))
+ * @return {Boolean}
+ */
+Array.prototype.any = Array.prototype.some;
+
+
+if (!Array.prototype.every) {
+	/**
+	 * Indica se todos os elementos do array satisfazem a função condicional
+	 *
+	 * @see http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:every
+	 * @addon
+	 * @param {Function} everyFunction (function(element, index, array))
+	 * @param {Object} thisObject [undefined]
+	 * @return {Boolean}
+	 */
+	Array.prototype.every = function (everyFunction, thisObject) {
+		var length = this.length;
+	    thisObject = thisObject || this;
+		for (var i = 0; i < length; i++) {
+			if (!everyFunction.call(thisObject, this[i], i, this)) {
+				return false;
+			}
+		}
+	
+		return true;
+	}
+}
+
+if (!Array.prototype.indexOf) {
+	/**
+	 * Procura a primeira ocorrência de um elemento no array (usando ===)
+	 * @see http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:indexOf
+	 *
+	 * @addon
+	 * @param {mixed} needle
+	 * @param {Integer} offset [0]
+	 * @return {Integer}
+	 */
+	Array.prototype.indexOf = function (needle, offset) {
+		var length = this.length;
+		for (var i = offset || 0; i < length; i++) {
+			if (this[i] === needle) {
+				return i;
+			}
+		}
+	
+		return -1;
+	}
+}
+
+if (!Array.prototype.lastIndexOf) {
+    /**
+     * Procura a última ocorrência de um elemento no array (usando ===)
+     * @see http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:lastIndexOf
+     *
+     * @addon
+     * @param {mixed} elt
+     * @param {Integer} from [0]
+     * @return {Integer}
+     */
+	Array.prototype.lastIndexOf = function(elt /*, from*/) {
+		var len = this.length;
+		var from = Number(arguments[1]);
+		if (isNaN(from)) {
+		    from = len - 1;
+	    } else {
+	        from = 
+	            (from < 0)
+	            ? Math.ceil(from)
+	            : Math.floor(from);
+	        if (from < 0)
+	            from += len;
+	        else if (from >= len)
+	            from = len - 1;
+	    }
+	
+	    for (; from > -1; --from) {
+	        if (from in this && this[from] === elt)
+	            return from;
+	    }
+	
+	    return -1;
+    };
+}
+
+/**
+ * Procura a primeira ocorrência de um elemento no array (usando {@link Util#equals} )
+ *
+ * @addon
+ * @param {mixed} needle
+ * @param {Integer} offset [0]
+ * @return {Integer}
+ */
+Array.prototype.search = function(needle, offset) {
+	var length = this.length;
+	for (var i = offset || 0; i < length; i++) {
+		if (Util.equals(this[i], needle)) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+/**
+ * Indica a existência de um determinado elemento no array
+ *
+ * @addon
+ * @param {mixed} thing
+ * @param {Boolean} strict [true]
+ * @return {Boolean}
+ */
+Array.prototype.contains = function(thing, strict) {
+    strict = Util.isUndefined(strict) ? true : strict;
+    return (strict ? this.indexOf(thing) : this.search(thing)) != -1;
+}
+
+/**
+ * Indica a existência de um determinado elemento no array (usar {@link Array#contains} )
+ *
+ * @addon
+ * @deprecated
+ * @param {mixed} thing
+ * @param {Boolean} strict [true]
+ * @return {Boolean}
+ */
+Array.prototype.inArray = Array.prototype.contains;
+
+/**
+ * Remove um elemento e retorna o mesmo
+ *
+ * @addon
+ * @param {Integer} index
+ * @return {mixed}
+ * @throws Error
+ */
+Array.prototype.remove = function(index) {
+    if (index >= this.length || index < 0) {
+        throw new Error("Array#remove: Index out of bounds");
+    }
+    
+    return this.splice(index,1)[0]; 
+}
+
+/**
+ * Remove um elemento e retorna o mesmo
+ *
+ * @addon
+ * @param {mixed} element
+ * @param {Boolean} strict [true]
+ * @return {mixed}
+ */
+Array.prototype.removeElement = function(element, strict) {
+	strict = typeof strict == "undefined" ? true : strict;
+	var index = strict ? this.indexOf(element) : this.search(element);
+	if (index != -1) {
+		return this.remove(index);
+	}
+}
+
+/**
+ * Retorna o maior valor numérico do array
+ * 
+ * @return {Number}
+ */
+Array.prototype.max = function() {
+	return this.select(
+		function(/*Number*/ element, /*Integer*/ index, /*Number[]*/ array, /*NUmber[]*/ selected) {
+			return (
+				Util.isUndefined(selected)
+				? element
+				: element >= selected 
+				? element 
+				: selected
+		);
+		}
+	);
+}
+
+/**
+ * Retorna o menor valor numérico do array
+ * 
+ * @return {Number}
+ */
+Array.prototype.min = function() {
+	return this.select(
+        function(/*Number*/ element, /*Integer*/ index, /*Number[]*/ array, /*NUmber[]*/ selected) {
+			return (
+				Util.isUndefined(selected)
+				? element
+				: element <= selected 
+				? element : 
+				selected
+			);
+		}
+	);
+}
+
+/**
+ * Retorna um array contendo os elementos de um objeto iterável (arraylike)
+ *
+ * @addon
+ * @param {mixed} arrayLike
+ * @return {mixed[]}
+ */
+Array.toArray = function(arrayLike) {
+	var returnArray = [];
+	var length = arrayLike.length;
+	if (typeof length != "undefined") {
+		for (var i = 0; i < length; i++) {
+			returnArray.push(arrayLike[i]);
+		}
+	}
+
+	return returnArray;
+}
+
+/**
+ * Zera o array
+ * 
+ * @return {undefined}
+ */
+Array.prototype.clear = function() {
+	while (this.length > 0) {
+		void(this.pop());
+	}
+}
+
+/**
+ * Retorna um array contendo os elementos de ambos os arrays
+ * 
+ * @deprecated Usar diretamente o método {@link Array#concat}
+ * @param {mixed[]} array
+ * @return {mixed}
+ */
+Array.prototype.merge = function(array) {
+    return this.concat(array);
+}
+
+/**
+ * Retorna um array contendo a união dos elementos deste e do outro array, não permitindo elementos duplicados
+ *
+ * @deprecated Usar o método <b>concat</b>
+ * @param {mixed[]} array
+ * @param {Boolean} strict [true]
+ * @return {undefined}
+ */
+Array.prototype.union = function (array, strict) {
+	strict = Util.isUndefined(strict) ? true : strict;
+	var returnArray = [];
+	
+	eachFunction = function(/*mixed*/ thing) {
+		if (!returnArray.contains(thing, strict)) {
+			returnArray.push(thing);
+		}
+	}
+	
+	this.each(eachFunction);
+	array.each(eachFunction);
+
+	return returnArray;
+}
+
+/**
+ * Similar ao {@link Array#push}) mas não permite duplicidade dentro do array, retornando o tamanho final do array 
+ * 
+ * @param {mixed...} arguments
+ * @return {Integer}
+ */
+Array.prototype.add = function () {
+	var arr = this;
+	jQuery.makeArray(arguments).each(
+		function (/*mixed*/ thing) {
+			if (!arr.contains(thing)) {
+				arr.push(thing);
+			}
+		}
+	);
+	
+	return this.length;
+}
+
+if (!Array.prototype.map) {
+	/**
+	 * Retorna um novo array com os resultados da chamada da função de mapeamento passada por cada elemento do array
+	 * @see http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:map
+	 *
+	 * @param {Function} mapFunction
+	 * @param {Object} thisObject
+	 */
+	Array.prototype.map = function (mapFunction, thisObject) {
+	    var length = this.length;
+	    var returnArray = new Array(length);
+	    thisObject = thisObject || this;
+	    this.each(
+	        function (/*mixed*/ element, /*Integer*/ index, /*mixed[]*/ array) {
+	            returnArray[index] = mapFunction.call(thisObject, element, index, array);
+	        }
+	    );
+	    
+	    return returnArray;
+	};
+}
+
+/**
+ * Retorna uma string JSON representando o array
+ * 
+ * @see http://www.json.org/json.js
+ * @return {String}
+ */
+Array.prototype.toJSONString = function () {
+    var atributos = [];
+        
+    this.each(
+        function (/*mixed*/ item) {
+	        switch (typeof item) {
+	            case 'object':
+	                if (item) {
+	                    if (typeof item.toJSONString === 'function') {
+	                        atributos.push(item.toJSONString());
+	                    }
+	                } else {
+	                    atributos.push('null');
+	                }
+	                break;
+	
+	            case 'string':
+	            case 'number':
+	            case 'boolean':
+	                atributos.push(item.toJSONString());
+	        }            
+        }
+    );
+
+    return '[' + atributos.join(',') + ']';
+};
+
+if (!Array.prototype.reduce) {
+    /**
+     * Aplica uma função simultaneamente contra dois valores do array (da esquerda para a direita) para reduzir para um único valor
+     * @see http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:reduce
+     *
+     * @param {Function} reduceFunction
+     * @param {mixed} inicial [undefined]
+     * @param {Object} thisObject
+     */
+    Array.prototype.reduce = function(reduceFunction, inicial) {
+	    var len = this.length;
+	    if (!Util.isFunction(reduceFunction)) {
+            throw new TypeError("Array#reduce: invalid function");
+        }
+        
+	    if (len == 0 && arguments.length == 1) {
+			throw new TypeError("Array#reduce: no value to return, initial value and an empty array");
+	    }
+
+		var i = 0;
+		if (arguments.length >= 2) {
+            var rv = inicial;
+		} else {
+            do {
+                if (i in this) {
+                    rv = this[i++];
+                    break;
+                }
+		        if (++i >= len) {
+		            throw new TypeError("Array#reduce: no value to return, initial value and an empty array");
+		        }
+	        } while (true);
+	    }
+
+	    for (; i < len; i++) {
+            if (i in this) {
+                rv = reduceFunction.call(null, rv, this[i], i, this);
+            }
+	    }
+
+	    return rv;
+    };
+}
+
+if (!Array.prototype.reduceRight) {
+    /**
+     * Aplica uma função simultaneamente contra dois valores do array (da direita para a esquerda) para reduzir para um único valor
+     * @see http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:reduceRight
+     *
+     * @param {Function} reduceFunction
+     * @param {mixed} inicial [undefined]
+     * @param {Object} thisObject
+     */    
+    Array.prototype.reduceRight = function(reduceFunction, inicial) {
+	    var len = this.length;
+	    if (!Util.isFunction(reduceFunction)) {
+			throw new TypeError("Array#reduce: invalid function");
+	    }
+
+	    if (len == 0 && arguments.length == 1) {
+		    throw new TypeError("Array#reduce: no value to return, initial value and an empty array");
+        }
+
+	    var i = len - 1;
+	    if (arguments.length >= 2) {
+            var rv = inicial;
+	    } else {
+            do {
+		        if (i in this) {
+		           rv = this[i--];
+		           break;
+		        }
+	
+		        if (--i < 0) {
+		            throw new TypeError("Array#reduce: no value to return, initial value and an empty array");
+		        }
+            } while (true);
+        }
+
+	    for (; i >= 0; i--) {
+		    if (i in this) {
+		        rv = reduceFunction.call(null, rv, this[i], i, this);
+            }
+	    }
+
+		return rv;
+    };
+}
+/**
+ * Retorna uma string JSON representando o booleano
+ * 
+ * @see http://www.json.org/json.js
+ * @return {String}
+ */
+Boolean.prototype.toJSONString = function () {
+    return String(this);
+};
+/**
+ * @extends
+ */
+Date.superClass = Object.prototype;
+
+/**
+ * @type Integer
+ */
+Date.SECOND = 1000;
+
+/**
+ * @type Integer
+ */
+Date.MINUTE = 0xEA60;
+
+/**
+ * @type Integer
+ */
+Date.HOUR = 0x36EE80;
+
+/**
+ * @type Integer
+ */
+Date.DAY = 0x5265C00;
+
+/**
+ * @type Integer
+ */
+Date.WEEK = 0x240C8400;
+
+/**
+ * @type String
+ */
+Date.TYPE_MONTH = "M";
+
+/**
+ * @type String
+ */
+Date.TYPE_YEAR = "Y";
+
+/**
+ * @type String
+ */
+Date.TYPE_DAY = "D";
+
+/**
+ * @type String[]
+ */
+Date.WEEK_DAY = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"];
+
+/**
+ * @type String[]
+ */
+Date.SHORT_WEEK_DAY = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"];
+
+/**
+ * @type String[]
+ */
+Date.MONTH_NAME = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+/**
+ * @type String[]
+ */
+Date.SHORT_MONTH_NAME = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+
+/**
+ * @type Integer[]
+ */
+Date.MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+/**
+ * Número de milisegundos de diferença entre a representação da data local e UTC
+ * 
+ * @type Integer
+ */
+Date.TIME_ZONE_OFFSET = (new Date().getTimezoneOffset() * 60000);
+
+/**
+ * Retorna uma versão em String de um Date (dd/mm/yyyy)
+ *
+ * @addon
+ * @type String
+ */
+Date.prototype.toString = function() {
+	return this.format("%d/%m/%Y");
+}
+
+/**
+ * Verifica se determinada data é final de semana
+ *
+ * @addon
+ * @param {Date} date
+ * @type Boolean
+ */
+Date.prototype.isWeekend = function() {
+ 	return (this.getDay() == 0 || this.getDay() == 6);
+}
+
+/**
+ * Retorna o dia da semana
+ * 
+ * @type String
+ */
+Date.prototype.getLocaleDay = function() {
+	return this.format("%a");
+}
+
+/**
+ * STR TO DATE - Converte um string no formato DD/MM/YYYY para Date
+ *
+ * @addon
+ * @param {String} strDate
+ * @type Date
+ */
+Date.strToDate = function(strDate) {
+ 	var valores = strDate.split("/");
+
+    return new Date(valores[1] + '/' + valores[0] + '/' + valores[2]);
+}
+
+/**
+ * Converte uma data impressa pelo servidor no formato YYYY-MM-DD hh:mm:ss.l para Date
+ *
+ * @addon
+ * @param {String} strDate
+ * @type Date
+ */
+Date.serverStrToDate = function(strDate) {
+    return new Date(strDate.split(".").shift().replace(/\-/g, "/"));
+}
+
+/**
+ * Retorna o numero da semana no ano (ISO 8601) (dynarch)
+ * 
+ * @type Integer
+ */
+Date.prototype.getWeekNumber = function() {
+	var d = new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0);
+	var DoW = d.getDay();
+	d.setDate(d.getDate() - (DoW + 6) % 7 + 3);
+	var ms = d.valueOf();
+	d.setMonth(0);
+	d.setDate(4);
+	return Math.round((ms - d.valueOf()) / (7 * 864e5)) + 1;
+};
+
+/**
+ * Retorna o número do dia no ano
+ * 
+ * @type Integer
+ */
+Date.prototype.getDayOfYear = function() {
+	var now = new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0);
+	var then = new Date(this.getFullYear(), 0, 0, 0, 0, 0);
+	var time = now - then;
+	return Math.floor(time / Date.DAY);
+};
+
+/** 
+ * Retorna a string da data formatada
+ * 
+ * <pre>
+ * Tokens:
+ * "%a" Dia da semana abreviado
+ * "%A" Dia da semana completo
+ * "%b" Nome do mês abreviado
+ * "%B" Nome do mês completo
+ * "%C" Século
+ * "%d" Dia do mês (01 a 31)
+ * "%e" Dia do mês (1 a 31)
+ * "%H" Hora do dia (00 a 23)
+ * "%i" Hora do dia (01 a 12)
+ * "%j" Dia do ano (001 a 366)
+ * "%k" Hora do dia (0 a 23)
+ * "%l" Hora do dia (1 a 12)
+ * "%m" Mês (01 a 12)
+ * "%M" Minuto (00 a 59)
+ * "%n" Quebra de linha (\n)
+ * "%p" Periodo do dia (am/pm)
+ * "%P" Periodo do dia (AM/PM)
+ * "%s" Segundos
+ * "%S" Segundos (00 a 59)
+ * "%t" Caracter Tab (\t)
+ * "%U" Número da semana no ano (01 a 53)
+ * "%u" Dia da semana (1 a 7, 1 = segunda)
+ * "%V" Número da semana no ano (01 a 53)
+ * "%w" Dia da semana (0 a 6, 0 = domingo)
+ * "%W" Número da semana no ano (01 a 53)
+ * "%y" Ano sem o século (00 a 99)
+ * "%Y" Ano completo
+ * "%%" Caracter porcentagem (%)
+ * </pre>
+ * 
+ * @param {String} formato combinação de literais e tokens ("%d/%m/%Y" => "25/12/2007")
+ * @type String
+ */
+Date.prototype.format = function (format) {
+	var m = this.getMonth();
+	var d = this.getDate();
+	var y = this.getFullYear();
+	var wn = this.getWeekNumber();
+	var w = this.getDay();
+	var s = {};
+	var hr = this.getHours();
+	var pm = (hr >= 12);
+	var ir = (pm) ? (hr - 12) : hr;
+	var dy = this.getDayOfYear();
+	if (ir == 0) ir = 12;
+	var min = this.getMinutes();
+	var sec = this.getSeconds();
+
+	s["%a"] = Date.SHORT_WEEK_DAY[w];
+	s["%A"] = Date.WEEK_DAY[w];
+	s["%b"] = Date.SHORT_MONTH_NAME[m];
+	s["%B"] = Date.MONTH_NAME[m];
+	s["%C"] = 1 + Math.floor(y / 100);
+	s["%d"] = (d < 10) ? ("0" + d) : d;
+	s["%e"] = d;
+	s["%H"] = (hr < 10) ? ("0" + hr) : hr;
+	s["%I"] = (ir < 10) ? ("0" + ir) : ir;
+	s["%j"] = (dy < 100) ? ((dy < 10) ? ("00" + dy) : ("0" + dy)) : dy;
+	s["%k"] = hr;
+	s["%l"] = ir;
+	s["%m"] = (m < 9) ? ("0" + (1+m)) : (1+m);
+	s["%M"] = (min < 10) ? ("0" + min) : min;
+	s["%n"] = "\n";
+	s["%p"] = pm ? "PM" : "AM";
+	s["%P"] = pm ? "pm" : "am";
+	s["%s"] = Math.floor(this.getTime() / 1000);
+	s["%S"] = (sec < 10) ? ("0" + sec) : sec;
+	s["%t"] = "\t";
+	s["%U"] = s["%W"] = s["%V"] = (wn < 10) ? ("0" + wn) : wn;
+	s["%u"] = w + 1;
+	s["%w"] = w;
+	s["%y"] = ('' + y).substr(2, 2);
+	s["%Y"] = y;
+	s["%%"] = "%";
+
+	var re = /%./g;
+	format = String(format);
+
+	var a = format.match(re);
+
+	for (var i = 0; i < a.length; i++) {
+		var tmp = s[a[i]];
+		if (tmp) {
+			re = new RegExp(a[i], 'g');
+			format = format.replace(re, tmp);
+		}
+	}
+
+	return format;
+};
+
+/**
+ * Retorna o numero do último dia do mês da data
+ * 
+ * @type Integer
+ */
+Date.prototype.getMonthMaxDay = function() {
+	var month = this.getMonth();
+	return (
+		month === 1 && (this.getFullYear() % 4) === 0 
+		? 29
+		: Date.MONTH_DAYS[month]
+	);
+}
+
+
+/**
+ * Retorna uma string JSON representando a data
+ * 
+ * @see http://www.json.org/json.js
+ * @return {String}
+ */
+Date.prototype.toJSONString = function () {
+    function f(n) {
+        return n < 10 ? '0' + n : n;
+    }
+
+    return '"' + this.getFullYear() + '-' +
+            f(this.getMonth() + 1) + '-' +
+            f(this.getDate()) + 'T' +
+            f(this.getHours()) + ':' +
+            f(this.getMinutes()) + ':' +
+            f(this.getSeconds()) + '"';
+};
+
+/**
+ * Indica se uma data esta entre duas determinadas datas (inclusivo)
+ * 
+ * @param {Date} startDate
+ * @param {Date} endDate
+ * @return {Boolean}
+ */
+Date.prototype.between = function(startDate, endDate) {
+    if (startDate > endDate) {
+        var swapTemp = endDate;
+        endDate = startDate;
+        startDate = swapTemp;
+    }
+    return (startDate <= this && endDate >= this);
+}
+
+/**
+ * Indica se esta data está após a data passada
+ * 
+ * @param {Date} date
+ * @return {Boolean}
+ */
+Date.prototype.after = function(date) {
+    return (this > date);
+}
+
+/**
+ * Indica se esta data está anterior a data passada
+ * 
+ * @param {Date} date
+ * @return {Boolean}
+ */
+Date.prototype.before = function(date) {
+    return this < date;
+}
+
+/**
+ * Verifica a equalidade entre esta data e uma outra data
+ * 
+ * @param {Date} date
+ * @return {Boolean}
+ */
+Date.prototype.equals = function(date) {
+    return Date.superClass.equals.call(this, date) || (date instanceof Date && date.getTime() == this.getTime());
+}
+
+/**
+ * Retorna um clone da data
+ * 
+ * @return {Date}
+ */
+Date.prototype.clone = function() {
+    return (new Date(this.getTime()));
+}
+
+/**
+ * Adiciona um determinado número de tempo a data 
+ * 
+ * @param {String} type
+ * @param {Number} number
+ * @return {Date}
+ * @throws {TypeError}
+ */
+Date.prototype.roll = function(type, number) {
+   if (type === Date.TYPE_DAY) {
+       this.setTime(this.getTime() + (number * Date.DAY));
+   } else if (type === Date.TYPE_MONTH || type === Date.TYPE_YEAR) {
+       var n = Math.abs(number);
+       var add = number >= 0 ? 1 : -1;
+       for (var x = 1; x <= n; x++) {
+           var day = this.getDate();
+           this.setDate(1);
+           if (type == Date.TYPE_MONTH) {
+               this.setMonth(this.getMonth() + add);
+           } else {
+               this.setFullYear(this.getFullYear() + add);
+           }
+           if (day > this.getMonthMaxDay()) {
+               this.setDate(this.getMonthMaxDay());
+           } else {
+               this.setDate(day);
+           }
+       }
+   } else {
+       throw new TypeError('Date#roll: invalid type');
+   }
+
+   return this;
+};
+
+
+/**
+ * Retorna a diferença entre esta e outra data segundo o tipo indicado
+ * 
+ * @param {String} type
+ * @param {Date} dateEnd
+ * @return {Number}
+ * @throws {TypeError}
+ */
+Date.prototype.diff = function(type, dateEnd) {
+   if (type == Date.TYPE_DAY) {
+       return Math.floor((dateEnd.getTime() - this.getTime()) / Date.DAY);
+   } else if (type === Date.TYPE_MONTH) {
+       var years = (dateEnd.getFullYear() - this.getFullYear()) * 12;
+       if (dateEnd.getMonth() >= this.getMonth()) {
+           return years + (dateEnd.getMonth() - this.getMonth());
+       } else {
+           return years - (this.getMonth() - dateEnd.getMonth());
+       }
+   } else if (type === Date.TYPE_YEAR) {
+       return dateEnd.getFullYear() - this.getFullYear();
+   } else {
+       throw new TypeError('Date#diff: invalid type');
+   }
+}; 
+/**
+ * Construtor do Hash
+ *
+ * @requires Util
+ * @requires Array
+ * @requires String
+ * @constructor
+ * @param {Object} object
+ * @type Hash
+ */
+function Hash(object) {
+	/**
+	 * @private
+	 * @type Object
+	 */
+	this._contents = {};
+
+	/**
+	 * @private
+	 * @type String[]
+	 */
+	this._indexes = [];
+	
+	var hash = this;
+	if (object) {
+		Util.getAttributes(object).each(function(element) { hash.set(element, object[element]); });
+	}
+}
+
+/**
+ * Seta o valor de um elemento do hashtable
+ *
+ * @param {String} index
+ * @param {mixed} value
+ * @type Hash
+ */
+Hash.prototype.set = function(index, value) {
+	if (!this.exists(index)) {
+		this._indexes.push(index);
+	}
+
+	this._contents["_" + index] = value;
+
+	return this;
+}
+
+/**
+ * Alias para o {@link Hash#set}
+ * 
+ * @type Hash
+ */
+Hash.prototype.put = Hash.prototype.set;
+
+/**
+ * Retorna o valor de um elemento do hashtable
+ *
+ * @param {String} index
+ * @type mixed
+ */
+Hash.prototype.get = function(index) {
+	return this._contents["_" + index];
+}
+
+/**
+ * Retorna um array com os nomes dos indices
+ *
+ * @type String[]
+ */
+Hash.prototype.indexes = function() {
+	return Util.clone(this._indexes);
+}
+
+/**
+ * Alias para o {@link Hash#indexes}
+ * 
+ * @type String[]
+ */
+Hash.prototype.keys = Hash.prototype.indexes;
+
+/**
+ * Indica se um determinado indice existe
+ *
+ * @param {String} index
+ * @type Boolean
+ */
+Hash.prototype.exists = function(index) {
+	return typeof this._contents["_" + index] != "undefined";
+}
+
+/**
+ * Remove o índice e seu elemento retornando o elemento removido
+ *
+ * @param {String} index
+ * @type mixed
+ */
+Hash.prototype.remove = function(index) {
+	if (jQuery.inArray(index,this._indexes)) {
+		this._indexes.removeElement(index);
+		var indexName = "_" + index;
+		var element = this._contents[indexName];
+		delete this._contents[indexName];
+		return element;
+	}
+}
+
+/**
+ * Limpa o hash
+ *
+ * @type Hash
+ */
+Hash.prototype.clear = function() {
+	this._contents = {};
+	this._indexes = [];
+	return this;
+}
+
+/**
+ * Retorna o numero de indices no hash
+ *
+ * @type Integer
+ */
+Hash.prototype.size = function() {
+	return this._indexes.length;
+}
+
+/**
+ * Indica se o hash está vazio
+ * 
+ * @type Boolean
+ */
+Hash.prototype.isEmpty = function() {
+	return (this.size() === 0);
+}
+
+/**
+ * Retorna um array contendo os valores do hash desconsiderando os indices
+ * 
+ * @type mixed[]
+ */
+Hash.prototype.toArray = function() {
+	var array = [];
+	var hash = this;
+	this.indexes().each(function(index) { array.push(hash.get(index)); });
+	return array;
+}
+
+/**
+ * Procura a primeira ocorrência de um elemento no hash (usando {@link Util#equals})
+ *
+ * @param {mixed} needle
+ * @type String
+ */
+Hash.prototype.search = function(element) {
+	var hash = this;
+	var index = this.indexes().selectFirst(function(index) {return Util.equals(element, hash.get(index)); });
+	return (
+		Util.isUndefined(index)
+		? null
+		: index
+	);
+}
+
+/**
+ * Procura a primeira ocorrência de um elemento no hash (usando ===)
+ *
+ * @addon
+ * @param {mixed} needle
+ * @type Integer
+ */
+Hash.prototype.indexOf = function(element) {
+	var hash = this;
+	var index = this.indexes().selectFirst(function(index) {return (element === hash.get(index)); });
+	return (
+		Util.isUndefined(index)
+		? null
+		: index
+	);	
+}
+
+/**
+ * Remove um elemento e retorna o mesmo
+ *
+ * @addon
+ * @param {mixed} element
+ * @param {Boolean} strict [true]
+ * @type mixed
+ */
+Hash.prototype.removeElement = function(element, strict) {
+	strict = typeof strict == "undefined" ? true : strict;
+	var index = strict ? this.indexOf(element) : this.search(element);
+	if (!Util.isNull(index)) {
+		return this.remove(index);
+	}
+}
+/**
+ * Construtor da classe IndexedHash
+ * 
+ * @constructor
+ * @extends Hash
+ * @param {mixed[]} values [undefined]
+ * @type IndexedHash
+ */
+function IndexedHash(values) {
+	Hash.call(this, values);
+	
+	/**
+	 * @type Integer
+	 * @private
+	 */
+	this._nextIndex = 0;
+	
+
+	/**
+	 * @type Integer
+	 * @private
+	 */
+	this._currentIndex = null;
+}
+
+Util.extend(IndexedHash, Hash);
+
+/**
+ * Retorna o próximo índice do hash
+ * 
+ * @type Integer
+ */
+IndexedHash.prototype.getNextIndex = function() {
+	return this._nextIndex;
+}
+
+/**
+ * Retorna o índice atual do hash
+ * 
+ * @type Integer
+ */
+IndexedHash.prototype.getCurrentIndex = function() {
+	return this._currentIndex;
+}
+
+/**
+ * Adiciona um ítem ao hash e retorna seu índice
+ * 
+ * @param {mixed} thing
+ * @type Integer
+ */
+IndexedHash.prototype.add = function(thing) {
+	this._currentIndex = this._nextIndex;
+	this._nextIndex++;
+	this.set(this._currentIndex, thing);
+	
+	return this._currentIndex;
+}
+
+/**
+ * Valida um valor de índice
+ * 
+ * @type {Integer} index
+ * @type Integer
+ */
+IndexedHash.prototype.validateIndex = function(index) {
+	var index = parseInt(index, 10);
+	if (Util.isInfinity(index) || isNaN(index)) {
+		return null;
+	}
+	return index;
+}
+
+/**
+ * Seta o valor de um elemento do hashtable
+ *
+ * @throws Error
+ * @param {Integer} index
+ * @param {mixed} value
+ * @type IndexedHash
+ */
+IndexedHash.prototype.set = function(index, value) {
+	var idx = this.validateIndex(index);
+	if (Util.isNull(idx)) {
+		throw ("Invalid index [" + index + "]");
+	}
+	
+	var ret = IndexedHash.superClass.set.call(this, idx, value);
+	if (idx = this.currentIndex) {
+		this._flush();
+	}
+	
+	return ret;
+}
+
+/**
+ * Alias para o {@link IndexedHash#set}
+ * 
+ * @type IndexedHash
+ */
+IndexedHash.prototype.put = IndexedHash.prototype.set;
+
+/**
+ * Retorna o valor de um elemento do hashtable
+ *
+ * @param {String} index
+ * @type mixed
+ * @throws Error
+ */
+IndexedHash.prototype.get = function(index) {
+	var idx = this.validateIndex(index);
+	if (Util.isNull(idx)) {
+		throw ("Invalid index [" + index + "]");
+	}
+	
+	return IndexedHash.superClass.get.call(this, index);
+}
+
+/**
+ * Remove o índice e seu elemento retornando o elemento removido
+ *
+ * @throws Error
+ * @param {String} index
+ * @type mixed
+ */
+IndexedHash.prototype.remove = function(index) {
+	var idx = this.validateIndex(index);
+	if (Util.isNull(idx)) {
+		throw ("Invalid index [" + index + "]");
+	}
+	
+	var ret = IndexedHash.superClass.remove.call(this, index);
+	
+	if (idx == this.currentIndex) {
+		this._flush();
+	}
+	
+	return ret;
+}
+
+/**
+ * Atualiza os atributos de controle internos
+ * 
+ * @type undefined
+ */
+IndexedHash.prototype._flush = function() {
+	if (this.isEmpty()) {
+		this._currentIndex = null;
+		this._nextIndex = 0;
+		return;
+	} 
+	this._nextIndex = this.indexes().max();
+	this._currentIndex = (this._nextIndex - 1);
+}
+/**
+ * Construtor da classe Interval
+ * Utilizar o par unidade/valor para inicializar ou então um outro intervalo
+ * 
+ * @requires Date
+ * @constructor
+ * @param {Interval|Integer} mixed Intervalo ou unidade dependendo do caso
+ * @param {Number} value Valor do intervalo caso for informada a unidade
+ * @type Interval
+ */
+function Interval(mixed, value) {
+
+	/**
+	 * @type Number
+	 * @private
+	 */
+	this._milliseconds = null;
+
+	/**
+	 * @type Number
+	 * @private
+	 */
+	this._seconds = 0;
+
+	/**
+	 * @type Number
+	 * @private
+	 */
+	this._minutes = null;
+
+	/**
+	 * @type Number
+	 * @private
+	 */
+	this._hours = null;
+
+	/**
+	 * @type Number
+	 * @private
+	 */
+	this._days = null;
+
+	/**
+	 * @type Number
+	 * @private
+	 */
+	this._weeks = null;
+
+	/**
+	 * @type Number
+	 * @private
+	 */
+	this._months = null;
+
+	/**
+	 * @type Number
+	 * @private
+	 */
+	this._years = null;
+	
+	if (mixed instanceof Interval) {
+		this.set(Interval.SECOND, mixed.get(Interval.SECOND));
+	} else if (!(Util.isUndefined(mixed) || Util.isUndefined(value))) {
+		this.set(mixed, value);
+	}
+}
+
+/**
+ * @type Integer
+ */
+Interval.MILLISECOND = 0;
+
+/**
+ * @type Integer
+ */
+Interval.SECOND = 1;
+
+/**
+ * @type Integer
+ */
+Interval.MINUTE = 2;
+
+/**
+ * @type Integer
+ */
+Interval.HOUR = 3;
+
+/**
+ * @type Integer
+ */
+Interval.DAY = 4;
+
+/**
+ * @type Integer
+ */
+Interval.WEEK = 5;
+
+/**
+ * @type Integer
+ */
+Interval.MONTH = 6;
+
+/**
+ * @type Integer
+ */
+Interval.YEAR = 7;
+
+/**
+ * Seta o valor do intervalo para a determinada unidade
+ * 
+ * @param {Integer} Unit
+ * @type undefined
+ */
+Interval.prototype.set = function(unit, value) {
+	this._seconds = (
+		unit === Interval.MILLISECOND
+		? value / 1000
+		: unit === Interval.SECOND
+		? value
+		: unit === Interval.MINUTE
+		? value * 60
+		: unit === Interval.HOUR
+		? value * 3600
+		: unit === Interval.DAY
+		? value * 0x15180
+		: unit === Interval.WEEK
+		? value * 0x93A80
+		: unit === Interval.MONTH
+		? value * 0x62E080
+		: unit === Interval.YEAR
+		? value * 0x1E13380
+		: null
+	);
+		
+	this._milliseconds = null;
+	this._minutes = null;
+	this._hours = null;
+	this._days = null;
+	this._weeks = null;
+	this._months = null;
+	this._years = null;		
+}
+
+/**
+ * Retorna o valor do intervalo na unidade correspondente
+ * 
+ * @param {Integer} unit
+ * @type Number
+ */
+Interval.prototype.get = function(unit) {
+	if (this._seconds === null) {
+		return null;
+	}
+
+	if (unit === Interval.MILLISECOND) {
+		if (this._milliseconds === null) {
+			this._milliseconds = this._seconds * 1000;
+		}
+		return this._milliseconds;
+	} else if (unit === Interval.SECOND) {
+		return this._seconds;
+	} else if (unit === Interval.MINUTE) {
+		if (this._minutes === null) {
+			this._minutes = this._seconds / 60;
+		}
+		return this._minutes;
+	} else if (unit === Interval.HOUR) {
+		if (this._hours === null) {
+			this._hours = this._seconds / 3600;
+		}
+		return this._hours;
+	} else if (unit === Interval.DAY) {
+		if (this._days === null) {
+			this._days = this._seconds / 0x15180;
+		}
+		return this._days;		
+	} else if (unit === Interval.WEEK) {
+		if (this._weeks === null) {
+			this._weeks = this._seconds / 0x93A80;
+		}
+		return this._weeks;		
+	} else if (unit === Interval.MONTH) {
+		if (this._months === null) {
+			this._months = this._seconds / 0x62E080;
+		}
+		return this._months;				
+	} else if (unit === Interval.YEAR) {
+		if (this._years === null) {
+			this._years = this._seconds / 0x1E13380;
+		}
+		return this._years;	
+	}	
+	
+	return null;
+}
+
+/**
+ * Retorna a menor parte de tempo segundo a unidade indicada
+ * 
+ * @param {Integer} unit
+ * @param {Boolean} signed [true]
+ * @type Integer
+ */
+Interval.prototype.getRemain = function(unit, signed) {
+	if (this._seconds === null) {
+		return null;
+	}
+
+	signed = typeof signed !== "undefined" ? signed : true;
+	
+	var value = Math.floor(
+		jQuery.inArray(unit, Interval.WEEK, Interval.YEAR)
+		? this.get(unit)
+		: this.get(unit) % (
+			unit === Interval.MILLISECOND
+			? 1000
+			: unit === Interval.SECOND
+			? 60
+			: unit === Interval.MINUTE
+			? 60
+			: unit === Interval.HOUR
+			? 24
+			: unit === Interval.DAY
+			? 30
+			: unit === Interval.MONTH
+			? 12
+			: 1
+		)
+	);
+	
+	return (
+		!signed && value < 0
+		? value * -1 
+		: value
+	);
+}
+
+/**
+ * Retorna um horário formatado
+ * 
+ * @deprecated falta um método genérico de formatação, algo do tipo Interval#format
+ * 
+ * @param {Boolean} signed [true]
+ * @return {String}
+ */
+Interval.prototype.getHorarioFormatado = function(signed) {
+	if (this._seconds === null) {
+		return null;
+	}
+
+	signed = typeof signed !== "undefined" ? signed : true;
+	
+	return (
+		("" + this.getRemain(Interval.HOUR, signed)).strPad("0", 2) + ":" + 
+		("" + this.getRemain(Interval.MINUTE, false)).strPad("0", 2) + ":" + 
+		("" + this.getRemain(Interval.SECOND, false)).strPad("0", 2)
+	);
+}
+
+/**
+ * Adiciona um intervalo a este
+ * 
+ * @param {Interval} interval
+ * @type Interval
+ */
+Interval.prototype.addInterval = function(interval) {
+	return this.add(Interval.SECOND, interval.get(Interval.SECOND));
+}
+
+/**
+ * Subtrai um intervalo deste
+ * 
+ * @param {Interval} interval
+ * @type Interval
+ */
+Interval.prototype.subtractInterval = function(interval) {
+	return this.subtract(Interval.SECOND, interval.get(Interval.SECOND));
+}
+
+/**
+ * Adiciona um determinado valor de tempo ao intervalo
+ * 
+ * @param {Integer} unit
+ * @param {Number} value
+ * @type Interval
+ */
+Interval.prototype.add = function(unit, value) {
+	this.set(unit, (this.get(unit) + value));
+	return this;
+}
+
+/**
+ * Subtrái um determinado valor de tempo do intervalo
+ * 
+ * @param {Integer} unit
+ * @param {Number} value
+ * @type Interval
+ */
+Interval.prototype.subtract = function(unit, value) {
+	this.set(unit, (this.get(unit) - value));
+	return this;
+}
+
+/**
+ * Retorna um intervalo da diferença entre este e outro intervalo
+ * 
+ * @type {Interval} interval
+ * @type Interval
+ */
+Interval.prototype.diff = function(interval) {
+	var diff = new Interval();
+	diff.set(Interval.SECOND, this.get(Interval.SECOND).diff(interval.get(Interval.SECOND)));
+	return diff;
+}
+
+/**
+ * Verifica se o intervalo é vazio
+ * 
+ * @type Boolean
+ */
+Interval.prototype.isEmpty = function() {
+	return (this.get(Interval.SECOND) === 0);
+}
+
+/**
+ * Retorna um clone do intervalo
+ * 
+ * @param {Interval} clone [undefined]
+ * @reeturn {Interval}
+ */
+Interval.prototype.clone = function(clone) {
+    clone = clone || new Interval();
+    
+    clone._seconds = this._seconds;
+    
+    return clone;
+}
+/**
+ * Retorna uma string formatada da hora
+ * 
+ * @type String
+ */
+Number.prototype.toTimeFormat = function() {
+	var val = ""+this;
+	
+	var hour = "" + (+val.substr(0, val.substr(length - 2)));
+	while (hour.length < 2) {
+		hour = "0" + hour;
+	}
+	
+	var minute = "" + (+val.substr(-2));
+	while(minute.length) {
+		minute = "0" + minute;
+	}
+
+	return hour + ":" + minute;
+}
+
+/**
+ * Cria um numero a partir de uma string de hora formatada
+ * 
+ * @param {String} value
+ * @type Number
+ */
+Number.fromTimeFormat = function(value) {
+	return +value.strReplace(/\:/g, value);
+}
+
+/**
+ * Verifica se o número esta entre determinado valor
+ * 
+ * @param {Number} value1
+ * @param {Number} value2
+ * @type undefined
+ */
+Number.prototype.between = function(value1, value2) {
+	if (value1 > value2) {
+		return value2 <= this && value1 >= this;
+	} else {
+		return value1 <= this && value2 >= this;
+	}
+}
+
+/**
+ * Retorna a diferença entre um outro valor
+ * 
+ * @param {Number} value
+ * @type Number
+ */
+Number.prototype.diff = function(value) {
+	return (
+		value > this
+		? value - this
+		: this - value
+	);
+}	
+
+
+/**
+ * Retorna uma string JSON representando o número
+ * 
+ * @see http://www.json.org/json.js
+ * @return {String}
+ */
+Number.prototype.toJSONString = function () {
+   return isFinite(this) ? String(this) : 'null';
+};
+
+
+/**
+ * @include "../Manhattan.js"
+ */
+
+/**
+ * Construtor da classe Range
+ * 
+ * @param {mixed} firstElement
+ * @param {mixed} lastElement
+ * @param {Function} getValueFunction [Util.valueOf]
+ * @constructor
+ * @return {Range}
+ */
+function Range(firstElement, lastElement, getValueFunction) {
+
+    /**
+	 * @type mixed
+	 */
+	this.firstElement = Util.isUndefined(firstElement) ? -Infinity : firstElement;
+	
+	/**
+	 * @type mixed
+	 */
+	this.lastElement = Util.isUndefined(lastElement) ? Infinity : lastElement;
+
+	/**
+	 * @type Function
+	 */	
+	this.getValueFunction = Util.isFunction(getValueFunction) ? getValueFunction : Util.valueOf;
+}
+
+/**
+ * @param {mixed} value
+ * @return {undefined}
+ */
+Range.prototype.setFirstElement = function(value) {
+	this.firstElement = value;
+}
+
+/**
+ * @return {mixed}
+ */
+Range.prototype.getFirstElement = function() {
+	return this.firstElement;
+}
+
+/**
+ * @param {mixed} value
+ * @return {undefined}
+ */
+Range.prototype.setLastElement = function(value) {
+	this.lastElement = value;
+}
+
+/**
+ * @return {mixed}
+ */
+Range.prototype.getLastElement = function() {
+	return this.lastElement;
+}
+
+/**
+ * @param {Function} value
+ * @return {undefined}
+ */
+Range.prototype.setGetValueFunction = function(value) {
+	this.getValueFunction = value;
+}
+
+/**
+ * @return {Function}
+ */
+Range.prototype.getGetValueFunction = function() {
+	return this.getValueFunction;
+}
+
+/**
+ * Retorna o valor do primeiro elemento
+ * 
+ * @return {Number}
+ */
+Range.prototype.getFirstValue = function() {
+	return (
+        Util.isInfinity(this.firstElement)
+		? this.firstElement
+		: this.getValueFunction(this.firstElement)
+	);
+}
+
+/**
+ * Retorna o valor do último elemento
+ * 
+ * @return {Number}
+ */
+Range.prototype.getLastValue = function() {
+	return (
+		Util.isInfinity(this.lastElement)
+		? this.firstElement
+		: this.getValueFunction(this.lastElement)
+	);
+}
+
+/**
+ * Retorna o elemento que possui o maior valor
+ * em caso de igualdade, retorna null
+ * 
+ * @return {mixed}
+ */
+Range.prototype.getMaxElement = function() {
+    var firstValue = this.getFirstValue(),
+        lastValue = this.getLastValue();
+    
+    switch (true) {
+        case (firstValue > lastValue)   : return this.firstElement;
+        case (firstValue < lastValue)   : return this.lastElement;
+        default                         : return null;
+    }
+}
+
+/**
+ * Retorna o elemento que possui o menor valor
+ * em caso de igualdade, retorna null
+ * 
+ * @return {mixed}
+ */
+Range.prototype.getMinElement = function() {
+    var firstValue = this.getFirstValue(),
+        lastValue = this.getLastValue();
+    
+    switch (true) {
+        case (firstValue < lastValue)   : return this.firstElement;
+        case (firstValue > lastValue)   : return this.lastElement;
+        default                         : return null;
+    }    
+}
+
+/**
+ * Retorna o valor máximo do campo
+ * 
+ * @return {Number}
+ */
+Range.prototype.getMinValue = function() {
+	var firstValue = this.getFirstValue();
+	var lastValue = this.getLastValue();
+
+	return (
+		firstValue > lastValue
+		? lastValue
+		: firstValue
+	);	
+}
+
+/**
+ * Retorna o valor mínimo do campo
+ * 
+ * @return {Number}
+ */
+Range.prototype.getMaxValue = function() {
+	var firstValue = this.getFirstValue();
+	var lastValue = this.getLastValue();
+
+	return (
+		firstValue > lastValue
+		? firstValue
+		: lastValue
+	);	
+}
+
+/**
+ * Retorna a diferença entre os dois valores
+ * 
+ * @return {Number}
+ */
+Range.prototype.diff = function() {
+	return this.getFirstValue().diff(this.getLastValue());
+}
+
+/**
+ * Verifica se existe intersecção entre dois campos
+ * 
+ * @param {Range} range
+ * @return {Boolean}
+ */
+Range.prototype.intersects = function(range) {
+	var maxR1 = this.getMaxValue();
+	var minR1 = this.getMinValue();
+	var maxR2 = range.getMaxValue();
+	var minR2 = range.getMinValue();
+	
+	return (
+		maxR1.between(maxR2, minR2) ||
+		minR1.between(maxR2, minR2) ||
+		maxR2.between(maxR1, minR1) ||
+		minR2.between(maxR1, minR1)
+	);
+}
+
+/** 
+ * Verifica o valor de intersecção entre dois campos
+ * 
+ * @param {Range} range
+ * @return {Number}
+ */
+Range.prototype.intersection = function(range) {
+	var intersectionRange = this.intersectionRange(range);
+	return intersectionRange !== null ? intersectionRange.diff() : null;
+}
+
+/** 
+ * Retorna o campo (somente valores) de intersecção entre dois campos
+ * 
+ * @param {Range} range
+ * @return {Number}
+ */
+Range.prototype.intersectionRange = function(range) {
+    var maxR1 = this.getMaxValue(),
+        minR1 = this.getMinValue(),
+        maxR2 = range.getMaxValue(),
+        minR2 = range.getMinValue();    
+    
+	if (!this.intersects(range)) {
+		return null;
+	}
+	if (this.contains(range)) {
+        return new Range(minR2, maxR2);
+	} else if (this.within(range)) {
+        return new Range(minR1, maxR1);
+	}
+
+	var lowestMax = Math.min(maxR1, maxR2)
+	var highestMin = Math.max(minR1, minR2);
+	
+	if (this.contains(minR2)) {
+		return new Range(minR2, lowestMax);
+	}
+	
+	if (this.contains(maxR2)) {
+		return new Range(maxR2, highestMin);
+	}
+	
+	if (range.contains(minR1)) {
+		return new Range(minR1, lowestMax);
+	}
+	
+	if (range.contains(maxR1)) {
+		return new Range(maxR1, highestMin);
+	}
+	
+	return null;
+}
+
+/**
+ * Verifica se o valor está contido neste campo
+ * 
+ * @param {mixed} value
+ * @return {Boolean}
+ */
+Range.prototype.contains = function(value) {
+	if (Util.isNumber(value) || value instanceof this.firstElement.constructor) {
+		return (Util.isNumber(value) ? value : this.getValueFunction(value)).between(this.getFirstValue(), this.getLastValue());
+	} else if (value instanceof Range) {
+		return value.getMinValue() >= this.getMinValue() && value.getMaxValue() <= this.getMaxValue(); 
+	} else {
+        throw new TypeError("Range#contains: invalid value");
+    }
+}
+
+/**
+ * Verifica se o campo está contido em um outro campo
+ * 
+ * @param {Range} range
+ * @return {Boolean}
+ */
+Range.prototype.within = function(range) {
+	return range.contains(this);
+}
+
+/**
+ * Retorna um array contendo o menor e o maior valor do range
+ * 
+ * @return {Number[]}
+ */
+Range.prototype.toArrayValue = function() {
+	return [this.getMinValue(), this.getMaxValue()];
+}
+
+/**
+ * Retorna um array contendo os elementos do range
+ * 
+ * @return {mixed[]}
+ */
+Range.prototype.toArray = function() {
+	return [this.firstElement, this.lastElement];
+}
+
+/**
+ * Soma a diferenca dos ranges de um array
+ * 
+ * @param {Range[]} ranges
+ * @return {Number}
+ */
+Range.sumDiffRanges = function(ranges) {
+	var sum = 0;
+	ranges.each(function(range) { sum += range.diff(); });
+	return sum;
+}
+
+/**
+ * Retorna um clone do range
+ * 
+ * @param {Range} clone [undefined]
+ * @return {Range}
+ */
+Range.prototype.clone = function(clone) {
+    clone = clone || new Range();
+    
+    clone.firstElement = this.firstElement;
+    clone.lastElement = this.lastElement;
+    clone.getValueFunction = this.getValueFunction;
+    
+    return clone;
+}
+/**
+ * @requires Util
+ */
+
+/**
+ * @type String
+ */
+String.BASE64_KEY = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+/**
+ * @type Object
+ */
+String.JSON_MAPPING = {
+	'\b': '\\b',
+	'\t': '\\t',
+	'\n': '\\n',
+	'\f': '\\f',
+	'\r': '\\r',
+	'"' : '\\"',
+	'\\': '\\\\'
+};
+
+/**
+ * Remove os espaços da esquerda da string
+ *
+ * @addon
+ * @type String
+ */
+String.prototype.ltrim = function() {
+	return this.replace(/\s*((\S+\s*)*)/, "$1");
+}
+
+/**
+ * Remove os espaços da esquerda da string
+ *
+ * @addon
+ * @type String
+ */
+String.prototype.rtrim = function() {
+	return this.replace(/((\s*\S+)*)\s*/, "$1");
+}
+
+/**
+ * Remove os espaços da esquerda e da direita da string
+ *
+ * @addon
+ * @type String
+ */
+String.prototype.trim = function() {
+	return this.rtrim().ltrim();
+}
+
+/**
+ * Indica se uma determinada string está continda nesta
+ *
+ * @param {String} needle
+ * @addon
+ * @type Boolean
+ */
+String.prototype.inString = function(needle) {
+	return this.indexOf(needle) != -1;
+}
+
+/**
+ * Verifica se a string inicia com uma determinada substring
+ *
+ * @param {String} needle
+ * @addon
+ * @type Boolean
+ */
+String.prototype.startsWith = function(needle) {
+	return (this.indexOf(needle) == 0);
+}
+
+
+/**
+ * Retorna o valor da string codificado para uma URI
+ *
+ * @addon
+ * @type String
+ */
+String.prototype.uriEncode = function() {
+	return escape(this).replace(new RegExp('\\+','g'),'%2B').replace(new RegExp('%20','g'),'+');
+}
+
+/**
+ * Retorna o valor decodificado de uma string URI
+ *
+ * @addon
+ * @type String
+ */
+String.prototype.uriDecode = function() {
+	return unescape(this.replace(new RegExp('\\+','g'),' '));
+}
+
+/**
+ * Retorna a string codificada em base64
+ *
+ * @addon
+ * @type string
+ */
+String.prototype.encodeBase64 = function() {
+	var output = "";
+	var chr1, chr2, chr3;
+	var enc1, enc2, enc3, enc4;
+	var i = 0;
+	var base64Key = String.BASE64_KEY;
+	var length = this.length;
+
+	do {
+		chr1 = this.charCodeAt(i++);
+		chr2 = this.charCodeAt(i++);
+		chr3 = this.charCodeAt(i++);
+
+		enc1 = chr1 >> 2;
+		enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+		enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+		enc4 = chr3 & 63;
+
+		if (isNaN(chr2)) {
+			enc3 = enc4 = 64;
+		} else if (isNaN(chr3)) {
+			enc4 = 64;
+		}
+
+		output += (base64Key.charAt(enc1) + base64Key.charAt(enc2) +	base64Key.charAt(enc3) + base64Key.charAt(enc4));
+	} while (i < length);
+
+	return output;
+}
+
+/**
+ * Retorna a string decodificada a partir de um base64
+ *
+ * @addon
+ * @type String
+ */
+String.prototype.decodeBase64 = function() {
+	var output = "";
+	var chr1, chr2, chr3;
+	var enc1, enc2, enc3, enc4;
+	var i = 0;
+	var base64Key = String.BASE64_KEY;
+	var input = this.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+	var length = input.length;
+
+	do {
+		enc1 = base64Key.indexOf(input.charAt(i++));
+		enc2 = base64Key.indexOf(input.charAt(i++));
+		enc3 = base64Key.indexOf(input.charAt(i++));
+		enc4 = base64Key.indexOf(input.charAt(i++));
+
+		chr1 = (enc1 << 2) | (enc2 >> 4);
+		chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+		chr3 = ((enc3 & 3) << 6) | enc4;
+
+		output = output + String.fromCharCode(chr1);
+
+		if (enc3 != 64) {
+			output = output + String.fromCharCode(chr2);
+		}
+		if (enc4 != 64) {
+			output = output + String.fromCharCode(chr3);
+		}
+	} while (i < length);
+
+	return output;
+}
+
+/**
+ * Retorna a string transformado o primeiro caracter em letra maiúscula
+ *
+ * @addon
+ * @type String
+ */
+String.prototype.ucFirst = function() {
+	return this.charAt(0).toUpperCase() + this.substr(1);
+}
+
+/**
+ * Retorna a string transformado o primeiro caracter em letra minúscula
+ *
+ * @addon
+ * @type String
+ */
+String.prototype.lcFirst = function() {
+	return this.charAt(0).toLowerCase() + this.substr(1);
+}
+
+/**
+ * Retorna a string concatenada com uam repetição de caracteres até obter um determinado tamanho
+ * 
+ * @param {String} chr
+ * @param {Integer} length
+ * @param {Boolean} inverse 
+ * @type String
+ */
+String.prototype.strPad = function(chr, length, inverse) {
+	var str = "" + this;
+	while (str.length < length) {		
+		str = inverse ? str + chr : chr + str;
+	}
+
+	return str;
+}
+
+/**
+ * Retorna a string convertendo as quebras de linhas para "&lt;br /&gt;"
+ * 
+ * @type String
+ */
+String.prototype.nl2br = function() {
+	return this.replace(/\n/g, "<br />");
+}
+
+/**
+ * Indica se uma determinada string está continda nesta
+ *
+ * @param {String} needle
+ * @addon
+ * @type Boolean
+ */
+String.prototype.contains = function(needle) {
+	return (this.indexOf(needle) != -1);
+}
+
+/**
+ * Retorna o valor armazenado na string JSON
+ * 
+ * @see http://www.json.org/json.js
+ * @param {Function} filter [undefined] 
+ * @type mixed
+ */
+String.prototype.parseJSON = function(filter) {
+	var j;
+	
+	function walk(k, v) {
+	    var i;
+	    if (v && typeof v === 'object') {
+	        for (i in v) {
+	            if (v.hasOwnProperty(i)) {
+	                v[i] = walk(i, v[i]);
+	            }
+	        }
+	    }
+	    return filter(k, v);
+	}
+
+	if (/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/.test(this.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) {
+
+	    j = eval('(' + this + ')');
+
+        if (typeof filter === 'function') {
+            j = walk('', j);
+        }
+        return j;
+    }
+
+    throw new SyntaxError('String#parseJSON');
+};    
+
+/**
+ * Retorna uma string JSON representando a string
+ * 
+ * @see http://www.json.org/json.js
+ * @return {String}
+ */
+String.prototype.toJSONString = function () {
+
+    if (/["\\\x00-\x1f]/.test(this)) {
+        return (
+            '"' + this.replace(
+                /([\x00-\x1f\\"])/g, 
+                function (a, b) {
+		            var c = String.JSON_MAPPING[b];
+		            if (c) {
+		                return c;
+		            }
+		            c = b.charCodeAt();
+		            return ('\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16));
+		        }
+            ) + '"'
+        );
+    }
+    
+    return '"' + this + '"';
+};
+
+/**
+ * Retorna a String com todas as ocorrências do caracter desejado substituído pelo novo.
+ * Diferente do replace, que substituí apenas o primeiro caracter encontrado.
+ * Função criada para evitar o looping infinito que outras funções de replaceAll geram ao 
+ * trocar um caracter x por 2 caracteres xx. ex replaceAll("'","''");
+ *  
+ * @param {char} de - deve ser apenas um caracter
+ * @param {String} para - qualquer caracter ou conjunto de caracteres
+ * @type String
+ * @return {String}
+ */
+String.prototype.replaceAllChar = function(de, para) {		
+	var str = this;
+	var result = "";	
+	for(i = 0; i < str.length; i++){
+		if(str.charAt(i) == de){
+			result += para;
+		}else{
+			result += str.charAt(i);		
+		}				
+	}
+	return result;
+};
+
+/**
+ * Retorna a String com todas as ocorrências do caracter desejado substituído pelo novo.
+ * Diferente do replace, que substituí apenas o primeiro caracter encontrado.
+ * Não subtituir o caracter desejado por n caracter iguais, senão entra em looping.
+ *  
+ * @param {String} de
+ * @param {String} para
+ * @type String
+ * @return {String}
+ */
+String.prototype.replaceAll = function(de, para) {		
+	var str = this;
+	var pos = str.indexOf(de);
+	while(pos > -1){
+		str = str.replace(de, para);
+		pos = str.indexOf(de);
+	}	
+	return str;	
+};

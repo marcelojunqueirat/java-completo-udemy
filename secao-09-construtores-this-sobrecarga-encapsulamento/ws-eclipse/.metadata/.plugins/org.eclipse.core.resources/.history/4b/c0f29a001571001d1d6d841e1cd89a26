@@ -1,0 +1,15 @@
+package entities;
+
+public class Account {
+	private int accountNumber;
+	private String accountHolder;
+	private double initialDeposit;
+	
+	public Account(int accountNumber, String accountHolder, double initialDeposit) {
+		super();
+		this.accountNumber = accountNumber;
+		this.accountHolder = accountHolder;
+		this.initialDeposit = initialDeposit;
+	}
+	
+}

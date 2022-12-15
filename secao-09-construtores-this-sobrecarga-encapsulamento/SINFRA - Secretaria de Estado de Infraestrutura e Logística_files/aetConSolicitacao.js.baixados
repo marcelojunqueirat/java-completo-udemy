@@ -1,0 +1,149 @@
+//ready - igual ao metodo 'onload'
+jQuery(document).ready(function () {
+	
+	jQuery("#btLimpar").bind("click", function() {
+		F_openPage("abrirConSolicitacao.do");
+	});
+	
+	jQuery("#btNovo").bind("click", function() {
+		var cdOrgaosetor = jQuery("#filtro\\.cdOrgaosetor").val();
+		F_openPage("abrirCadSolicitacao.do?cdOrgaosetor=" + cdOrgaosetor);
+	});
+	
+	jQuery("#filtro\\.nuAno").bind("blur", function() {
+		formataAno(document.getElementById('filtro.nuAno'));
+	});
+	
+	jQuery("#btCopiar").bind("click", function() {
+		copiarAet();
+	});
+	
+	jQuery("[id*=cbCopiar]").bind("click", function() {
+		var $self = jQuery(this);		
+		marcarCbCopiarNaGrid(this.checked, $self);
+	});	
+	
+	jQuery("input[id='filtro\\.flApenasaguardandoavaliacao']").bind("click", function() {
+		var $self = jQuery(this);		
+		controleCheckboxAvaliacao(this.checked);
+	});	
+	
+	//inicializacao
+	//selecionarTipoPessoa(document.getElementById("filtro.tpPessoa").value, "nuCpf", "nuCnpj");
+	habilitarTodosCbCopiar();	
+	
+	var check = jQuery("input[id='filtro\\.flApenasaguardandoavaliacao']")[0];
+	controleCheckboxAvaliacao(check.checked);
+	
+	//fmtDesabilitaCampos('procDocCorrespDTO');
+	// add classes dessa forma pq os campos est?o dentro de uma tag que n?o da para ser alterado
+	jQuery("input[id='procDocCorrespDTO\\.cdOrgaosetor']").addClass("alignRight");
+	jQuery("input[id='procDocCorrespDTO\\.nuAno']").addClass("alignRight");
+	jQuery("input[id='procDocCorrespDTO\\.nuProcessooficial']").addClass("alignRight");
+});
+
+function limpaBuscaAguardandoAvaliacao(){
+	jQuery("#filtro\\.flApenasaguardandoavaliacao").attr("checked", false);
+	jQuery("#filtro\\.flApenasaguardandoavaliacao").next().val("N");
+}
+
+
+function controleCheckboxAvaliacao(isChecked) {
+	if (isChecked) {
+		jQuery("select[id='filtro\\.cdSituacao'] option[value='']").attr("selected","selected");
+		jQuery("select[id='filtro\\.cdSituacao']").attr("disabled", true);		
+	}else{
+		jQuery("select[id='filtro\\.cdSituacao']").attr("disabled", false);
+	}
+}
+
+function marcarCbCopiarNaGrid(isChecked, $self) {
+	if (isChecked) {
+		desmarcarTodosCbCopiar();
+		$self.attr("checked", "checked");
+	}
+}
+
+function habilitarTodosCbCopiar() {
+	jQuery("[id*=cbCopiar]").each(function() {
+		var $self = jQuery(this);
+		$self.attr("disabled", "");
+	});
+}
+
+function desmarcarTodosCbCopiar() {
+	jQuery("[id*=cbCopiar]:checked").each(function(i) {
+		var $self = jQuery(this);
+		$self.attr("checked", "");
+	});
+}
+
+function copiarAet(linha) {
+	if (confirm("Deseja realmente copiar a AET selecionada?")) {
+		var nLinha = linha.id.split('_')[1];
+		var urlCopiar = getUrlCopiar(nLinha);
+		F_openPage(urlCopiar);
+	}
+}
+
+function getUrlCopiar(linha) {
+	
+	var cdOrgaosetor = jQuery("#row\\[" + linha + "\\]\\.cdOrgaosetor_" + linha).val();
+	var nuAno = jQuery("#row\\[" + linha + "\\]\\.nuAno_" + linha).val();		
+	var nuAet = jQuery("#row\\[" + linha + "\\]\\.nuAet_" + linha).val();
+	
+	var urlCopiar = "copiarSolicitacao.do?cdOrgaosetor=";
+	urlCopiar += cdOrgaosetor;
+	urlCopiar += "&nuAno=";
+	urlCopiar += nuAno;
+	urlCopiar += "&nuAet=";
+	urlCopiar += nuAet;
+	return urlCopiar;
+}
+
+function limparCampoProcesso(){
+	try{
+		fmtLimpar('procDocCorrespDTO');
+	}catch(e){}
+}
+
+function fmtDepoisSelecionar(id) {
+	var nuProcesso = _gvl('entity.nuProcessocpa');
+	var cdOrgaosetor = _gvl('entity.cdSetorcpa');
+	var nuAno = _gvl('entity.nuAnocpa');
+	var cdTransportadora = _gvl('entity.cdTransportador');
+	
+	if (!_isNullOrBlank(nuProcesso) && !_isNullOrBlank(cdOrgaosetor)
+			&& !_isNullOrBlank(nuAno) && !_isNullOrBlank(cdTransportadora) ) {
+		SolicitacaoDWR.validaProcessoInformado(cdOrgaosetor, nuAno, nuProcesso, cdTransportadora,
+				function(mensagem) {
+					if( !_isNullOrBlank(mensagem) ){
+						alert(mensagem);
+						limparCampoProcesso();
+					}
+				});
+	}
+}
+
+function validaPeriodoSolicitacao(){
+	var dtInicio = document.getElementById("filtro.dtSolicitacaoInicio");
+	var dtFim = document.getElementById("filtro.dtSolicitacaoFim");
+	validaPeriodo(dtInicio, dtFim);
+}
+
+function validaPeriodoLiberacao(){
+	var dtInicio = document.getElementById("filtro.dtLiberacaoInicio");
+	var dtFim = document.getElementById("filtro.dtLiberacaoFim");
+	validaPeriodo(dtInicio, dtFim);
+}
+
+function complementInputSelectRequestParameters(sender) {
+	if (sender == "tipotransporte") {
+		return "&semEventosrodoviarios=S";		
+	}
+	if (sender == "requerente") {
+		return	"&trazForaUso=S";		
+	}
+	return "";
+}
+

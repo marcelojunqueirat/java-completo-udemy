@@ -1,0 +1,1328 @@
+#captcha {
+	background-image: url(../imagens/captcha/bg_captcha.gif);
+	background-repeat: no-repeat;
+	width: 372px;
+	height: 66px;
+	padding-bottom: 5px;
+}
+
+#captchaCodigo {
+float: right;
+	width: 201px;
+	text-align: center;
+	margin: 7px 5px 0 0;
+
+}
+#captchaInfo {
+	float: left;
+	margin: 7px 0 0 5px;
+	font-family: arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+#captchaInfo input{
+margin: 5px 0 0 0;
+border: 1px solid #cecece;
+	font-family: arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+#captchaBotoes{
+float: right;
+	width: 20px;
+	text-align: center;
+	margin:13px 7px  0 0;
+}
+
+#captchaBotoes img{
+margin:0 0 8px 0;
+}
+
+
+
+body { font-size:62.5%; margin:0; padding:0; }
+#menuLog { font-size:1.4em; margin:20px; }
+
+.fg-button { clear:left; margin:0 4px 40px 20px; padding: .4em 1em; text-decoration:none !important; cursor:pointer; position: relative; text-align: center; zoom: 1; }
+.fg-button .ui-icon { position: absolute; top: 50%; margin-top: -8px; left: 50%; margin-left: -8px; }
+a.fg-button { float:left;  }
+button.fg-button { width:auto; overflow:visible; } /* removes extra button width in IE */
+
+.fg-button-icon-left { padding-left: 2.1em; }
+.fg-button-icon-right { padding-right: 2.1em; }
+.fg-button-icon-left .ui-icon { right: auto; left: .2em; margin-left: 0; }
+.fg-button-icon-right .ui-icon { left: auto; right: .2em; margin-left: 0; }
+.fg-button-icon-solo { display:block; width:8px; text-indent: -9999px; }	 /* solo icon buttons must have block properties for the text-indent to work */	
+
+.fg-button.ui-state-loading .ui-icon { background: url(spinner_bar.gif) no-repeat 0 0; }
+
+#ui-tab-dialog-close a { float:none; padding:0; }
+
+.mconfigColuna { width: 250px; margin: 10px 5px 10px 15px; float: left; }  
+.configTema { padding-left: 38px; font-weight: bold; display: block; line-height: 32px; background: url(../imagens/base/icoConfigTema.png) no-repeat scroll left center transparent; margin-bottom: 5px; }
+.configTempo { padding-left: 38px; font-weight: bold; display: block; line-height: 32px; background: url(../imagens/base/icoConfigTempo.png) no-repeat scroll left center transparent; margin-bottom: 5px; }
+
+.mconfigColuna .unidadeWidget { width: 240px !important; height: 100px !important; }
+
+.linkSelecTemaBID { cursor:pointer; display: block; width: 27px; height: 27px; float: left; margin: 2px 8px 4px 2px; text-indent: -9000px; overflow: hidden; background: url(../skins/portrait_BID.png) no-repeat center center;}
+.linkSelecTemaGreen { cursor:pointer; display: block; width: 27px; height: 27px; float: left; margin: 2px 8px 4px 2px; text-indent: -9000px; overflow: hidden; background: url(../skins/portrait_lightgreen.png) no-repeat center center;}
+.linkSelecTemaBlue { cursor:pointer; display: block; width: 27px; height: 27px; float: left; margin: 2px 8px 4px 2px; text-indent: -9000px; overflow: hidden; background: url(../skins/portrait_softblue.png) no-repeat center center;}
+.linkSelecTemaPink { cursor:pointer; display: block; width: 27px; height: 27px; float: left; margin: 2px 8px 4px 2px; text-indent: -9000px; overflow: hidden; background: url(../skins/portrait_pink.png) no-repeat center center;}
+.linkSelecTemaClassic { cursor:pointer; display: block; width: 27px; height: 27px; float: left; margin: 2px 8px 4px 2px; text-indent: -9000px; overflow: hidden; background: url(../skins/portrait_classic.png) no-repeat center center;}
+.linkSelecTemaSilver { cursor:pointer; display: block; width: 27px; height: 27px; float: left; margin: 2px 8px 4px 2px; text-indent: -9000px; overflow: hidden; background: url(../skins/portrait_silver.png) no-repeat center center;}
+.linkSelecTemaDarkblue { cursor:pointer; display: block; width: 27px; height: 27px; float: left; margin: 2px 8px 4px 2px; text-indent: -9000px; overflow: hidden; background: url(../skins/portrait_darkblue.png) no-repeat center center;}
+.linkSelecTemaSienge { cursor:pointer; display: block; width: 27px; height: 27px; float: left; margin: 2px 8px 4px 2px; text-indent: -9000px; overflow: hidden; background: url(../skins/portrait_sienge.png) no-repeat center center;}
+.linkSelecActive {background-color: gray; }/* titulo da pagina  */
+.titulo {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+/* sub-titulo da pagina  */
+.subtitle {
+	font-size: 13px;
+	font-weight: bold;
+}
+
+/* caminho da aplicação  */
+.caminho {
+color:#FFFFFF;
+background-color:#000000;
+font-weight: bold;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 11px;
+}
+
+/* fundo do Cabecalho  */
+.fundoSuperior {
+background-image: url(../imagens/fundoSuperior.jpg);
+background-repeat: no-repeat;
+background-position: right top;
+background-color:#AB1B1B;
+}
+
+/* fundo do rodape  */
+.fundoRodape {
+background-color:#000000;
+color:#FFFFFF;
+}
+
+/* Texto da etapa  */
+.etapaTexto {
+	padding-top: 0px;
+	padding-right: 5px;
+	padding-bottom: 0px;
+	padding-left: 2px;
+	background-image: url(../imagens/etapaFundo.gif);
+	font-weight: bold;
+}
+
+/* Seta da etapa  */
+.etapaSeta {
+	background-image: url(../imagens/etapaSeta.gif);
+	width: 20px;
+}
+
+/* Numero da etapa  */
+.etapaNumero {
+	height: 27px;
+	width: 27px;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	background-image: url(../imagens/etapa.gif);
+}
+
+/* Numero atual da etapa  */
+.etapaNumeroAtual {
+	height: 27px;
+	width: 27px;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	background-image: url(../imagens/etapaAtual.gif);
+}
+
+/* Fundo da etapa  */
+.etapaFundo{
+	background-image: url(../imagens/etapaFundo.gif);
+}
+
+/* Parte final da etapa  */
+.etapaFinal{
+	background-image: url(../imagens/etapaFinal.gif);
+	width: 20px;
+}
+
+/* Titulo etapa  */
+.etapaTit{
+	background-image: url(../imagens/etapaTit.gif);
+	background-repeat: no-repeat;
+
+	height: 40px;
+}
+
+/* Fundo da pagina */
+.fundo{
+}
+
+/* Label */
+.label {
+font-size: 11px;
+font-weight: bold;
+}
+
+/* Label Maior */
+.labelGrande {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+/* Título da Mensagem */
+.tituloMensagem {
+	font-size: 11px;
+}
+/** Celula da grid **/
+.spwCelulaGrid {
+border-top-width: 0px;
+border-right-width: 1px;
+border-bottom-width: 0px; /*1*/
+border-left-width: 0px;
+border-top-style: solid;
+border-right-style: solid;
+border-bottom-style: solid;
+border-left-style: solid;
+border-top-color: #E5E5E5; /*#CEDBD3*/
+border-right-color: #E5E5E5;
+border-bottom-color: #E5E5E5;
+border-left-color: #E5E5E5;
+height: 23px;
+line-height: 23px;
+min-height: 23px;
+font-size: 9px;
+overflow: hidden;
+font: 11px Arial, Helvetica, sans-serif;
+}
+
+td.spwCelulaGrid {
+border-right: 1px solid #e5e5e5;
+padding-left: 3px;
+}
+
+td.spwCelulaGrid input.spwCampoTextoGrid.alignRight {
+padding-right: 1px;	
+padding-left: 1px;
+background:url("") repeat-x scroll 0 0 transparent;
+}
+
+td.spwCelulaGrid input.spwCampoTextoGrid {
+padding-right: 1px;	
+padding-left: 1px;
+background:url("") repeat-x scroll 0 0 transparent;
+}
+
+td.spwCelulaGrid div {
+padding-left: 1px;
+}
+
+/** hack para chrome **/
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+ td.spwCelulaGrid input.spwCampoTextoGrid  { padding-right: 4px; }
+} /** **/ 
+
+.spwCelulaGridImgs {
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 0px; /*1*/
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #E5E5E5; /*#CEDBD3*/
+	border-right-color: #E5E5E5;
+	border-bottom-color: #E5E5E5;
+	border-left-color: #E5E5E5;
+	height: 18px;
+	min-height: 18px;
+	padding: 2px 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	overflow: hidden;
+	vertical-align: middle;
+	text-align: center;	
+}
+
+/** Cabecalho da grid **/
+.spwCabecalhoGrid {
+border-top-width: 0px;
+border-right-width: 0px;
+border-bottom-width: 0px;
+border-left-width: 0px;
+border-top-style: solid;
+border-right-style: solid;
+border-bottom-style: solid;
+border-left-style: solid;
+border-top-color: #cccccc;
+border-right-color: #cccccc;
+border-bottom-color: #cccccc;
+border-left-color: #cccccc;
+font-size: 10px;
+font-weight: normal;
+color: #FFF;
+cursor: POINTER;
+overflow: hidden;
+}
+
+td.spwCabecalhoGrid {
+height: 22px;
+padding-left: 2px;
+padding-right: 1px;
+}
+
+/** Tabela de filtros extras **/
+.tabelaExtraFiltros{
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #cccccc;
+	border-right-color: #cccccc;
+	border-bottom-color: #000000;
+	border-left-color: #cccccc;
+	background-color: #cccccc;
+}
+
+/** Titulo da grid de consulta **/
+.spwTituloGrid {
+font-family: Arial, Helvetica, sans-serif;
+font-size: 14px;
+font-weight: bold;
+background-color: #9B9B9B;
+color: #FFFFFF;
+cursor:move;
+}
+
+/** Layer da grid **/
+.spwLayerGrid {
+	width:100%; 
+	overflow: auto; 
+	border:1px;
+}
+
+.spwTableSearchGridTag {
+	table-layout:fixed;
+}
+
+/** Tabela da grid generica **/
+.spwTabelaGrid {
+border-width: 0px;
+border-style: solid;
+border-color: #C1C1C1;
+}
+
+/** Formulario da grid **/
+.spwGridForm {
+	border-width: 1px;
+	border-style: solid;		
+	border-top-color: #C1C1C1;
+	border-right-color: #C1C1C1;
+	border-bottom-color: #C1C1C1;
+	border-left-color: #C1C1C1;	
+	background: #FFFFFF url(../imagens/base/bgGridForm.png) repeat-x top;
+}
+
+
+/** Tabela da grid tipo "grid-edit" **/
+.spwTabelaGridEdit {
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #C1C1C1;
+	border-right-color: #C1C1C1;
+	border-bottom-color: #C1C1C1;
+	border-left-color: #C1C1C1;
+	}
+
+/** Dados da grid **/
+.spwCampoTextoGrid {
+	font-size: 11px;
+	border: 0px;
+	height: 100%;
+	width: 100%; 
+}
+
+.spwBotaoGrid,.spwBotaoGrid-d,.spwBotaoGrid-o,.spwBotaoDefaultGrid,.spwBotaoDefaultGrid-o,.spwBotaoDefaultGrid-d {
+	font-size: 10px;
+	padding-left: 1;
+	padding-right: 1;
+	padding-top: 0;
+	padding-bottom: 0;
+	height: 16;
+}
+
+/** Botao da grid **/
+.spwBotaoGrid {
+	background-color: #6699FF;
+	border: 1px solid #0066FF;
+	cursor: POINTER;
+}
+
+/** Botao da grid com foco **/
+.spwBotaoGrid-o {
+	background-color: #33CCFF;
+	border: 1px solid #0099CC;
+	cursor: POINTER;
+}
+
+/** Botao da grid com foco **/
+.spwBotaoGrid-d {
+	background-color: #CCCCCC;
+	border: 1px solid #969696;
+}
+
+/** Botao da grid default **/
+.spwBotaoDefaultGrid {
+	background-color: #FFCC00;
+	border: 1px solid #FF9900;
+	cursor: POINTER;
+}
+
+/** Botao da grid default com foco **/
+.spwBotaoDefaultGrid-o {
+	background-color: #FFDD00;
+	border: 1px solid #FF9900;
+	cursor: POINTER;
+}
+
+/** Botao da grid default desabilitado **/
+.spwBotaoDefaultGrid-d {
+	background-color: #CCCCCC;
+	border: 1px solid #969696;
+}
+
+/** Imagem do cabecalho descendente **/
+.spwCabecalhoDesc {
+	background-image: url(../imagens/desc.gif);
+	background-repeat: no-repeat;
+	background-position: right bottom;
+}
+
+/** Imagem do cabecalho ascendente **/
+.spwCabecalhoAsc {
+	background-image: url(../imagens/asc.gif);
+	background-repeat: no-repeat;
+	background-position: right bottom;
+}
+
+.spwLinhaGridImpar {
+	background-color: #FFFFFF;
+}
+
+.spwLeftBorder {
+	border-left: 1px solid #C1C1C1;
+}
+
+.spwRightBorder {
+	border-right: 1px solid #C1C1C1;
+}
+@media print{
+
+	/** Celula da grid **/
+	.spwCelulaGrid {
+		border-top-width: 0px;
+		border-right-width: 1px;
+		border-bottom-width: 1px;
+		border-left-width: 0px;
+		border-top-style: solid;
+		border-right-style: solid;
+		border-bottom-style: solid;
+		border-left-style: solid;
+		border-top-color: #000000;
+		border-right-color: #000000;
+		border-bottom-color: #000000;
+		border-left-color: #000000;
+		height: 20px;
+		*height: 16px;			
+		font: 9px Arial, Helvetica, sans-serif;
+	}
+	
+	/** Cabecalho da grid **/
+	.spwCabecalhoGrid {
+		border-top-width: 0px;
+		border-right-width: 1px;
+		border-bottom-width: 0px;
+		border-left-width: 0px;
+		border-top-style: solid;
+		border-right-style: solid;
+		border-bottom-style: solid;
+		border-left-style: solid;
+		border-top-color: #000000;
+		border-right-color: #000000;
+		border-bottom-color: #000000;
+		border-left-color: #000000;
+		font-size: 10px !important;
+		background-color: #CEDED6;
+		font-weight: normal !important;
+		color: #000000;
+	}
+	
+	/** Titulo da grid de consulta **/
+	.spwTituloGrid {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 14px;
+		font-weight: bold;
+		background-color: #FFFFFF;
+		color: #000000;
+	}
+	
+	/** Layer da grid **/
+	.spwLayerGrid {
+		overflow:hidden;
+		width:100%; 
+		border:1px;
+		height:100%;
+	}
+	
+	/** Tabela da grid generica **/
+	.spwTabelaGrid {
+		border-top-width: 1px;
+		border-right-width: 0px;
+		border-bottom-width: 1px;
+		border-left-width: 1px;
+		border-top-style: solid;
+		border-right-style: solid;
+		border-bottom-style: solid;
+		border-left-style: solid;
+		border-top-color: #C1C1C1;
+		border-right-color: #C1C1C1;
+		border-bottom-color: #C1C1C1;
+		border-left-color: #C1C1C1;
+	}
+	
+	/** Tabela da grid tipo "grid-edit" **/
+	.spwTabelaGridEdit {
+		border-top-width: 0px;
+		border-right-width: 1px;
+		border-bottom-width: 1px;
+		border-left-width: 1px;
+		border-top-style: solid;
+		border-right-style: solid;
+		border-bottom-style: solid;
+		border-left-style: solid;
+		border-top-color: #C1C1C1;
+		border-right-color: #C1C1C1;
+		border-bottom-color: #C1C1C1;
+		border-left-color: #C1C1C1;
+	}
+	
+	/** Botao da grid **/
+	.spwBotaoGrid {
+		display:none;
+	}
+	
+	/** Botao da grid com foco **/
+	.spwBotaoGrid-o {
+		display:none;
+	}
+	
+	/** Botao da grid default **/
+	.spwBotaoDefaultGrid {
+		display:none;
+	}
+	
+	/** Botao da grid default com foco **/
+	.spwBotaoDefaultGrid-o {
+		display:none;
+	}
+}
+/** Estilo do Form **/
+form {
+    margin: 0px;
+    padding: 0px;
+}
+
+/** Estilo para os links da pagina  **/ 
+a:link {
+	font-family: Arial, Helvetica, sans-serif;  color: #000066; text-decoration: none
+}
+
+/** Estilo para os links da pagina  **/ 
+a:visited {
+	font-family: Arial, Helvetica, sans-serif;  color: #000066; text-decoration: none
+}
+
+/** Estilo para os links da pagina  **/ 
+a:hover {
+	font-family: Arial, Helvetica, sans-serif;  color: #0066CC; text-decoration: none
+}
+
+/** Estilo para o corpo do HTML  **/ 
+body {
+	font-family: Arial, Helvetica, sans-serif; font-size: 10px
+}
+
+/** Estilo para um campo INPUT do form  **/ 
+input {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+/** Estilo para o campo SELECT do form  **/ 
+select {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+/** Estilo para tabelas  **/ 
+table {  
+	font-family: Arial, Helvetica, sans-serif; 
+	font-size: 11px;
+}
+
+/** Estilo para o campo TEXTAREA do form  **/ 
+textarea {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+.spwBotao,.spwBotao-d,.spwBotao-o,.spwBotaoDefault,.spwBotaoDefault-o,.spwBotaoDefault-d,.spwBtButtonDefault {
+	font-size: 11px;
+	padding-left: 1;
+	padding-right: 1;
+	padding-top: 0;
+	padding-bottom: 0;
+	height:20px;
+	font-weight: bold;
+}
+
+/** Estilo para um botao comum do form **/ 
+.spwBotao {
+	background-color: #6699FF;
+	border: 1px solid #0066FF;
+	cursor: POINTER;
+}
+
+/** Estilo para um botao comum do form, com o mouse em cima **/ 
+.spwBotao-o {
+	background-color: #33CCFF;
+	border: 1px solid #0099CC;
+	cursor: POINTER;
+}
+
+/** Estilo para um botao comum do form, com o mouse em cima **/ 
+.spwBotao-d {
+	background-color: #CCCCCC;
+	border: 1px solid #969696;
+}
+
+/** Estilo para um botao default do form **/ 
+.spwBotaoDefault {
+	background-color: #FFCC00;
+	border: 1px solid #FF9900;
+	cursor: POINTER;
+}
+
+/** Estilo para um botao default do form, com o mouse em cima **/ 
+.spwBotaoDefault-o {
+	background-color: #FFDD00;
+	border: 1px solid #FF9900;
+	cursor: POINTER;
+}
+
+/** Estilo para um botao default do form, desabilitado**/ 
+.spwBotaoDefault-d{
+	background-color: #CCCCCC;
+	border: 1px solid #969696;
+}
+
+/** Campo do formulrio **/
+.spwCampoTexto {
+}
+
+/** Qquer coisa alinhada a direita **/
+.alignRight {
+	text-align: right;
+}
+
+/** Qquer coisa alinhada ao centro **/
+.alignCenter {
+	text-align: center;
+}
+
+/** Qquer coisa escondida **/
+.hidden {
+	display:none;
+}
+
+/** Qquer coisa escondida para impressao **/
+.noPrint {
+}
+
+/** layer processando **/
+.processando{
+	position:absolute;
+	height: 40px;
+	width: 200px;
+	background-image: url(../imagens/liveSearch/aguarde.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+/** Qquer coisa errada **/
+.erro {
+	color: #ff0000;
+}
+
+.corFonteDesabilitada {
+	color: #666666;
+}
+
+.hint {
+	color: #FFFFFF;
+	background-color: #000000;
+	border: 1px solid #FF0000;
+}
+
+/** Opção da mensagem **/
+a.opcaoMensagem:link{
+	font-size: 11px;
+    text-decoration: underline;
+    color:#00AA00;
+}
+
+a.opcaoMensagem:visited{
+	font-size: 11px;
+    text-decoration: underline;
+    color:#00AA00;
+}
+
+a.opcaoMensagem:active{
+	font-size: 11px;
+    text-decoration: underline;
+    color:#00AA00;
+}
+
+a.opcaoMensagem:hover{
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.tabelaMensagem{
+	background-color: #FFFFDD;
+}
+
+.toggle{
+	background-image: url(../imagens/abrirSubTitulo.gif);
+}
+
+.toggle-o{
+	background-image: url(../imagens/abrirSubTitulo-o.gif);
+}
+
+.toggle-c{
+	background-image: url(../imagens/fecharSubTitulo.gif);
+}
+
+.toggle-c-o{
+	background-image: url(../imagens/abrirSubTitulo-o.gif);
+}
+
+.menuContexto{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	display:inline;
+	float:left;
+}
+
+.tableCalendario{
+	display:inline-block;
+	vertical-align: middle;
+}
+
+.columnTD {
+	cursor: POINTER;
+}
+
+.campoDddDesabilitado {
+	text-decoration: line-through;
+	background-color: #EBEBEB;
+	border-style: groove;
+}
+
+
+/** Titulo da janela **/
+.spwTituloModal {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #9B9B9B;
+    color: #FFFFFF;
+}
+
+.spwRodapeModal {
+    border: none;
+    font-size: 10px;
+    background-color: #cccccc;
+    color: #000000;
+    height:20;
+    font-weight: bold;
+}
+
+/** Layer da Modal **/
+.spwLayerModal {
+    width:100%; 
+    overflow: auto; 
+    border:1px;
+}
+.spwBotaoModal,.spwBotaoModal-d,.spwBotaoModal-o,.spwBotaoDefaultModal,.spwBotaoDefaultModal-o,.spwBotaoDefaultModal-d {
+    font-size: 10px;
+    padding-left: 1;
+    padding-right: 1;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 16;
+}
+.botaoDisabled{
+	background-color: #FFFFFF;
+	border: 1px dashed #FF9900;	
+}
+
+.avisoCriticoModal{
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:9000;
+	background:#F5F5F5;
+	width:100%;
+	height:100%;		
+}
+#AvisosCriticos{
+    font-family: arial, Helvetica, sans-serif;
+    font-size:10px;
+    margin:10px;
+}
+#AvisosCriticos a{
+    color:#000066;
+    text-decoration: none;
+    width:100%;
+    display:block;
+    font-size:11px;
+    font-family: arial, Helvetica, sans-serif;
+    font-weight: normal;
+    margin:0 0 10px 0;
+    cursor:pointer;
+    }
+#AvisosCriticos a:hover{
+	font-size:11px;
+    font-weight: normal;
+    font-family: arial, Helvetica, sans-serif;
+    text-decoration:underline;
+    
+   
+}
+#AvisosCriticos p{
+padding:0 0 0 10px;
+}
+#AvisosCriticos ul{
+    padding:0;
+    margin:0;
+}
+#AvisosCriticos li{
+    border-bottom:1px solid #cecece;
+    margin: 0 0 20px 0;
+    list-style: none;
+}
+#AvisosCriticos a.avisoLido{
+    background-image: url(../imagens/ic_aviso_lido.gif);
+    background-position: right;
+    background-repeat: no-repeat;
+    color:#000066;
+    text-decoration: none;
+    width:100%;
+    display:block;
+font-size:11px;
+    font-weight: normal;
+}
+/* botao fechar da janela de consulta */    
+.spwBotaoFecharJanela, .spwBotaoFecharJanela:hover{
+	color:#999999;
+	display:block;
+	width:16px;
+	height:16px;
+	line-height:16px;
+	cursor:pointer;
+	text-align:center;
+	font-weight:bold;
+	font-size:12px;
+	font-family:Verdana, Geneva, sans-serif;
+}
+.spwBotaoFecharJanela:hover{
+	color:#555555
+}
+/* tabela do input select, padding 1 para sem doctype */  
+.spwInputSelect > tbody > tr > td:first-child{
+	padding-right: 2px;
+}
+.spwInputSelect a.spwHtmlBotaoProcurar{
+	margin-left: 1px;
+}
+
+.spwInputSelect a.spwHtmlBotaoProcurar-o{
+	margin-left: 1px;
+}
+
+.spwInputSelect a.spwHtmlBotaoProcurar-d{
+	margin-left: 1px;
+}
+
+.spwButtonGrid input, .spwButtonGrid-o input, .spwButtonGrid-d input, .spwButtonGridMain input, .spwButtonGridMain-o input, .spwButtonGridMain-d input {
+     height: 17px;
+}
+@media print{
+	/** Estilo para um botao comum do form **/ 
+	.spwBotao {
+		display:none;
+	}
+	
+	/** Estilo para um botao comum do form, com o mouse em cima **/ 
+	.spwBotao-o {
+		display:none;
+	}
+	
+	/** Estilo para um botao default do form **/ 
+	.spwBotaoDefault {
+		display:none;
+	}
+	
+	/** Estilo para um botao default do form, com o mouse em cima **/ 
+	.spwBotaoDefault-o {
+		display:none;
+	}
+	
+	/** Qquer coisa escondida **/
+	.hidden {
+		display:inline;
+	}
+	
+	/** Qquer coisa escondida para impressao **/
+	.noPrint {
+		display:none;	
+	}
+}
+.jscalendar-DB-table-date-schedule {
+background-color:#FFFFFF;
+border:0px none;
+font-family:verdana;
+font-size: 11px;
+padding:0px;
+}
+
+.jscalendar-DB-table-style {
+background-color:#FFFFFF;
+border:1px solid #A0A0A0;
+font-family:arial;
+font-size:11px;
+padding:0px;
+}
+.jscalendar-DB-div-style {
+position:absolute;
+visibility:hidden;
+z-index:999;
+}
+.jscalendar-DB-title-style {
+color:#FFFFFF;
+font-family:arial;
+font-size:11px;
+font-weight:bold;
+padding:2px;
+}
+.jscalendar-DB-title-background-style {
+background-color:#0000AA;
+border:0px;
+}
+.jscalendar-DB-title-control-normal-style {
+border:1px solid #3366FF;
+cursor:pointer;
+}
+.jscalendar-DB-title-img-normal-style {
+cursor:pointer;
+}
+.jscalendar-DB-title-control-select-style {
+border:1px solid #88AAFF;
+cursor:pointer;
+}
+.jscalendar-DB-title-img-select-style {
+cursor:pointer;
+}
+.jscalendar-DB-dropdown-style {
+background-color:#FFFFDD;
+border:1px solid #A0A0A0;
+cursor:pointer;
+font-family:arial;
+font-size:11px;
+}
+.jscalendar-DB-dropdown-select-style {
+background-color:#FFCC99;
+}
+.jscalendar-DB-dropdown-normal-style {
+background-color:inherit;
+}
+.jscalendar-DB-body-style {
+background-color:#FFFFFF;
+font-family:verdana;
+font-size: 11px;
+padding:0px;
+}
+.jscalendar-DB-current-day-style {
+color:red;
+font-weight:bold;
+text-decoration:none;
+}
+.jscalendar-DB-end-of-weekday-style {
+color:#909090;
+text-decoration:none;
+}
+.jscalendar-DB-normal-day-style {
+color:black;
+text-decoration:none;
+}
+.jscalendar-DB-would-be-selected-day-style {
+background-color:#EEEEEE;
+}
+.jscalendar-DB-selected-day-style {
+border:1px solid #A0A0A0;
+}
+.jscalendar-DB-holiday-style {
+background-color:#FFDDDD;
+}
+.jscalendar-DB-today-style {
+background-color:#F0F0F0;
+color:black;
+padding:0px;
+text-align:center;
+text-decoration:none;
+}
+.jscalendar-DB-today-lbl-style {
+padding:1px;
+text-align:center;
+}
+.jscalendar-DB-weeknumber-div-style {
+background-color:#D0D0D0;
+padding:0px;
+}
+.jscalendar-DB-pastaSep {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #999999;
+	border-right-color: #999999;
+	border-bottom-color: #999999;
+	border-left-color: #999999;
+	background-color: #EEEEEE;
+	width: 5px;
+}
+.jscalendar-DB-pastaAtiva {
+	padding-right: 10px;
+	padding-left: 10px;
+	border-top-width: 3px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #00CC00;
+	border-right-color: #999999;
+	border-bottom-color: #999999;
+	border-left-color: #999999;
+	cursor:default;
+}
+.jscalendar-DB-pastaDes {
+	background-color: #EEEEEE;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #CCCCCC;
+	border-right-color: #CCCCCC;
+	border-bottom-color: #999999;
+	border-left-color: #CCCCCC;
+	cursor:pointer;
+}
+.jscalendar-DB-pastaFinal {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #999999;
+	border-right-color: #999999;
+	border-bottom-color: #999999;
+	border-left-color: #999999;
+	background-color: #EEEEEE;
+}
+.jscalendar-DB-pastaOver {
+	background-color: #FFFF99;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #CCCCCC;
+	border-right-color: #CCCCCC;
+	border-bottom-color: #999999;
+	border-left-color: #CCCCCC;
+	cursor:pointer;
+}
+.jscalendar-DB-tabela-pasta {
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #999999;
+	border-right-color: #999999;
+	border-bottom-color: #999999;
+	border-left-color: #999999;
+}
+.columnTD {
+	cursor: POINTER;
+}
+
+.nodoDesabilitado {
+	color: #ababab;
+	font-style: italic;
+	cursor: pointer;
+}
+
+.nodoNormal {
+	cursor: pointer;
+}
+
+.nodoNormal-over {
+	cursor: pointer;
+	color: rgb(89,146,256);
+}
+
+.linha-selecionada {
+	background-color: rgb(49,106,197);	
+	color: #FFFFFF;
+}
+
+.linha-vertical {
+	background-image: url('../imagens/treeSearchLinha.png');
+}
+
+.linha-ultimo-filho {
+	background-image: url('../imagens/treeSearchLinhaUltimoFilho.png');
+}
+
+.linha-filho {
+	background-image: url('../imagens/treeSearchLinhaFilho.png');
+}
+
+.icone-encolhido {
+	background-image: url('../imagens/treeSearchIcoMais.png');
+}
+
+.icone-aberto {
+	background-image: url('../imagens/treeSearchIcoMenos.png');
+}
+
+.icone-bola {
+	background-image: url('../imagens/treeSearchIcoBola.gif');
+}/* Datepicker
+----------------------------------*/
+.ui-datepicker { width: 17em; padding: .2em .2em 0; }
+.ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
+.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 1px; }
+.ui-datepicker .ui-datepicker-prev { left:2px; }
+.ui-datepicker .ui-datepicker-next { right:2px; }
+.ui-datepicker .ui-datepicker-prev-hover { left:1px; }
+.ui-datepicker .ui-datepicker-next-hover { right:1px; }
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px;  }
+.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
+.ui-datepicker .ui-datepicker-title select { float:left; font-size:1em; margin:1px 0; }
+.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-year { width: 49%;}
+.ui-datepicker .ui-datepicker-title select.ui-datepicker-year { float: right; }
+.ui-datepicker table {width: 100%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em; }
+.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
+.ui-datepicker td { border: 0; padding: 1px; }
+.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
+.ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
+.ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
+
+/* with multiple calendars */
+.ui-datepicker.ui-datepicker-multi { width:auto; }
+.ui-datepicker-multi .ui-datepicker-group { float:left; }
+.ui-datepicker-multi .ui-datepicker-group table { width:95%; margin:0 auto .4em; }
+.ui-datepicker-multi-2 .ui-datepicker-group { width:50%; }
+.ui-datepicker-multi-3 .ui-datepicker-group { width:33.3%; }
+.ui-datepicker-multi-4 .ui-datepicker-group { width:25%; }
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-buttonpane { clear:left; }
+.ui-datepicker-row-break { clear:both; width:100%; }
+
+/* RTL support */
+.ui-datepicker-rtl { direction: rtl; }
+.ui-datepicker-rtl .ui-datepicker-prev { right: 2px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next { left: 2px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-prev:hover { right: 1px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next:hover { left: 1px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane { clear:right; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button { float: left; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+
+/* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
+.ui-datepicker-cover {
+    display: none; /*sorry for IE5*/
+    display/**/: block; /*sorry for IE5*/
+    position: absolute; /*must have*/
+    z-index: -1; /*must have*/
+    filter: mask(); /*must have*/
+    top: -4px; /*must have*/
+    left: -4px; /*must have*/
+    width: 200px; /*must have*/
+    height: 200px; /*must have*/
+}#spwAriaAlert, .spwAriaDescription {
+    font-size: 0pt;
+    position: absolute;
+    top: 0px;
+    left: -999px;
+}
+.spwGridDescription {
+    display: none;
+}
+
+.spwGrid {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.spwGrid thead {
+    /* Propriedade sobrescrita nas skins */
+    background: url(../imagens/acessibilidade/gridheader.png) #eee;
+}
+
+.spwGrid tfoot {
+    background: bottom left url(../imagens/acessibilidade/gridfooter.png) #eee;
+}
+
+.spwGrid td {
+    border: 1px solid #eee;
+}
+
+.spwGrid thead th, .spwGrid tfoot td {
+    height: 2em;
+    vertical-align: middle;
+    empty-cells: show;
+}
+
+tbody.spwGridRowData td {
+    height: 1.8em;
+    padding: 2px;
+}
+
+.spwGrid tfoot td {
+    padding: 0 4px;
+}
+
+.spwGridButton {
+    font-size: inherit;
+    font-family: inherit;
+    height: 90%;
+}
+
+table.spwGrid td.current {
+    outline: 1px solid #ccc;
+    -moz-outline-radius: 4px;
+    background: #ddd;
+}
+
+tbody.spwGridRowData input {
+    background-color: transparent;
+}
+
+tbody.spwGridRowData *[readonly] {
+    /* color: #888; */
+}
+
+tbody.spwGridRowData input:focus {
+    background-color: white;
+}
+
+tbody.spwGridRowTemplate {
+    display: none;
+}
+
+tr.spwGridInfo td {
+    padding: 0 2px 0 0;
+    border-style: none;
+    background-color: transparent;
+}
+html {
+    font-family: sans-serif;
+}
+
+ul.spwMenu {
+    font-size: large;
+    margin: 5mm 1cm;
+    padding: 0;
+    -moz-border-radius: 4mm;
+}
+
+ul.spwMenu li {
+    padding: 1mm 2mm;
+    list-style-type: none;
+}
+
+ul.spwMenu a {
+    text-decoration: none;
+    color: black;
+}
+
+ul.spwMenu li.current {
+    -moz-border-radius: 3mm;
+    background-image: -moz-linear-gradient(top, #eee, #aaa);
+    color: black;
+}

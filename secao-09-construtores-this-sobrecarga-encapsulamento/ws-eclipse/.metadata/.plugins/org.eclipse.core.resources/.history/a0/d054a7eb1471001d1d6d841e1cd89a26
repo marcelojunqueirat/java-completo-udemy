@@ -1,0 +1,10 @@
+package entities;
+
+public class Account {
+
+	private int accountNumber;
+	private accountHolder;
+	private double initialDeposit;
+	
+	
+}

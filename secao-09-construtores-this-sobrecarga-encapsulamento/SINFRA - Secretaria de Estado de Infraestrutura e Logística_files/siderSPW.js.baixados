@@ -1,0 +1,38 @@
+(function(){
+	/*	
+	 	@Override da GF_abrirGridForm() do SPW para invocar a função Elastic.refresh();
+	 	e resolver o problema com jQuery.width() vs. 'display:none'; na tag spjhtml:table
+		dentro de um GridForm após tornar o display do form como 'default'.
+	*/
+	var F_siderSPW_GF_abrirGridForm = GF_abrirGridForm;
+	GF_abrirGridForm = function () {
+		F_siderSPW_GF_abrirGridForm.apply(this, arguments);
+		Elastic.refresh();
+	};
+	
+	
+	/*	
+		@Override da spPopCal.init() do SPW para invocar a função Elastic.refresh();
+		e solucionar problemas com a barra de rolagem que surge temporariamente na
+		inicialização do spwPopCalendar.
+		
+		Alternativa: body { overflow-y:scroll !important; } na CSS.
+	*/
+	var F_siderSPW_spPopCal_init = spPopCal.init;
+	spPopCal.init = function(){
+		F_siderSPW_spPopCal_init.apply(this, arguments);
+		Elastic.refresh();
+	};
+	
+	
+	/*	
+		@Override da IH_toggle() do SPW para invocar a função Elastic.refresh();
+		e solucionar problemas com a barra de rolagem.
+	*/
+	var F_siderSPW_IH_toogle = IH_toggle;
+	IH_toggle = function () {
+		F_siderSPW_IH_toogle.apply(this, arguments);
+		Elastic.refresh();
+	};
+	
+})();

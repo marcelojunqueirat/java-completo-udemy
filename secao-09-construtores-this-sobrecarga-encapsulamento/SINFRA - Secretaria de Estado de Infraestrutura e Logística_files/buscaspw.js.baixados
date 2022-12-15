@@ -1,0 +1,202 @@
+var buscaSpw = (function($) {
+
+	/**
+	* Remove caracteres de controle de uma string
+	* @param {string s}
+	*/
+	
+	var removeNL = function(s) {
+	  r = "";
+	  var tamanho = s.length;
+	  for (var i=0; i < tamanho; i++) {            
+	    if (s.charAt(i) != '\n' &&
+	        s.charAt(i) != '\r' &&
+	        s.charAt(i) != '\t') {
+	      r += s.charAt(i);
+	      }
+	    }
+	  return r;
+	};
+	
+	/**
+	 * Esconde os labels que não possuem nenhum subitem
+	 *
+	 */	
+	var esconderLabelsSemItens = function(){
+		jQuery("#posts label").each(function(){
+			var $this = jQuery(this);
+			var modulo = $this.attr('modulo');
+			
+			var itens = jQuery('li[modulo='+modulo+']:visible').size();
+			
+			if(itens=== 0){
+				$this.hide();
+			}else{
+				$this.show();
+			}	
+			
+		});
+	};	
+	
+	/**
+	 * Filtra os itens li para mostrar apenas os que estão de acordo com o termo
+	 *
+	 * @param {coleção jQuery}
+	 *            Lista de itens li do jQuery, que serão mostrados ou escondidos de acordo com o termo digitado
+	 * @param {array}
+	 *           Termo digitado pelo usuário que servirá como base para o filtro
+	 */	
+	var filtraElementos = function($lista, termo){
+	
+		var textoNegrito = '';
+		
+		$lista.hide();
+		
+		var termoSplit = termo.split(' ');
+		var tamanhoTokens = termoSplit.length; 
+		var $listaCache = $lista.not('[status]');
+		
+		$listaCache.each(function(){
+		
+			var $this = $(this);
+			
+			var textLi = $this.text();
+			var status = true;
+			var textoSelecionado = textLi;
+			
+			var n = 0;
+			
+			while (n < tamanhoTokens) {
+				termoSplit[n] = termoSplit[n].replace('*', '');
+				var minhaReg = new RegExp(termoSplit[n], 'i'); 
+				
+				var statusTemp = textoSelecionado.search(minhaReg);
+				textoSelecionado = textoSelecionado.replace(minhaReg, '');
+				
+				if(statusTemp === -1){
+					status = false;
+				}else{
+					textoNegrito = $.negritoTextoSelecionado(textLi,termoSplit, $this);
+					$this.text(textoNegrito);
+				}
+				
+				n++;
+			}
+		
+			if(status === true  || status > 0){
+				$this.show()
+			}	
+			
+		});
+		
+		jQuery('#aguarde').hide();
+	};	
+	
+	/**
+	* Marca com um fundo escuro o primeiro elemento visivel retornado
+	*   
+    * @param {collection lista}
+	* 		Lista de itens li do menu search
+	*/
+	var destacaPrimeiroItemVisivel= function($lista){
+		$lista.removeClass('selected');
+		$lista.filter(":visible:first").addClass('selected');
+	};
+	
+	/**
+	 * Marca com um negrito todos os caracteres que correspondem com o termo digitado
+	 *
+	 * @param {string textLi}
+	 *            Lista de itens li do jQuery, que serão mostrados ou escondidos de acordo com o termo digitado
+	 * @param {array textoSplit}
+	 *            Lista de itens li do jQuery, que serão mostrados ou escondidos de acordo com o termo digitado
+	 * @param {elementoJquery}
+	 *           Termo digitado pelo usuário que servirá como base para o filtro
+	 */	
+   $.negritoTextoSelecionado = function(textLi, textoSplit, elementoJquery){
+		   
+	    var itemLista = elementoJquery.find('a');
+	    
+	    textLi = removeNL(textLi);
+	    
+	    var retorno = textLi;
+	    
+	    $.each(textoSplit, function(i, elemento){
+	    	if(elemento !=='' && elemento !=='/'){
+		    	var minhaRegRep = new RegExp( '(' + elemento + ')', 'gi');
+		    	retorno = retorno.replace(minhaRegRep, "<b>$1</b>"); 
+	    	}
+	    }); 
+	
+	  	itemLista.html(retorno);
+	
+		return elementoJquery.html(itemLista);
+	};
+	
+	/**
+	 * Recarrega a lista mostrando todos os elementos, apenas mantendo os que devem estar escondidos por causa do filtro do módulo
+	 *
+	 * @param {coleção jQuery}
+	 *            Lista de itens li do menu search, que serão mostrados ou escondidos de acordo com o termo digitado
+	 * @param {array}
+	 *           Termo digitado pelo usuário que servirá como base para o filtro
+	 */	
+	var recarregaEstadoInicial = function($lista){
+		$lista.filter('[status]').hide();	
+		$lista.not('[status]').show();
+		$lista.find('span').removeClass('textoSelecionado');
+		
+		//Removendo todos os negritos dos textos
+		$lista.find('a').each(function(){
+		   var $this = jQuery(this);
+		   $this.html($this.text());
+		});
+		//Marca com um fundo escuro o primeiro elemento visivel retornado
+		destacaPrimeiroItemVisivel($lista);
+	};
+	
+	/**
+	 * Método responsável por varrer uma lista e filtrar os elementos que contém um termo 
+	 *
+	 * @param {string}
+	 *           Termo digitado pelo usuário que servirá como base para o filtro
+	 * @param {coleção jQuery}
+	 *            Lista de itens li do jQuery, que serão mostrados ou escondidos de acordo com o termo digitado
+
+	 */
+	var realizaBusca = function(termo, $lista) {
+	
+		var textoNegrito = '';
+	
+		if(termo==undefined){
+		    termo = jQuery('#buscar').val();
+		}
+		
+		if($lista==undefined){
+			$lista = jQuery('#posts li');
+		}
+		
+		if(termo === ''){
+			recarregaEstadoInicial($lista);				
+			jQuery('#aguarde').hide();
+			esconderLabelsSemItens();
+			return;
+		}
+		
+		filtraElementos($lista,  termo);
+		
+		esconderLabelsSemItens();
+		
+		//Marca com um fundo escuro o primeiro elemento visivel retornado
+		destacaPrimeiroItemVisivel($lista);
+	};
+	
+	//Métodos públicos	  
+	return { 
+		'realizaBusca' : realizaBusca
+	};	  
+	
+	})(jQuery);
+
+
+	

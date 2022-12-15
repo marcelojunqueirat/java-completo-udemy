@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\Marcelo\OneDrive - Softplan\cursos\java-completo-udemy\secao-04-estrutura-sequencial\ws-eclipse\.metadata\.plugins\org.eclipse.jdt.core
+40091167.index
+1172522056.index
+1865797976.index

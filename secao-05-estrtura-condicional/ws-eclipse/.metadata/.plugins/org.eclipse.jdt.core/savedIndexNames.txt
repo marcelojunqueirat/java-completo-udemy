@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\Marcelo\OneDrive - Softplan\cursos\java-completo-udemy\secao-05-estrtura-condicional\ws-eclipse\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+2032775362.index
+1172522056.index

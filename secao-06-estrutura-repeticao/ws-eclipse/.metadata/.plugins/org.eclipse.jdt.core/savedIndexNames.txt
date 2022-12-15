@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\Marcelo\OneDrive - Softplan\cursos\java-completo-udemy\secao-06-estrutura-repeticao\ws-eclipse\.metadata\.plugins\org.eclipse.jdt.core
+3760251256.index
+1865797976.index
+1172522056.index

@@ -1,0 +1,22 @@
+jQuery(function(){
+	jQuery(document).bind('mouseup', function(e) {
+		if ( jQuery(e.target).closest('.btAcoes').length == 1 ) return false;
+		
+		if(jQuery.browser.msie){
+	  		jQuery('#menuacoes', top.document).hide();
+	 	} else{
+	  		jQuery('#menuacoes', top.document).slideUp();
+	 	}
+	});
+
+	jQuery('html').click(function(){
+		var valorInput = jQuery('#buscar', top.document).val();
+		jQuery('#q', top.document).val(valorInput);
+
+		if(jQuery.browser.msie){
+			jQuery('#resultados', top.document).hide();
+		}else{
+			jQuery('#resultados', top.document).slideUp();
+		}
+	});	
+});

@@ -1,0 +1,815 @@
+
+<!-- saved from url=(0014)about:internet -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><meta name="document" content="/jsp/aet/autorizacao/solicitacao/aetConSolicitacao.jsp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- TLDs AET -->
+
+
+
+
+
+
+
+
+<!-- CPA TAG -->
+
+
+<!-- CDT TAG -->
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="./aet.css" type="text/css">
+<link href="./base(2).css" rel="stylesheet" type="text/css">
+<link href="./ui.all(1).css" rel="stylesheet" type="text/css">
+<link href="./elastic.css" rel="stylesheet" type="text/css">
+<link href="./tema.css" rel="stylesheet" type="text/css">
+<link href="./classic.css" id="skin" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="./spwConcatenado(1).css">
+
+
+
+<script async="" src="./analytics.js.baixados"></script><script id="trackwidget-js" src="./widget.min.js.baixados" type="text/javascript" async=""></script><script type="text/javascript" src="./jquery-1.4.3.js.baixados"></script>
+<script type="text/javascript" src="./jquery.string.1.0.js.baixados"></script>
+<script type="text/javascript" src="./jquery.utilitarios.0.1.js.baixados"></script>
+<script type="text/javascript" src="./jquery-ui-1.7.2.js(2).baixados"></script>
+<script type="text/javascript" src="./elastic.js.baixados"></script>
+
+<script type="text/javascript">var localeJS = "pt_BR_SINFRA";</script>
+<script type="text/javascript" src="./spwResourceMsg.js(1).baixados"></script> 
+<script type="text/javascript" src="./spwResourceMap_pt.js(1).baixados"></script>
+
+<script type="text/javascript" src="./prototype.js.baixados"></script>
+<script type="text/javascript" src="./spwConcatenado.js(1).baixados"></script>
+<script type="text/javascript" src="./manhattanConcatenado.js.baixados"></script>
+
+</head><body marginwidth="0" marginheight="0" class="fundo"><input id="imagensSkin" value="skins/classic/imagens/" type="hidden">
+
+<script language="javascript" type="text/JavaScript" src="./aet.js.baixados"></script>
+<script language="javascript" type="text/JavaScript" src="./cdtSujeito.js.baixados"></script>
+<script language="javascript" type="text/JavaScript" src="./aetUtil.js.baixados"></script>
+
+<script language="javascript" type="text/JavaScript" src="./spwBugFixes.js.baixados"></script>
+
+
+
+<script>
+(function (f, b, g) {
+    var a = {
+   		key: "kAiMF9wi",
+	   	customer: { 
+	   	   	name: "Administrador do Sistema",
+	   	   	email: "rodrigo.furrati@softplan.com.br",
+	   	   	phone: "",
+	   	   	Identificador: "SIDER"
+		}
+	};
+    var e;
+    var c = f.getElementsByTagName(b)[0];
+    if (f.getElementById(g)) {
+        return;
+    }
+    e = f.createElement(b);
+    e.id = g;
+    e.src = "https://app.track.co/widget.min.js";
+    e.type = "text/javascript";
+    e.async = true;
+    e.onload = e.onreadystatechange = function () {
+        var h = this.readyState;
+        if (h && h !== "complete" && h !== "loaded") {
+            return;
+        }
+        try {
+            var c = new TrackWidget();
+            c.createWidget(a);
+        } catch (i) {}
+    };
+    c.parentNode.insertBefore(e, c);
+})(document, "script", "trackwidget-js");
+</script>
+
+
+
+
+
+
+
+
+<title>Consulta de AETs</title>
+<script type="text/javascript" src="./engine.js(1).baixados"></script>
+<script type="text/javascript" src="./FormatadorDWR.js.baixados"></script>
+<script type="text/javascript" src="./formatador.js.baixados"></script>
+<script type="text/javascript" src="./aetUtil.js.baixados"></script>
+<script type="text/javascript" src="./aetConSolicitacao.js.baixados"></script>
+
+
+
+
+	
+<script type="text/javascript">
+	jQuery('html').click(function(){
+			var valorInput = jQuery('#buscar', top.document).val();
+			jQuery('#q', top.document).val(valorInput);
+			
+			if(jQuery.browser.msie){
+				jQuery('#resultados', top.document).hide();
+				jQuery('#menuacoes', top.document).hide();
+			}else{
+				jQuery('#resultados', top.document).slideUp();
+				jQuery('#menuacoes', top.document).slideUp();
+			}
+		});	
+</script>
+
+<div id="holderConteudo1"><div id="holderConteudo2">
+	<form name="solicitacaoForm" method="post" action="https://sinframt-des.ungp.softplan.com.br/aet/consultarSolicitacao.do" autocomplete="off" onsubmit="return applySubmit(this, eval(&#39;function spwSubmit(t, e){decodificaInputMulSelOnSubmit();if (!IS_enableSubmit) return false; return BENV_isCamposValidos(t); } spwSubmit(this, event);&#39;));">
+
+		<div class="fundoSuperior">
+        <h1>Consulta de AETs</h1>
+    </div>
+
+
+		<br>
+		
+		<br>
+		
+<div class="subTitulo">
+ <h2>Parâmetros da Consulta</h2>
+ <span name="divFiltro">
+</span>
+</div>
+			<br>
+			<table width="100%" border="0" cellpadding="0" cellspacing="2">
+				<tbody><tr>
+					<td class="styleLabel" align="right"><label class="label">Placa</label><b>:</b></td>
+					<td><input type="text" name="filtro.nuPlaca" value="" formattype="TEXT" onkeypress="CT_KPS(this, event);" onblur="CT_BLR(this);" onkeydown="CT_KDN(this, event);" onmousemove="CT_MMOV(this, event);" onmouseout="CT_MOUT(this, event);" onmouseover="CT_MOV(this, event);" onfocus="C_OFC(this, event);" style="text-transform: uppercase;width:80px;" class="spwCampoTexto" id="filtro.nuPlaca"></td>
+				</tr>
+				<tr>
+					<td class="styleLabel" align="right"><label class="label">Setor</label><b>:</b></td>
+					<td>
+							
+
+							
+
+							
+						<script>
+
+var orgaosetorNomeCamposArray = new Array();
+ orgaosetorNomeCamposArray[0] = 'cdOrgaosetor';
+ orgaosetorNomeCamposArray[1] = 'sgOrgaosetor';
+ orgaosetorNomeCamposArray[2] = 'nmOrgaosetor';
+ var filtro_cdOrgaosetorNomeCamposArray = orgaosetorNomeCamposArray;
+ var filtro_sgOrgaosetorNomeCamposArray = orgaosetorNomeCamposArray;
+ var filtro_nmOrgaosetorNomeCamposArray = orgaosetorNomeCamposArray;</script>
+
+<table class="spwInputSelect" width="100%" border="0" cellspacing="0" cellpadding="0" id="orgaosetor" idpai="null" filtropai="null" url="jsp/aet/cpa/orgaosetor/aetSearchOrgaosetor.jsp" input-select="orgaosetor" property="null" name="filtro.cdOrgaosetor" title="Consulta de Setores" ctxpath="/aet" multiplaselecao="false" useaction="false" bindings="&amp;bind_cdOrgaosetor=filtro.cdOrgaosetor&amp;bind_sgOrgaosetor=filtro.sgOrgaosetor&amp;bind_nmOrgaosetor=filtro.nmOrgaosetor" entitypkclass="orgaosetorcdtPK" idiframe="" altura="300" largura="500" usemodulo="true" desabilitarselecionados="false" carregafilho="false" consultasearchaoabrir="true"><tbody>
+    <tr>
+							<td style="display:none;">
+            <input type="text" name="filtro.cdOrgaosetor" id="filtro.cdOrgaosetor" bindingreference="cdOrgaosetor" value="" formattype="NUMBER" formato="5" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" onchange="IS_request(&#39;orgaosetor&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;orgaosetor&#39;, &#39;filtro.cdOrgaosetor&#39;, this.value,&#39;/aet&#39;,&#39;jsp/aet/cpa/orgaosetor/aetSearchOrgaosetor.jsp&#39;, &#39;null&#39;, &#39;Consulta de Setores&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdOrgaosetor=filtro.cdOrgaosetor&amp;bind_sgOrgaosetor=filtro.sgOrgaosetor&amp;bind_nmOrgaosetor=filtro.nmOrgaosetor&#39;, &#39;false&#39;, event, &#39;InputSelectAutoComplete&#39;, &#39;&#39;,&#39;false&#39;); " style="display:none;" class="alignRight" input-select="orgaosetor" idiframe=""></td>
+
+							<td width="20">
+            <input type="text" name="filtro.sgOrgaosetor" size="20" id="filtro.sgOrgaosetor" bindingreference="sgOrgaosetor" value="" formattype="TEXT" formato="20" onkeypress="CT_KPS(this, event);" onblur="CT_BLR(this);" onkeydown="CT_KDN(this, event);" onmousemove="CT_MMOV(this, event);" onmouseout="CT_MOUT(this, event);" onmouseover="CT_MOV(this, event);" onfocus="C_OFC(this, event);" onchange="IS_request(&#39;orgaosetor&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;orgaosetor&#39;, &#39;filtro.sgOrgaosetor&#39;, this.value,&#39;/aet&#39;,&#39;jsp/aet/cpa/orgaosetor/aetSearchOrgaosetor.jsp&#39;, &#39;null&#39;, &#39;Consulta de Setores&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdOrgaosetor=filtro.cdOrgaosetor&amp;bind_sgOrgaosetor=filtro.sgOrgaosetor&amp;bind_nmOrgaosetor=filtro.nmOrgaosetor&#39;, &#39;false&#39;, event, &#39;InputSelectAutoComplete&#39;, &#39;&#39;,&#39;false&#39;); " style="width:145px" class="spwCampoTexto" input-select="orgaosetor" idiframe=""></td>
+
+							<td>
+            <input type="text" name="filtro.nmOrgaosetor" id="filtro.nmOrgaosetor" bindingreference="nmOrgaosetor" value="" formattype="TEXT" formato="50" onkeypress="CT_KPS(this, event);" onblur="CT_BLR(this);" onkeydown="CT_KDN(this, event);" onmousemove="CT_MMOV(this, event);" onmouseout="CT_MOUT(this, event);" onmouseover="CT_MOV(this, event);" onfocus="C_OFC(this, event);" onchange="IS_request(&#39;orgaosetor&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;orgaosetor&#39;, &#39;filtro.nmOrgaosetor&#39;, this.value,&#39;/aet&#39;,&#39;jsp/aet/cpa/orgaosetor/aetSearchOrgaosetor.jsp&#39;, &#39;null&#39;, &#39;Consulta de Setores&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdOrgaosetor=filtro.cdOrgaosetor&amp;bind_sgOrgaosetor=filtro.sgOrgaosetor&amp;bind_nmOrgaosetor=filtro.nmOrgaosetor&#39;, &#39;false&#39;, event, &#39;InputSelectAutoComplete&#39;, &#39;&#39;,&#39;false&#39;); " style="width:100%;" class="spwCampoTexto" input-select="orgaosetor" idiframe=""></td>
+						
+        <td width="20" align="center"><a class="spwHtmlBotaoProcurar" border="0" title="Abre a consulta" onmouseover="IH_mOver(this)" onmouseout="IH_mOut(this)" onclick="IS_request(&#39;orgaosetor&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;orgaosetor&#39;, &#39;filtro.cdOrgaosetor&#39;,&#39;&#39;,&#39;/aet&#39;,&#39;jsp/aet/cpa/orgaosetor/aetSearchOrgaosetor.jsp&#39;, &#39;null&#39;, &#39;Consulta de Setores&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdOrgaosetor=filtro.cdOrgaosetor&amp;bind_sgOrgaosetor=filtro.sgOrgaosetor&amp;bind_nmOrgaosetor=filtro.nmOrgaosetor&#39;, &#39;true&#39;, event, &#39;InputSelectSearchGrid&#39;,&#39;&#39;,&#39;false&#39;)">&nbsp;</a><a class="spwHtmlBotaoProcurar-d" border="0" style="display:none"></a>
+        </td>
+    </tr>
+</tbody>
+</table>
+<script>
+
+</script>
+
+					</td>
+				</tr>
+				<tr>
+					<td class="styleLabel" align="right"><label class="label">Ano*</label><b>:</b></td>
+					<td>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tbody><tr>
+								<td width="80"><input type="text" name="filtro.nuAno" value="2022" formattype="NUMBER" formato="4" obrigatorio="true" rotulo="Ano" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" style="width:80px;" class="spwCampoTexto alignRight" id="filtro.nuAno"></td>
+								<td width="145" align="right"><label class="label">Nº pedido</label><b>:</b></td>
+								<td width="80"><input type="text" name="filtro.nuAet" value="210" formattype="NUMBER" formato="5" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" onchange="limpaBuscaAguardandoAvaliacao()" style="width:80px;" class="spwCampoTexto alignRight" id="filtro.nuAet">
+								</td>
+								<td width="145" align="right">
+										<label class="label">Nº AET</label><b>:</b>
+								</td>
+								<td><input type="text" name="filtro.nuAetoficial" value="" formattype="NUMBER" formato="5" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" onchange="limpaBuscaAguardandoAvaliacao()" style="width:80px;" class="spwCampoTexto alignRight " id="filtro.nuAetoficial">
+								</td>
+							</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				<tr>
+					<td class="styleLabel" align="right"><label class="label">Período de solicitação</label><b>:</b></td>
+					<td>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tbody><tr>
+								<td width="80">
+<table border="0" cellspacing="0" cellpadding="0" class="tableCalendario">
+	<tbody><tr>
+		<td>
+			<input type="text" name="filtro.dtSolicitacaoInicio" value="" formattype="DATE" locale="pt_BR" onkeypress="CD_KPS(this, event);" onblur="CD_BLR(this);" onkeydown="CD_KDN(this, event);" onmousemove="CD_MMOV(this, event);" onmouseout="CD_MOUT(this, event);" onmouseover="CD_MOV(this, event);" onfocus="CD_OFC(this, event);" onchange="validaPeriodoSolicitacao();" style="width:80px;" class="spwCampoTexto" id="filtro.dtSolicitacaoInicio">
+		</td>
+		<td>
+			<a id="filtro.dtSolicitacaoInicio_tpAgendamentoImg " onclick="spPopCal._popUpCalendar(this,$(&#39;filtro.dtSolicitacaoInicio&#39;),&#39;dd/MM/yyyy&#39;, &#39;/aet/imagens/&#39;)" onmouseover="IH_mOver(this)" onmouseout="IH_mOut(this)" class="spwHtmlCalendarIcon">&nbsp;</a>
+		</td>
+	</tr>
+</tbody></table>
+</td>
+								<td width="20">&nbsp;&nbsp;a&nbsp;&nbsp;</td>
+								<td>
+<table border="0" cellspacing="0" cellpadding="0" class="tableCalendario">
+	<tbody><tr>
+		<td>
+			<input type="text" name="filtro.dtSolicitacaoFim" value="" formattype="DATE" locale="pt_BR" onkeypress="CD_KPS(this, event);" onblur="CD_BLR(this);" onkeydown="CD_KDN(this, event);" onmousemove="CD_MMOV(this, event);" onmouseout="CD_MOUT(this, event);" onmouseover="CD_MOV(this, event);" onfocus="CD_OFC(this, event);" onchange="validaPeriodoSolicitacao();" style="width:80px;" class="spwCampoTexto" id="filtro.dtSolicitacaoFim">
+		</td>
+		<td>
+			<a id="filtro.dtSolicitacaoFim_tpAgendamentoImg " onclick="spPopCal._popUpCalendar(this,$(&#39;filtro.dtSolicitacaoFim&#39;),&#39;dd/MM/yyyy&#39;, &#39;/aet/imagens/&#39;)" onmouseover="IH_mOver(this)" onmouseout="IH_mOut(this)" class="spwHtmlCalendarIcon">&nbsp;</a>
+		</td>
+	</tr>
+</tbody></table>
+</td>
+							</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				<tr>
+					<td class="styleLabel" align="right"><label class="label">Período de liberação</label><b>:</b></td>
+					<td>
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tbody><tr>
+								<td width="80">
+<table border="0" cellspacing="0" cellpadding="0" class="tableCalendario">
+	<tbody><tr>
+		<td>
+			<input type="text" name="filtro.dtLiberacaoInicio" value="05/12/2022" formattype="DATE" locale="pt_BR" onkeypress="CD_KPS(this, event);" onblur="CD_BLR(this);" onkeydown="CD_KDN(this, event);" onmousemove="CD_MMOV(this, event);" onmouseout="CD_MOUT(this, event);" onmouseover="CD_MOV(this, event);" onfocus="CD_OFC(this, event);" onchange="validaPeriodoLiberacao();" style="width:80px;" class="spwCampoTexto" id="filtro.dtLiberacaoInicio">
+		</td>
+		<td>
+			<a id="filtro.dtLiberacaoInicio_tpAgendamentoImg " onclick="spPopCal._popUpCalendar(this,$(&#39;filtro.dtLiberacaoInicio&#39;),&#39;dd/MM/yyyy&#39;, &#39;/aet/imagens/&#39;)" onmouseover="IH_mOver(this)" onmouseout="IH_mOut(this)" class="spwHtmlCalendarIcon">&nbsp;</a>
+		</td>
+	</tr>
+</tbody></table>
+</td>
+								<td width="20">&nbsp;&nbsp;a&nbsp;&nbsp;</td>
+								<td>
+<table border="0" cellspacing="0" cellpadding="0" class="tableCalendario">
+	<tbody><tr>
+		<td>
+			<input type="text" name="filtro.dtLiberacaoFim" value="" formattype="DATE" locale="pt_BR" onkeypress="CD_KPS(this, event);" onblur="CD_BLR(this);" onkeydown="CD_KDN(this, event);" onmousemove="CD_MMOV(this, event);" onmouseout="CD_MOUT(this, event);" onmouseover="CD_MOV(this, event);" onfocus="CD_OFC(this, event);" onchange="validaPeriodoLiberacao();" style="width:80px;" class="spwCampoTexto" id="filtro.dtLiberacaoFim">
+		</td>
+		<td>
+			<a id="filtro.dtLiberacaoFim_tpAgendamentoImg " onclick="spPopCal._popUpCalendar(this,$(&#39;filtro.dtLiberacaoFim&#39;),&#39;dd/MM/yyyy&#39;, &#39;/aet/imagens/&#39;)" onmouseover="IH_mOver(this)" onmouseout="IH_mOut(this)" class="spwHtmlCalendarIcon">&nbsp;</a>
+		</td>
+	</tr>
+</tbody></table>
+</td>
+							</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				<tr>
+					<td class="styleLabel" align="right"><label class="label">Tipo de transporte</label><b>:</b></td>
+					<td>
+							
+							
+						<script>
+
+var tipotransporteNomeCamposArray = new Array();
+ tipotransporteNomeCamposArray[0] = 'cdTipotransporte';
+ tipotransporteNomeCamposArray[1] = 'deTipotransporte';
+ var filtro_cdTipotransporteNomeCamposArray = tipotransporteNomeCamposArray;
+ var filtro_deTipotransporteNomeCamposArray = tipotransporteNomeCamposArray;</script>
+
+<table class="spwInputSelect" style="table-layout: fixed;" width="100%" border="0" cellspacing="0" cellpadding="0" id="tipotransporte" idpai="null" filtropai="null" url="jsp/aet/tabelaaux/tipotransporte/aetSearchTipotransporte.jsp" input-select="tipotransporte" property="null" name="filtro.cdTipotransporte" title="Consulta de Tipos de Transporte" ctxpath="/aet" multiplaselecao="false" useaction="false" bindings="&amp;bind_cdTipotransporte=filtro.cdTipotransporte&amp;bind_deTipotransporte=filtro.deTipotransporte" entitypkclass="tipotransportePK" idiframe="" altura="300" largura="500" usemodulo="true" desabilitarselecionados="false" carregafilho="false" consultasearchaoabrir="true"><tbody>
+    <tr>
+							<td width="50">
+            <input type="text" name="filtro.cdTipotransporte" size="50" id="filtro.cdTipotransporte" bindingreference="cdTipotransporte" value="" formattype="NUMBER" formato="5" rotulo="Tipo de transporte" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" onchange="IS_request(&#39;tipotransporte&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;tipotransporte&#39;, &#39;filtro.cdTipotransporte&#39;, this.value,&#39;/aet&#39;,&#39;jsp/aet/tabelaaux/tipotransporte/aetSearchTipotransporte.jsp&#39;, &#39;null&#39;, &#39;Consulta de Tipos de Transporte&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdTipotransporte=filtro.cdTipotransporte&amp;bind_deTipotransporte=filtro.deTipotransporte&#39;, &#39;false&#39;, event, &#39;InputSelectAutoComplete&#39;, &#39;&#39;,&#39;false&#39;); " style="width:100%" class="spwCampoTexto alignRight" input-select="tipotransporte" idiframe=""></td>
+							<td width="*">
+            <input type="text" name="filtro.deTipotransporte" size="*" id="filtro.deTipotransporte" bindingreference="deTipotransporte" value="" formattype="TEXT" formato="50" onkeypress="CT_KPS(this, event);" onblur="CT_BLR(this);" onkeydown="CT_KDN(this, event);" onmousemove="CT_MMOV(this, event);" onmouseout="CT_MOUT(this, event);" onmouseover="CT_MOV(this, event);" onfocus="C_OFC(this, event);" onchange="IS_request(&#39;tipotransporte&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;tipotransporte&#39;, &#39;filtro.deTipotransporte&#39;, this.value,&#39;/aet&#39;,&#39;jsp/aet/tabelaaux/tipotransporte/aetSearchTipotransporte.jsp&#39;, &#39;null&#39;, &#39;Consulta de Tipos de Transporte&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdTipotransporte=filtro.cdTipotransporte&amp;bind_deTipotransporte=filtro.deTipotransporte&#39;, &#39;false&#39;, event, &#39;InputSelectAutoComplete&#39;, &#39;&#39;,&#39;false&#39;); " style="width:100%" class="spwCampoTexto" input-select="tipotransporte" idiframe=""></td>
+						
+        <td width="20" align="center"><a class="spwHtmlBotaoProcurar" border="0" title="Abre a consulta" onmouseover="IH_mOver(this)" onmouseout="IH_mOut(this)" onclick="IS_request(&#39;tipotransporte&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;tipotransporte&#39;, &#39;filtro.cdTipotransporte&#39;,&#39;&#39;,&#39;/aet&#39;,&#39;jsp/aet/tabelaaux/tipotransporte/aetSearchTipotransporte.jsp&#39;, &#39;null&#39;, &#39;Consulta de Tipos de Transporte&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdTipotransporte=filtro.cdTipotransporte&amp;bind_deTipotransporte=filtro.deTipotransporte&#39;, &#39;true&#39;, event, &#39;InputSelectSearchGrid&#39;,&#39;&#39;,&#39;false&#39;)">&nbsp;</a><a class="spwHtmlBotaoProcurar-d" border="0" style="display:none"></a>
+        </td>
+    </tr>
+</tbody>
+</table>
+<script>
+
+</script>
+						
+ 					</td>	
+				</tr>
+				<tr>
+					<td class="styleLabel" align="right"><label class="label">Requerente</label><b>:</b>
+					</td>
+					<td>
+						
+										
+										
+						<script>
+
+var requerenteNomeCamposArray = new Array();
+ requerenteNomeCamposArray[0] = 'cdRequerente';
+ requerenteNomeCamposArray[1] = 'nmRequerente';
+ requerenteNomeCamposArray[2] = 'nuRg';
+ requerenteNomeCamposArray[3] = 'nmEmissor';
+ requerenteNomeCamposArray[4] = 'deEndereco';
+ requerenteNomeCamposArray[5] = 'nuNumero';
+ requerenteNomeCamposArray[6] = 'deComplemento';
+ requerenteNomeCamposArray[7] = 'deBairro';
+ requerenteNomeCamposArray[8] = 'nuCep';
+ requerenteNomeCamposArray[9] = 'nuTelefone';
+ requerenteNomeCamposArray[10] = 'nmMail';
+ requerenteNomeCamposArray[11] = 'cdMunicipio';
+ requerenteNomeCamposArray[12] = 'nmMunicipioRequerente';
+ requerenteNomeCamposArray[13] = 'sgUnidadefederalRequerente';
+ requerenteNomeCamposArray[14] = 'deMunicipio';
+ requerenteNomeCamposArray[15] = 'deUf';
+ requerenteNomeCamposArray[16] = 'cdPais';
+ requerenteNomeCamposArray[17] = 'nmPaisRequerente';
+ var filtro_cdRequerenteNomeCamposArray = requerenteNomeCamposArray;
+ var filtro_nmRequerenteNomeCamposArray = requerenteNomeCamposArray;</script>
+
+<table class="spwInputSelect" width="100%" border="0" cellspacing="0" cellpadding="0" id="requerente" idpai="null" filtropai="null" url="jsp/aet/autorizacao/requerente/aetSearchRequerente.jsp" input-select="requerente" property="null" name="filtro.cdRequerente" title="Consulta de Requerentes" ctxpath="/aet" multiplaselecao="false" useaction="false" bindings="&amp;bind_cdRequerente=filtro.cdRequerente&amp;bind_nmRequerente=filtro.nmRequerente" entitypkclass="requerentePK" idiframe="" altura="300" largura="500" usemodulo="true" desabilitarselecionados="false" carregafilho="false" consultasearchaoabrir="true"><tbody>
+    <tr>
+										<td width="110">
+            <input type="text" name="filtro.cdRequerente" size="110" id="filtro.cdRequerente" bindingreference="cdRequerente" value="" formattype="TEXT" formato="15" rotulo="Requerente" onkeypress="CT_KPS(this, event);" onblur="CT_BLR(this);" onkeydown="CT_KDN(this, event);" onmousemove="CT_MMOV(this, event);" onmouseout="CT_MOUT(this, event);" onmouseover="CT_MOV(this, event);" onfocus="C_OFC(this, event);" onchange="IS_request(&#39;requerente&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;requerente&#39;, &#39;filtro.cdRequerente&#39;, this.value,&#39;/aet&#39;,&#39;jsp/aet/autorizacao/requerente/aetSearchRequerente.jsp&#39;, &#39;null&#39;, &#39;Consulta de Requerentes&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdRequerente=filtro.cdRequerente&amp;bind_nmRequerente=filtro.nmRequerente&#39;, &#39;false&#39;, event, &#39;InputSelectAutoComplete&#39;, &#39;&#39;,&#39;false&#39;); " style="width:100%" class="spwCampoTexto" input-select="requerente" idiframe=""></td>
+										<td width="*">
+            <input type="text" name="filtro.nmRequerente" maxlength="50" size="*" id="filtro.nmRequerente" bindingreference="nmRequerente" value="" formattype="TEXT" rotulo="Requerente" onkeypress="CT_KPS(this, event);" onblur="CT_BLR(this);" onkeydown="CT_KDN(this, event);" onmousemove="CT_MMOV(this, event);" onmouseout="CT_MOUT(this, event);" onmouseover="CT_MOV(this, event);" onfocus="C_OFC(this, event);" onchange="IS_request(&#39;requerente&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;requerente&#39;, &#39;filtro.nmRequerente&#39;, this.value,&#39;/aet&#39;,&#39;jsp/aet/autorizacao/requerente/aetSearchRequerente.jsp&#39;, &#39;null&#39;, &#39;Consulta de Requerentes&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdRequerente=filtro.cdRequerente&amp;bind_nmRequerente=filtro.nmRequerente&#39;, &#39;false&#39;, event, &#39;InputSelectAutoComplete&#39;, &#39;&#39;,&#39;false&#39;); " style="width:100%" class="spwCampoTexto" input-select="requerente" idiframe=""></td>
+						
+        <td width="20" align="center"><a class="spwHtmlBotaoProcurar" border="0" title="Abre a consulta" onmouseover="IH_mOver(this)" onmouseout="IH_mOut(this)" onclick="IS_request(&#39;requerente&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;requerente&#39;, &#39;filtro.cdRequerente&#39;,&#39;&#39;,&#39;/aet&#39;,&#39;jsp/aet/autorizacao/requerente/aetSearchRequerente.jsp&#39;, &#39;null&#39;, &#39;Consulta de Requerentes&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdRequerente=filtro.cdRequerente&amp;bind_nmRequerente=filtro.nmRequerente&#39;, &#39;true&#39;, event, &#39;InputSelectSearchGrid&#39;,&#39;&#39;,&#39;false&#39;)" style="cursor: pointer;">&nbsp;</a><a class="spwHtmlBotaoProcurar-d" border="0" style="display:none"></a>
+        </td>
+    </tr>
+</tbody>
+</table>
+<script>
+
+</script>
+
+					</td>
+				</tr>
+				<tr>
+					<td class="styleLabel" align="right"><label class="label">Transportador</label><b>:</b>
+					</td>
+					<td>
+						
+										
+										
+						<script>
+
+var transportadorNomeCamposArray = new Array();
+ transportadorNomeCamposArray[0] = 'cdRequerente';
+ transportadorNomeCamposArray[1] = 'nmRequerente';
+ transportadorNomeCamposArray[2] = 'nuRg';
+ transportadorNomeCamposArray[3] = 'nmEmissor';
+ transportadorNomeCamposArray[4] = 'deEndereco';
+ transportadorNomeCamposArray[5] = 'nuNumero';
+ transportadorNomeCamposArray[6] = 'deComplemento';
+ transportadorNomeCamposArray[7] = 'deBairro';
+ transportadorNomeCamposArray[8] = 'nuCep';
+ transportadorNomeCamposArray[9] = 'nuTelefone';
+ transportadorNomeCamposArray[10] = 'nmMail';
+ transportadorNomeCamposArray[11] = 'cdMunicipio';
+ transportadorNomeCamposArray[12] = 'nmMunicipioRequerente';
+ transportadorNomeCamposArray[13] = 'sgUnidadefederalRequerente';
+ transportadorNomeCamposArray[14] = 'deMunicipio';
+ transportadorNomeCamposArray[15] = 'deUf';
+ transportadorNomeCamposArray[16] = 'cdPais';
+ transportadorNomeCamposArray[17] = 'nmPaisRequerente';
+ var filtro_cdTransportadorNomeCamposArray = transportadorNomeCamposArray;
+ var filtro_nmTransportadorNomeCamposArray = transportadorNomeCamposArray;</script>
+
+<table class="spwInputSelect" width="100%" border="0" cellspacing="0" cellpadding="0" id="transportador" idpai="null" filtropai="null" url="jsp/aet/autorizacao/requerente/aetSearchRequerente.jsp" input-select="requerente" property="null" name="filtro.cdTransportador" title="Consulta de Transportadores" ctxpath="/aet" multiplaselecao="false" useaction="false" bindings="&amp;bind_cdRequerente=filtro.cdTransportador&amp;bind_nmRequerente=filtro.nmTransportador" entitypkclass="requerentePK" idiframe="" altura="300" largura="500" usemodulo="true" desabilitarselecionados="false" carregafilho="false" consultasearchaoabrir="true"><tbody>
+    <tr>
+										<td width="110">
+            <input type="text" name="filtro.cdTransportador" size="110" id="filtro.cdTransportador" bindingreference="cdRequerente" value="" formattype="TEXT" formato="15" rotulo="Transportador" onkeypress="CT_KPS(this, event);" onblur="CT_BLR(this);" onkeydown="CT_KDN(this, event);" onmousemove="CT_MMOV(this, event);" onmouseout="CT_MOUT(this, event);" onmouseover="CT_MOV(this, event);" onfocus="C_OFC(this, event);" onchange="IS_request(&#39;requerente&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;transportador&#39;, &#39;filtro.cdTransportador&#39;, this.value,&#39;/aet&#39;,&#39;jsp/aet/autorizacao/requerente/aetSearchRequerente.jsp&#39;, &#39;null&#39;, &#39;Consulta de Transportadores&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdRequerente=filtro.cdTransportador&amp;bind_nmRequerente=filtro.nmTransportador&#39;, &#39;false&#39;, event, &#39;InputSelectAutoComplete&#39;, &#39;&#39;,&#39;false&#39;); " style="width:100%" class="spwCampoTexto" input-select="transportador" idiframe=""></td>
+										<td width="*">
+            <input type="text" name="filtro.nmTransportador" maxlength="50" size="*" id="filtro.nmTransportador" bindingreference="nmRequerente" value="" formattype="TEXT" rotulo="Transportador" onkeypress="CT_KPS(this, event);" onblur="CT_BLR(this);" onkeydown="CT_KDN(this, event);" onmousemove="CT_MMOV(this, event);" onmouseout="CT_MOUT(this, event);" onmouseover="CT_MOV(this, event);" onfocus="C_OFC(this, event);" onchange="IS_request(&#39;requerente&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;transportador&#39;, &#39;filtro.nmTransportador&#39;, this.value,&#39;/aet&#39;,&#39;jsp/aet/autorizacao/requerente/aetSearchRequerente.jsp&#39;, &#39;null&#39;, &#39;Consulta de Transportadores&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdRequerente=filtro.cdTransportador&amp;bind_nmRequerente=filtro.nmTransportador&#39;, &#39;false&#39;, event, &#39;InputSelectAutoComplete&#39;, &#39;&#39;,&#39;false&#39;); " style="width:100%" class="spwCampoTexto" input-select="transportador" idiframe=""></td>
+						
+        <td width="20" align="center"><a class="spwHtmlBotaoProcurar" border="0" title="Abre a consulta" onmouseover="IH_mOver(this)" onmouseout="IH_mOut(this)" onclick="IS_request(&#39;requerente&#39;,&#39;/AjaxServlet.ajax&#39;, &#39;transportador&#39;, &#39;filtro.cdTransportador&#39;,&#39;&#39;,&#39;/aet&#39;,&#39;jsp/aet/autorizacao/requerente/aetSearchRequerente.jsp&#39;, &#39;null&#39;, &#39;Consulta de Transportadores&#39;,&#39;300&#39;,&#39;500&#39;, &#39;&amp;bind_cdRequerente=filtro.cdTransportador&amp;bind_nmRequerente=filtro.nmTransportador&#39;, &#39;true&#39;, event, &#39;InputSelectSearchGrid&#39;,&#39;&#39;,&#39;false&#39;)">&nbsp;</a><a class="spwHtmlBotaoProcurar-d" border="0" style="display:none"></a>
+        </td>
+    </tr>
+</tbody>
+</table>
+<script>
+
+</script>
+
+					</td>
+				</tr>
+				
+				
+				
+				<tr>
+					<td class="styleLabel" align="right"><label class="label">Situação</label><b>:</b>
+					</td>
+					<td><select name="filtro.cdSituacao" id="filtro.cdSituacao"><option value="">-- Selecione --</option>
+							<option value="13">Ag. Pagamento Taxas (inicial, TUV ou PRE)</option>
+<option value="16">Aguardando aprovação do Eng. Técnico Responsável</option>
+<option value="3">Aguardando Documentos</option>
+<option value="4">Aguardando liberação da via</option>
+<option value="5">Aguardando Pagamento</option>
+<option value="10">Aguardando resposta do Crea</option>
+<option value="2">Atendida</option>
+<option value="14">Cancelada/Falta de documentos</option>
+<option value="15">Cancelada/limites não autorizados</option>
+<option value="20">Cancelada/Reprovada CNPJ não confere</option>
+<option value="17">Cancelada/Reprovada pelo Eng. Técnico Responsável</option>
+<option value="18">Editar - realizar correções cadastrais</option>
+<option value="12">Em cadastramento</option>
+<option value="8">Liberada para Impressão</option>
+<option value="7">Solicitada via Internet</option>
+<option value="1">Solicitada/em análise</option></select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td class="styleLabel" align="right">
+					     
+					</td>
+					
+					<td>
+					    <input type="checkbox" name="filtro.flApenasaguardandoavaliacao" value="S" uncheckedvalue="N" onclick="CH_updateHiddenValue(this);" id="filtro.flApenasaguardandoavaliacao"><input type="hidden" value="N" name="filtro.flApenasaguardandoavaliacao" inputcheckbox="true">
+							<label for="filtro.flApenasaguardandoavaliacao"><label class="label">Buscar apenas AETs aguardando avaliação</label></label>
+					</td>	
+					
+				</tr>
+				
+			</tbody></table>
+
+			<input type="hidden" name="entity.status" value="" id="entity.status">
+			<div id="divBotoes">
+				<p align="right">
+					<span class="spwButtonMain" onclick="onClickButtonSpan(event);" onmouseout="onMouseOutButtonSpan(event)" onmouseover="onMouseOverButtonSpan(event)"><span><input type="submit" name="btConsultar" value="Consultar" onclick=" BENV_CLK(this);" onmouseover="B_mOver(this);" onmouseout="B_mOut(this);" class="spwBotaoDefault" id="btConsultar"></span></span>
+					
+					<span class="spwButtonDefault" onclick="onClickButtonSpan(event);" onmouseout="onMouseOutButtonSpan(event)" onmouseover="onMouseOverButtonSpan(event)"><span><input type="button" name="btLimpar" value="Limpar" onmouseover="B_mOver(this);" onmouseout="B_mOut(this);" class="spwBotao spwBotao" id="btLimpar"></span></span>
+					<span class="spwButtonDefault" onclick="onClickButtonSpan(event);" onmouseout="onMouseOutButtonSpan(event)" onmouseover="onMouseOverButtonSpan(event)"><span><input type="button" name="btNovo" value="Novo" onmouseover="B_mOver(this);" onmouseout="B_mOut(this);" class="spwBotao spwBotao" id="btNovo"></span></span>
+				</p>
+			</div>
+		<script type="text/javascript">
+jQuery(function() {var alternarMostrarEsconder = function() { 
+if (jQuery(this).parents('div.subTitulo').next('div').is(':visible')) { 
+		jQuery(this).parents('div.subTitulo').next('div').slideUp();  
+		jQuery(this).attr('class','spwHtmlToggleDown');  
+	} else { 
+		jQuery(this).parents('div.subTitulo').next('div').slideDown(function () { 
+			Elastic && Elastic.refresh(); 
+		});	
+		jQuery(this).attr('class','spwHtmlToggleUp'); 
+	} 
+}; 
+jQuery('a[name=toggleFiltro]').unbind('click');jQuery('a[name=toggleFiltro]').click(alternarMostrarEsconder); 
+});
+
+function onSubtitleClick(elem) {
+    jQuery(elem).parent().find('img[name=toggleFiltro]').trigger('click');
+    return false;
+}
+</script>
+
+		
+<div class="subTitulo">
+ <h2>Resultado da Consulta</h2>
+ <span name="divFiltro">
+</span>
+</div>
+			<br>
+			<input type="hidden" name="FilterPagination_gridSolicitacaoDTO" value="/aet_aetConSolicitacao_jsp_gridSolicitacaoDTO">
+<input type="hidden" id="FilterPagination_gridSolicitacaoDTO" value="null">
+<style type="text/css"><!--
+.heightLayerRow { height:200px }
+.heightTableRow { 
+ height:205px}
+@media print{
+   .heightLayerRow { height:auto; }
+   .heightTableRow { height:auto; }
+}
+table#tabelaRow tr td { 
+ border-bottom: 1px solid #f2f2f2; 
+} 
+.heightTableRow { 
+ border-left: 1px solid #C1C1C1; 
+} 
+#laRow {
+ background: #FFF; 
+}
+--></style>
+<div class="wrapperGridHeader"> 
+<div class="wrapperGridFooter"> 
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="spwTabelaGrid" nmgrid="Row" tipogrid="List" id="Row" indexed="true" paginada="true" style="table-layout:fixed">
+  <tbody><tr>
+    <td>
+      <table width="100%" border="0" cellpadding="1" cellspacing="0" height="20" style="table-layout:fixed">
+        <tbody><tr>
+        <td id="0" width="90" class="spwCabecalhoGrid   spwCabecalhoGridOrder" onmouseover="cabecalhoGridLeftRound_mOver(this);" onmouseout="cabecalhoGrid_mOut(this);" onmousedown="cabecalhoGridLeftRound_Click(this);" onclick="grid = document.getElementById(&#39;Row&#39;);if(grid.getAttribute(&#39;orderBy&#39;)==&#39;sgOrgaosetor&#39;){if(grid.getAttribute(&#39;direction&#39;)!= &#39;asc&#39;){grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;);}else{grid.setAttribute(&#39;direction&#39;,&#39;desc&#39;);refreshEstilosColunas(this,&#39;desc&#39;);}}else{document.getElementById(&#39;Row&#39;).setAttribute(&#39;orderBy&#39;,&#39;sgOrgaosetor&#39;);grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;)}gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;0&#39;);"><b>Setor</b></td>
+        <td id="1" width="35" class="spwCabecalhoGrid alignRight      spwCabecalhoGridOrder" onmouseover="cabecalhoGrid_mOver(this);" onmouseout="cabecalhoGrid_mOut(this);" onmousedown="cabecalhoGrid_Click(this);" onclick="grid = document.getElementById(&#39;Row&#39;);if(grid.getAttribute(&#39;orderBy&#39;)==&#39;solicitacao.vSolicitacaoPK.nuAno&#39;){if(grid.getAttribute(&#39;direction&#39;)!= &#39;asc&#39;){grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;);}else{grid.setAttribute(&#39;direction&#39;,&#39;desc&#39;);refreshEstilosColunas(this,&#39;desc&#39;);}}else{document.getElementById(&#39;Row&#39;).setAttribute(&#39;orderBy&#39;,&#39;solicitacao.vSolicitacaoPK.nuAno&#39;);grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;)}gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;0&#39;);"><b>Ano</b></td>
+        <td id="2" width="65" class="spwCabecalhoGrid alignRight               spwCabecalhoGridOrder" onmouseover="cabecalhoGrid_mOver(this);" onmouseout="cabecalhoGrid_mOut(this);" onmousedown="cabecalhoGrid_Click(this);" onclick="grid = document.getElementById(&#39;Row&#39;);if(grid.getAttribute(&#39;orderBy&#39;)==&#39;solicitacao.vSolicitacaoPK.nuAet&#39;){if(grid.getAttribute(&#39;direction&#39;)!= &#39;asc&#39;){grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;);}else{grid.setAttribute(&#39;direction&#39;,&#39;desc&#39;);refreshEstilosColunas(this,&#39;desc&#39;);}}else{document.getElementById(&#39;Row&#39;).setAttribute(&#39;orderBy&#39;,&#39;solicitacao.vSolicitacaoPK.nuAet&#39;);grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;)}gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;0&#39;);"><b>Nº pedido</b></td>
+        <td id="3" width="65" class="spwCabecalhoGrid alignRight                 spwCabecalhoGridOrder" onmouseover="cabecalhoGrid_mOver(this);" onmouseout="cabecalhoGrid_mOut(this);" onmousedown="cabecalhoGrid_Click(this);" onclick="grid = document.getElementById(&#39;Row&#39;);if(grid.getAttribute(&#39;orderBy&#39;)==&#39;solicitacao.nuAetoficial&#39;){if(grid.getAttribute(&#39;direction&#39;)!= &#39;asc&#39;){grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;);}else{grid.setAttribute(&#39;direction&#39;,&#39;desc&#39;);refreshEstilosColunas(this,&#39;desc&#39;);}}else{document.getElementById(&#39;Row&#39;).setAttribute(&#39;orderBy&#39;,&#39;solicitacao.nuAetoficial&#39;);grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;)}gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;0&#39;);"><b>Nº AET</b></td>
+        <td id="4" width="175" class="spwCabecalhoGrid                                                       spwCabecalhoGridOrder" onmouseover="cabecalhoGrid_mOver(this);" onmouseout="cabecalhoGrid_mOut(this);" onmousedown="cabecalhoGrid_Click(this);" onclick="grid = document.getElementById(&#39;Row&#39;);if(grid.getAttribute(&#39;orderBy&#39;)==&#39;solicitacao.deTipotransporte&#39;){if(grid.getAttribute(&#39;direction&#39;)!= &#39;asc&#39;){grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;);}else{grid.setAttribute(&#39;direction&#39;,&#39;desc&#39;);refreshEstilosColunas(this,&#39;desc&#39;);}}else{document.getElementById(&#39;Row&#39;).setAttribute(&#39;orderBy&#39;,&#39;solicitacao.deTipotransporte&#39;);grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;)}gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;0&#39;);"><b>Tipo de transporte</b></td>
+        <td id="5" width="*" class="spwCabecalhoGrid                             spwCabecalhoGridOrder" onmouseover="cabecalhoGrid_mOver(this);" onmouseout="cabecalhoGrid_mOut(this);" onmousedown="cabecalhoGrid_Click(this);" onclick="grid = document.getElementById(&#39;Row&#39;);if(grid.getAttribute(&#39;orderBy&#39;)==&#39;solicitacao.nmRequerente&#39;){if(grid.getAttribute(&#39;direction&#39;)!= &#39;asc&#39;){grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;);}else{grid.setAttribute(&#39;direction&#39;,&#39;desc&#39;);refreshEstilosColunas(this,&#39;desc&#39;);}}else{document.getElementById(&#39;Row&#39;).setAttribute(&#39;orderBy&#39;,&#39;solicitacao.nmRequerente&#39;);grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;)}gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;0&#39;);"><b>Requerente</b></td>
+        <td id="6" width="130" class="spwCabecalhoGrid             spwCabecalhoGridOrder" onmouseover="cabecalhoGrid_mOver(this);" onmouseout="cabecalhoGrid_mOut(this);" onmousedown="cabecalhoGrid_Click(this);" onclick="grid = document.getElementById(&#39;Row&#39;);if(grid.getAttribute(&#39;orderBy&#39;)==&#39;solicitacao.dtSolicitacao&#39;){if(grid.getAttribute(&#39;direction&#39;)!= &#39;asc&#39;){grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;);}else{grid.setAttribute(&#39;direction&#39;,&#39;desc&#39;);refreshEstilosColunas(this,&#39;desc&#39;);}}else{document.getElementById(&#39;Row&#39;).setAttribute(&#39;orderBy&#39;,&#39;solicitacao.dtSolicitacao&#39;);grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;)}gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;0&#39;);"><b>Solicitação</b></td>
+        <td id="7" width="145" class="spwCabecalhoGrid                      spwCabecalhoGridOrder" onmouseover="cabecalhoGrid_mOver(this);" onmouseout="cabecalhoGrid_mOut(this);" onmousedown="cabecalhoGrid_Click(this);" onclick="grid = document.getElementById(&#39;Row&#39;);if(grid.getAttribute(&#39;orderBy&#39;)==&#39;solicitacao.deSituacao&#39;){if(grid.getAttribute(&#39;direction&#39;)!= &#39;asc&#39;){grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;);}else{grid.setAttribute(&#39;direction&#39;,&#39;desc&#39;);refreshEstilosColunas(this,&#39;desc&#39;);}}else{document.getElementById(&#39;Row&#39;).setAttribute(&#39;orderBy&#39;,&#39;solicitacao.deSituacao&#39;);grid.setAttribute(&#39;direction&#39;,&#39;asc&#39;);refreshEstilosColunas(this,&#39;asc&#39;)}gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;0&#39;);"><b>Situação</b></td>
+        <td width="20" class="spwCabecalhoGrid noPrint">&nbsp;</td>
+  <td width="15" id="9" class="spwCabecalhoGrid noPrint">&nbsp;</td>
+        </tr>
+      </tbody></table>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <div class="spwLayerGrid heightLayerRow" id="laRow">
+        <table width="100%" class="heightTableRow" border="0" cellpadding="0" style="border-left: 1px solid #C1C1C1" cellspacing="0">
+          <tbody><tr>
+            <td valign="top">
+              <table width="100%" border="0" cellpadding="1" style="table-layout:fixed" cellspacing="0" bordercolor="#CCCCCC" id="tabelaRow">
+<tbody><tr style="display: none" bgcolor="#FFFFFF" id="linhaRow_-1">
+        <td class="spwCelulaGrid " width="90">
+					<input type="hidden" name="cdTipotransporte" value="4" desabilitaonsubmit="false">
+					<input type="hidden" name="cdTipoveiculo" value="2" desabilitaonsubmit="false">
+					<input type="hidden" name="cdOrgaosetor" value="2" desabilitaonsubmit="false">
+					<div name="sgOrgaosetor" id="sgOrgaosetor" formattype="TEXT">SUOR/SALOC/SINFRA</div>
+				</td>
+        <td class="spwCelulaGrid alignRight" width="35">
+					<input type="text" name="nuAno" value="2022" formattype="NUMBER" formato="4" desabilitaonsubmit="false" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" readonly="readonly" style="width:100%" class="spwCampoTextoGrid alignRight">
+				</td>
+        <td class="spwCelulaGrid alignRight" width="65">
+					<input type="text" name="nuAet" value="210" formattype="NUMBER" formato="5" desabilitaonsubmit="false" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" readonly="readonly" style="width:100%" class="spwCampoTextoGrid alignRight">
+				</td>
+        <td class="spwCelulaGrid alignRight" width="65">
+					<input type="text" name="nuAetoficial" value="38" formattype="NUMBER" formato="5" desabilitaonsubmit="false" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" readonly="readonly" style="width:100%" class="spwCampoTextoGrid alignRight">
+				</td>
+        <td class="spwCelulaGrid " width="175">
+					<div name="deTipotransporte" id="deTipotransporte" formattype="TEXT">Bitrem/Rodotrem Curto</div>
+				</td>
+        <td class="spwCelulaGrid " width="*">
+					<div name="nmRequerente" id="nmRequerente" formattype="TEXT">Marcelo Teixeira Transportador</div>
+				</td>
+        <td class="spwCelulaGrid " width="130">
+					<div name="dtSolicitacaoFmtHr" id="dtSolicitacaoFmtHr" formattype="TEXT">05/12/2022 08:42:21</div>
+				</td>
+        <td class="spwCelulaGrid " width="145">
+					<div name="deSituacao" id="deSituacao" formattype="TEXT">Liberada para Impressão</div>
+				</td>
+<td class="spwCelulaGrid noPrint " width="20"><a class="spwGridBotaoEditarGrid" name="editar" border="0" onmouseover="IH_mOver(this)" onmouseout="IH_mOut(this)" title="Abre a edição do registro" disableoncreate="false" onclick="F_openPage(&#39;abrirEdicaoSolicitacao.do?cdOrgaosetor=&#39;+getParamNaLinhaGrid(this.parentNode,&#39;cdOrgaosetor&#39;,&#39;row&#39;)+&#39;&amp;nuAno=&#39;+getParamNaLinhaGrid(this.parentNode,&#39;nuAno&#39;,&#39;row&#39;)+&#39;&amp;nuAet=&#39;+getParamNaLinhaGrid(this.parentNode,&#39;nuAet&#39;,&#39;row&#39;)+&#39;&amp;cdTipotransporte=&#39;+getParamNaLinhaGrid(this.parentNode,&#39;cdTipotransporte&#39;,&#39;row&#39;)+&#39;&amp;cdTipoveiculo=&#39;+getParamNaLinhaGrid(this.parentNode,&#39;cdTipoveiculo&#39;,&#39;row&#39;)+&#39;&#39;)"></a></td>
+</tr>
+<tr bgcolor="#FFFFFF" id="linhaRow_0">
+        <td class="spwCelulaGrid  spwLinhaGridPar " width="90">
+					<input type="hidden" value="4" desabilitaonsubmit="false" id="row[0].cdTipotransporte_0" name_="cdTipotransporte">
+					<input type="hidden" value="2" desabilitaonsubmit="false" id="row[0].cdTipoveiculo_0" name_="cdTipoveiculo">
+					<input type="hidden" value="2" desabilitaonsubmit="false" id="row[0].cdOrgaosetor_0" name_="cdOrgaosetor">
+					<div id="row[0].sgOrgaosetor_0" formattype="TEXT" name_="sgOrgaosetor" class="null spwLinhaGridPar">SUOR/SALOC/SINFRA</div>
+				</td>
+        <td class="spwCelulaGrid  spwLinhaGridPar alignRight" width="35">
+					<input type="text" value="2022" formattype="NUMBER" formato="4" desabilitaonsubmit="false" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" readonly="true" style="width:100%" class="spwCampoTextoGrid alignRight spwLinhaGridPar" id="row[0].nuAno_0" name_="nuAno">
+				</td>
+        <td class="spwCelulaGrid  spwLinhaGridPar alignRight" width="65">
+					<input type="text" value="210" formattype="NUMBER" formato="5" desabilitaonsubmit="false" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" readonly="true" style="width:100%" class="spwCampoTextoGrid alignRight spwLinhaGridPar" id="row[0].nuAet_0" name_="nuAet">
+				</td>
+        <td class="spwCelulaGrid  spwLinhaGridPar alignRight" width="65">
+					<input type="text" value="38" formattype="NUMBER" formato="5" desabilitaonsubmit="false" allowzero="true" desformataonsubmit="false" onkeypress="CN_KPS(this, event);" onblur="CN_BLR(this);" onkeydown="CN_KDN(this, event);" onmousemove="CN_MMOV(this, event);" onmouseout="CN_MOUT(this, event);" onmouseover="CN_MOV(this, event);" onfocus="CN_OFC(this, event);" onpaste="C_valorTeclasControleHandler(this, event);" readonly="true" style="width:100%" class="spwCampoTextoGrid alignRight spwLinhaGridPar" id="row[0].nuAetoficial_0" name_="nuAetoficial">
+				</td>
+        <td class="spwCelulaGrid  spwLinhaGridPar " width="175">
+					<div id="row[0].deTipotransporte_0" formattype="TEXT" name_="deTipotransporte" class="null spwLinhaGridPar">Bitrem/Rodotrem Curto</div>
+				</td>
+        <td class="spwCelulaGrid  spwLinhaGridPar " width="*">
+					<div id="row[0].nmRequerente_0" formattype="TEXT" name_="nmRequerente" class="null spwLinhaGridPar">Marcelo Teixeira Transportador</div>
+				</td>
+        <td class="spwCelulaGrid  spwLinhaGridPar " width="130">
+					<div id="row[0].dtSolicitacaoFmtHr_0" formattype="TEXT" name_="dtSolicitacaoFmtHr" class="null spwLinhaGridPar">05/12/2022 08:42:21</div>
+				</td>
+        <td class="spwCelulaGrid  spwLinhaGridPar " width="145">
+					<div id="row[0].deSituacao_0" formattype="TEXT" name_="deSituacao" class="null spwLinhaGridPar">Liberada para Impressão</div>
+				</td>
+<td class="spwCelulaGrid noPrint spwLinhaGridPar " width="20"><a class="spwGridBotaoEditarGrid" name="editar" border="0" onmouseover="IH_mOver(this)" onmouseout="IH_mOut(this)" title="Abre a edição do registro" disableoncreate="false" onclick="F_openPage(&#39;abrirEdicaoSolicitacao.do?cdOrgaosetor=&#39;+getParamNaLinhaGrid(this.parentNode,&#39;cdOrgaosetor&#39;,&#39;row&#39;)+&#39;&amp;nuAno=&#39;+getParamNaLinhaGrid(this.parentNode,&#39;nuAno&#39;,&#39;row&#39;)+&#39;&amp;nuAet=&#39;+getParamNaLinhaGrid(this.parentNode,&#39;nuAet&#39;,&#39;row&#39;)+&#39;&amp;cdTipotransporte=&#39;+getParamNaLinhaGrid(this.parentNode,&#39;cdTipotransporte&#39;,&#39;row&#39;)+&#39;&amp;cdTipoveiculo=&#39;+getParamNaLinhaGrid(this.parentNode,&#39;cdTipoveiculo&#39;,&#39;row&#39;)+&#39;&#39;)" style="cursor: pointer;"></a></td>
+</tr>
+              </tbody></table>
+            </td>
+          </tr>
+        </tbody></table>
+      </div>
+    </td>
+  </tr>
+  <tr class="noPrint">
+    <td>
+      <div align="right">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="spwRodapeGridRound">
+          <tbody><tr>
+
+<script>
+	var browser;
+	function gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(value) {
+		if(!document.getElementById('gridSolicitacaoDTO_nuTotalPags')) return;
+		if(value == 4 && new Number(document.getElementById('gridSolicitacaoDTO').value) < 0){
+			alert(msgKey('label.js.paginaNegativa',''));
+		}else if(new Number(document.getElementById('gridSolicitacaoDTO').value) >= new Number(document.getElementById('gridSolicitacaoDTO_nuTotalPags').getAttribute('text'))){
+			alert(msgKey('label.js.paginaLimite',document.getElementById('gridSolicitacaoDTO_nuTotalPags').getAttribute('text')));
+		}else{
+    		desabilitaBotao('btPrigridSolicitacaoDTO');
+    		desabilitaBotao('btAntgridSolicitacaoDTO');
+    		desabilitaBotao('btProgridSolicitacaoDTO');
+    		desabilitaBotao('btUltgridSolicitacaoDTO');
+			deselecionaGridPaginadaCheckboxOnPagination('Row');
+			var url = "/aet/AjaxServlet.ajax?component=gridPaginada&filterPaginationID=/aet_aetConSolicitacao_jsp_gridSolicitacaoDTO&beanClass=br.com.softplan.sider.aet.autorizacao.dto.SolicitacaoDTO&objectPaginationHandler=br.com.softplan.sider.aet.struts.action.autorizacao.solicitacao.SolicitacaoPaginationHandler&ejbClass=&ejbMethod=&pageSize=50&page="+value+"&currentPage="+document.getElementById('gridSolicitacaoDTO').value+"&paramSize=0&orderBy="+document.getElementById('Row').getAttribute('orderBy')+"&orderByDirection="+document.getElementById('Row').getAttribute('direction')+"&column0Type=null&column0=cdTipotransporte&column1Type=null&column1=cdTipoveiculo&column2Type=null&column2=cdOrgaosetor&column3Type=TEXT&column3=sgOrgaosetor&column4MaskFormat=4&column4Type=NUMBER&column4=nuAno&column5MaskFormat=5&column5Type=NUMBER&column5=nuAet&column6MaskFormat=5&column6Type=NUMBER&column6=nuAetoficial&column7Type=TEXT&column7=deTipotransporte&column8Type=TEXT&column8=nmRequerente&column9Type=TEXT&column9=dtSolicitacaoFmtHr&column10Type=TEXT&column10=deSituacao&columnsSize=11&objSerializado="+jQuery('#FilterPagination_gridSolicitacaoDTO').val();+"";
+			if(jQuery.browser.msie){
+				browser = 'ie';
+			}else{
+				browser = 'ff';
+			}
+			if (window.XMLHttpRequest) {
+				reqgridSolicitacaoDTO = new XMLHttpRequest();
+			} else if (window.ActiveXObject) {
+				reqgridSolicitacaoDTO = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			reqgridSolicitacaoDTO.open("GET", url, true);
+			reqgridSolicitacaoDTO.onreadystatechange = gridSolicitacaoDTOGridPaginadaTag_AJAXResponse;
+			reqgridSolicitacaoDTO.send(null);
+		}
+	}
+   function gridSolicitacaoDTOGridPaginadaTag_AJAXResponse() {
+   	if (reqgridSolicitacaoDTO.readyState == 4) {
+    		if (reqgridSolicitacaoDTO.status == 200) {
+    		    if( !exceptionTagPresent(reqgridSolicitacaoDTO) ) {
+    		        var refers = reqgridSolicitacaoDTO.responseXML.getElementsByTagName("rfs")[0];
+					if( !clearTagPresent(reqgridSolicitacaoDTO) ) {
+						var currentPage = reqgridSolicitacaoDTO.responseXML.getElementsByTagName("crp")[0];
+    			    	document.getElementById('gridSolicitacaoDTO').value = currentPage.getAttribute("crpv");
+    			    	document.getElementById('gridSolicitacaoDTO_display').value = new Number(currentPage.getAttribute("crpv"))+1;
+    			    	var nuRegistros = refers.childNodes.length;
+    			    	for(var i = 0; i < nuRegistros; i++){
+    			    		var entity = refers.childNodes[i];
+          					var refsLen = entity.childNodes.length;
+          					if (getNuLinhas(document, getNomeGrid(getGrid(document.getElementById('gridSolicitacaoDTO')))) == i) {
+ 	         					criarLinha(document.getElementById('gridSolicitacaoDTO'),false);
+		 					}
+		 					for(var j = 0; j < refsLen; j++){
+		   						var row = entity.childNodes[j];
+		   						var refName = row.getAttribute("n");
+		   						var refValue = row.getAttribute("v");
+								var indPonto = refName.lastIndexOf('.');
+								if(indPonto != -1) refName = refName.substring(indPonto+1);
+           					var input = document.getElementById('row['+i+'].'+refName+'_'+i);
+								if(input){
+									if(input.type=="checkbox"){
+										input.disabled = true
+										if(input.value == refValue){
+										input.checked = "true";
+										}else{
+											input.checked = null;}
+									}else if(input.tagName=="DIV"){
+										if(refValue == null || refValue == "" || refValue === undefined){
+											input.innerHTML = '&nbsp';
+										} else {
+										    jQuery(input).text(refValue);
+										}
+									}else{
+										input.value = refValue;}
+          				 	     }
+          						}
+          					  }
+          				var tabela = document.getElementById('tabelaRow');
+          				var p = nuRegistros;
+    		    		while(p < 50){
+ 	    					var linha = 'linhaRow_'+p;
+ 	    					linha = document.getElementById(linha);
+    		    			if(linha != null){
+    		    				if(browser == 'ff'){
+    		    					var parent = linha.parentNode;
+    			    				parent.removeChild(linha);
+    			    			} else {
+   	 		    				tabela.childNodes[0].removeChild(linha);
+ 	   		    				}
+ 	   		    			}
+    		    			p++;
+    		    		}
+    		    		var currentPageInt =  new Number(currentPage.getAttribute('crpv'))
+    		    		document.getElementById('textQtLinhasRow').childNodes[0].nodeValue = nuRegistros;
+    		    		document.getElementById('gridSolicitacaoDTOLimInferior').childNodes[0].nodeValue = currentPageInt*50+1;
+    		    		document.getElementById('gridSolicitacaoDTOLimSuperior').childNodes[0].nodeValue = currentPageInt*50+nuRegistros;
+    		    		habilitaBotao('btPrigridSolicitacaoDTO');habilitaBotao('btProgridSolicitacaoDTO');
+    		    		habilitaBotao('btAntgridSolicitacaoDTO');habilitaBotao('btUltgridSolicitacaoDTO');
+    		    		if(currentPageInt == 0){
+    		    			desabilitaBotao('btPrigridSolicitacaoDTO');
+    		    			desabilitaBotao('btAntgridSolicitacaoDTO');
+    		    		}
+    		    	 	var pageSize = new Number(50)
+    		    	 	var nuTotalRegistros = new Number(currentPage.getAttribute('te'))
+    		    		if((currentPageInt + 1) * pageSize >= nuTotalRegistros){
+    		    			desabilitaBotao('btProgridSolicitacaoDTO');
+    		    			desabilitaBotao('btUltgridSolicitacaoDTO');
+    		    		}
+    		    		depoisPaginarGrid('gridSolicitacaoDTO');
+    		    	}
+    		    }
+			}
+   	}
+   }
+</script>
+<td width="27%" height="25" class="spwRodapeGrid">&nbsp;Exibindo: <b id="gridSolicitacaoDTOLimInferior">1</b><b> até </b><b id="gridSolicitacaoDTOLimSuperior">1</b><b style="display:none" id="textQtLinhasRow">1</b> de 1</td>
+<td height="25" class="spwRodapeGrid" width="46%" align="center">
+  <table border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+      <td><input type="button" id="btPrigridSolicitacaoDTO" class="spwBotaoPrimeiro-d" disabled="true" onmouseover="this.className=&quot;spwBotaoPrimeiro-o&quot;" onmouseout="this.className=&quot;spwBotaoPrimeiro&quot;" onclick="gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;0&#39;);this.onblur;" title="Primeira página"></td>
+      <td><input type="button" id="btAntgridSolicitacaoDTO" class="spwBotaoAnterior-d" disabled="true" onmouseover="this.className=&quot;spwBotaoAnterior-o&quot;" onmouseout="this.className=&quot;spwBotaoAnterior&quot;" onclick="gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;3&#39;);this.onblur;" title="Página anterior"></td>
+      <td width="30"><input id="gridSolicitacaoDTO_display" type="text" formattype="NUMBER" formato="5" onkeypress="CN_KPS(this, event);" style="width:40px;text-align:center " maxlength="5" value="1" onchange="if(this.value == &#39;&#39;){return;}document.getElementById(&#39;gridSolicitacaoDTO&#39;).value=new Number(this.value) - 1;gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;4&#39;);this.onblur;"></td>
+      <td nowrap=""><b>&nbsp;de <c id="gridSolicitacaoDTO_nuTotalPags" text="1">1</c>&nbsp;</b></td>
+      <td><input type="button" id="btProgridSolicitacaoDTO" class="spwBotaoProximo-d" disabled="true" onmouseover="this.className=&quot;spwBotaoProximo-o&quot;" onmouseout="this.className=&quot;spwBotaoProximo&quot;" onclick="gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;1&#39;);this.onblur;" title="Próxima página"></td>
+      <td><input type="button" id="btUltgridSolicitacaoDTO" class="spwBotaoUltimo-d" disabled="true" onmouseover="this.className=&quot;spwBotaoUltimo-o&quot;" onmouseout="this.className=&quot;spwBotaoUltimo&quot;" onclick="gridSolicitacaoDTOGridPaginadaTag_AJAXRequest(&#39;2&#39;);this.onblur;" title="Última página"></td>
+    </tr>
+  </tbody></table>
+</td>
+<td width="27%" height="25" align="right" class="spwRodapeGridRound">&nbsp;
+<input id="gridSolicitacaoDTO" type="hidden" value="0" name="gridSolicitacaoDTOGridPaginadaCurrentPage" orderby="null">
+<b style="display: none" id="textQtLinhasRow">1</b>
+</td>
+<script>
+    gp = document.createElement("GRIDPAGINADA");
+    gp.setAttribute("referenceName",'gridSolicitacaoDTO');
+</script>
+          </tr>
+        </tbody></table>
+      </div>
+    </td>
+  </tr>
+</tbody></table>
+</div></div> 
+
+		<script type="text/javascript">
+jQuery(function() {var alternarMostrarEsconder = function() { 
+if (jQuery(this).parents('div.subTitulo').next('div').is(':visible')) { 
+		jQuery(this).parents('div.subTitulo').next('div').slideUp();  
+		jQuery(this).attr('class','spwHtmlToggleDown');  
+	} else { 
+		jQuery(this).parents('div.subTitulo').next('div').slideDown(function () { 
+			Elastic && Elastic.refresh(); 
+		});	
+		jQuery(this).attr('class','spwHtmlToggleUp'); 
+	} 
+}; 
+jQuery('a[name=toggleFiltro]').unbind('click');jQuery('a[name=toggleFiltro]').click(alternarMostrarEsconder); 
+});
+
+function onSubtitleClick(elem) {
+    jQuery(elem).parent().find('img[name=toggleFiltro]').trigger('click');
+    return false;
+}
+</script>
+
+	</form>
+<script type="text/javascript" language="JavaScript">
+  <!--
+  var focusControl = document.forms["solicitacaoForm"].elements["filtro.nuPlaca"];
+
+  if (focusControl.type != "hidden") {
+     focusControl.focus();
+  }
+  // -->
+</script>
+
+	</div></div>
+
+
+
+ 
+
+    <script>
+    	<!-- Google Analytics -->
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      
+        ga('create', 'UA-76409338-1', 'auto');
+        ga('set', 'dimension1', 'SIDER');
+        ga('set', 'dimension2', 'SINFRA');
+        ga('set', 'dimension3', 'AETNet');
+    
+        ga('send', 'pageview');
+        <!--FIM Google Analytics -->
+    </script>
+
+
+</body></html>

@@ -1,0 +1,32 @@
+
+function SPWUtil() { }
+
+
+/** Popula os campos definidos em mapForm os valores de map
+ *  map: map com atributo e valor
+ *  mapForm: map com atributo e nome do campo
+**/
+SPWUtil.setValues = function(map, mapForm) {
+  for (var property in map) {
+      var propertyId = mapForm[property];
+      if(propertyId !== null){
+      	DWRUtil.setValue(propertyId, map[property]);
+      }      
+  }
+};
+
+
+/** Popula os campos de uma grid definidos em mapForm os valores de map
+ *  map: map com atributo e valor
+ *  mapForm: map com atributo e nome do campo
+ *  row: numero da linha criada
+**/
+SPWUtil.setValuesRow = function(map, mapForm, row) {
+  for (var property in map) {
+      var propertyId = mapForm[property];
+      if(typeof propertyId == "string" || propertyId instanceof String) {
+      	propertyId = propertyId.replace("\?", row) + "_" + row;
+      	DWRUtil.setValue(propertyId, map[property]);
+      }      
+  }
+};
