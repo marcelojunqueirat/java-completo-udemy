@@ -1,0 +1,55 @@
+package application;
+
+import java.util.Locale;
+import java.util.Scanner;
+
+import entities.Pessoa;
+
+public class Program {
+
+	public static void main(String[] args) {
+		Locale.setDefault(Locale.US);
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("Quantas pessoas serao digitadas? ");
+		int n = sc.nextInt();
+		
+		Pessoa[] vetorPessoa = new Pessoa[n];
+		
+		for (int i = 0; i < vetorPessoa.length; i ++) {
+			sc.nextLine();
+			System.out.println("Dados da " + (i+1) + "a pessoa: ");
+			System.out.print("Nome: ");
+			String nome = sc.nextLine();
+			
+			System.out.print("Idade: ");
+			int idade = sc.nextInt();
+			
+			System.out.print("Altura: ");
+			double altura = sc.nextDouble();
+			
+			vetorPessoa[i]= new Pessoa(nome, idade, altura);
+		}
+		
+		double somaAltura = 0.00;
+		for (int i = 0; i < vetorPessoa.length; i ++) {
+			somaAltura += vetorPessoa[i].getAltura(); 
+		}
+		
+		double alturaMedia = somaAltura / vetorPessoa.length;
+		
+		System.out.printf("\nAltura média: %.2f%n", alturaMedia);
+		
+		int contadorIdadeMenorQueDezesseis = 0;
+		for (int i = 0; i < vetorPessoa.length; i ++) {
+			if(vetorPessoa[i].getIdade() < 16) {
+				
+			}
+		}
+		
+		
+		
+		sc.close();
+	}
+
+}

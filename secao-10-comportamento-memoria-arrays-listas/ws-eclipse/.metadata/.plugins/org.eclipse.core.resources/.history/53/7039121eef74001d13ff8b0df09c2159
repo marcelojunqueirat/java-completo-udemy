@@ -1,0 +1,14 @@
+package application;
+
+public class Program {
+
+	public static void main(String[] args) {
+		int p, x;
+		p = 10;
+		x = p;
+		System.out.println(p);
+		System.out.println(x);
+		
+	}
+
+}

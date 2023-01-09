@@ -1,0 +1,17 @@
+package application;
+
+public class Program {
+
+	public static void main(String[] args) {
+		/* Dados em pdf nos slides */
+		int p, x;
+		p = 10;
+		x = p;
+		System.out.println(p);
+		System.out.println(x);
+		p = 15;
+		System.out.println(p);
+		System.out.println(x);
+	}
+
+}
