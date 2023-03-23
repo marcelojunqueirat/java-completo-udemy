@@ -12,6 +12,7 @@ import java.util.Map;
 
 import db.DB;
 import db.DbException;
+import db.DbIntegrityException;
 import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
@@ -101,7 +102,7 @@ public class SellerDaoJDBC implements SellerDao {
 			st.executeUpdate();
 			
 		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
+			throw new DbIntegrityException(e.getMessage());
 		} finally {
 			DB.closeStatement(st);
 		}
@@ -116,7 +117,7 @@ public class SellerDaoJDBC implements SellerDao {
 					"SELECT seller.*,department.Name as DepName "
 					+ "FROM seller INNER JOIN department "
 					+ "ON seller.DepartmentId = department.Id "
-					+ "WHERE seller.Id = ?"
+					+ "WHERE seller.Id = ? "
 					);
 			
 			st.setInt(1, id);
