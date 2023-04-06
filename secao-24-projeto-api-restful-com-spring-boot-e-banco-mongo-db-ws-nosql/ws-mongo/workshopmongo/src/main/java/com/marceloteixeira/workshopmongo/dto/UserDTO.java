@@ -1,6 +1,7 @@
 package com.marceloteixeira.workshopmongo.dto;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import com.marceloteixeira.workshopmongo.domain.User;
 
